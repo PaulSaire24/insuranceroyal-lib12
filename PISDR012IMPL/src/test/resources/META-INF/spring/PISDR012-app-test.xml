@@ -3,4 +3,17 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+	<bean id="pisdR012" class="com.bbva.pisd.lib.r012.impl.PISDR012Impl" parent="pisdR012Abstract"/>
+	<bean id="pisdR012Abstract" abstract="true" class="com.bbva.pisd.lib.r012.impl.PISDR012Abstract">
+		<property name="applicationConfigurationService" ref="applicationConfigurationService"/>
+		<property name="jdbcUtils" ref="jdbcUtils"/>
+	</bean>
+	<bean id="applicationConfigurationService" factory-bean="applicationConfigurationServiceFactory" factory-method="getApplicationConfigurationService">
+		<constructor-arg type="org.osgi.framework.BundleContext" ref="bundleContext"/>
+	</bean>
+	<bean id="jdbcUtils" factory-bean="jdbcUtilsFactory" factory-method="getJdbcUtils">
+		<constructor-arg type="org.osgi.framework.BundleContext" ref="bundleContext"/>
+	</bean>
+	<bean id="jdbcUtilsFactory" class="com.bbva.pisd.lib.r012.factory.JdbcUtilsFactory"/>
 </beans>

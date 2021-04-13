@@ -1,17 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.bbva.pisd</groupId>
 		<artifactId>PISDR012-parent</artifactId>
-		<version>0.1.0-SNAPSHOT</version>
+		<version>0.7.0-SNAPSHOT</version>
 	</parent>
 	<groupId>com.bbva.pisd</groupId>
 	<artifactId>PISDR012</artifactId>
 	<name>PISDR012</name>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.7.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
-	<description>Deployment unit insuranceroyal-lib12 of uuaa pisd</description>
+	<description>Library to get a Oracele DB connection</description>
 	<properties>
 		<osgi.version.manifest>0.0</osgi.version.manifest>
 	</properties>
@@ -56,6 +56,11 @@
 			<artifactId>elara-utility-log</artifactId>
 			<version>${apx.core.online.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.bbva.pisd.dto.insurance</groupId>
+			<artifactId>PISDC001</artifactId>
+			<version>0.7.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>
@@ -69,6 +74,7 @@
 						<Bundle-SymbolicName>${project.artifactId}-${project.version}</Bundle-SymbolicName>
 						<Bundle-Category>library</Bundle-Category>
 						<Import-Package>
+							com.bbva.pisd.dto.insurance.*;version="${osgi.version.manifest}",
 							com.bbva.elara.*;version="${osgi.version.manifest}",
 							org.osgi.framework;version="${osgi.version.manifest}",
 							com.bbva.elara.aspect;version="${osgi.version.manifest}",
@@ -76,8 +82,7 @@
 							org.springframework.aop;version="${osgi.version.manifest}",
 							org.springframework.aop.framework;version="${osgi.version.manifest}",
 							org.aopalliance.aop;version="${osgi.version.manifest}",
-							*;version="${osgi.version.manifest}"
-						</Import-Package>
+							*;version="${osgi.version.manifest}"</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
@@ -88,9 +93,9 @@
 						<phase>install</phase>
 						<configuration>
 							<tasks>
-								<copy todir="${outputDirectoryLibraries}" file="./target/${project.artifactId}.jar" />
+								<copy todir="${outputDirectoryLibraries}" file="./target/${project.artifactId}.jar"/>
 							</tasks>
-							</configuration>
+						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
