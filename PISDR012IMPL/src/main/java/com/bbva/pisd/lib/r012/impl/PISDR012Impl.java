@@ -254,4 +254,31 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return result;
 	}
 
+	@Override
+	public Map<String, Object> executeRegisterAdditionalQuotationVeh(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationVeh START *****");
+		Map<String, Object> response = null;
+
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue(),
+				PISDProperties.FIELD_CHASSIS_ID.getValue(),
+				PISDProperties.FIELD_VEHICLE_ENGINE_ID.getValue(),
+				PISDProperties.FIELD_VEHICLE_SEAT_NUMBER.getValue(),
+				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+
+			try {
+				LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationVeh - PARAMETERS OK ... EXECUTING *****");
+				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), arguments);
+				response.forEach((key, value)  -> LOGGER.info("[PISD.UPDATE_INSURANCE_QUOTATION_VEH] Result -> Key {} with value: {}", key, value));
+
+			} catch (NoResultException ex) {
+				LOGGER.info("executeGetCompanyDescById - QUERY EMPTY RESULT [PISD.UPDATE_INSURANCE_QUOTATION_VEH]");
+				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			}
+		}
+
+		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationVeh END *****");
+		return response;
+	}
+
+
 }

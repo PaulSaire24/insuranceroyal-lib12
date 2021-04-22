@@ -17,11 +17,6 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.bbva.pisd.dto.insurance</groupId>
-			<artifactId>PISDC001</artifactId>
-			<version>0.2.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>com.bbva.elara</groupId>
 			<artifactId>elara-aspect</artifactId>
 			<version>${apx.core.online.version}</version>
@@ -60,6 +55,11 @@
 			<groupId>com.bbva.elara</groupId>
 			<artifactId>elara-utility-log</artifactId>
 			<version>${apx.core.online.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.bbva.pisd.dto.insurance</groupId>
+			<artifactId>PISDC011</artifactId>
+			<version>0.2.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
