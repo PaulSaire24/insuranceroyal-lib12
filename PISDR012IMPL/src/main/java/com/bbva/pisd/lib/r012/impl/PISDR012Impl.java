@@ -260,9 +260,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 		Map<String, Object> response = null;
 
 		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue(),
-				PISDProperties.FIELD_CHASSIS_ID.getValue(),
-				PISDProperties.FIELD_VEHICLE_ENGINE_ID.getValue(),
-				PISDProperties.FIELD_VEHICLE_SEAT_NUMBER.getValue(),
 				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
 
 			try {

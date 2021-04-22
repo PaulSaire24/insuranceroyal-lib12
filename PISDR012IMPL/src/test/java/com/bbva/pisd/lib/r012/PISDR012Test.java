@@ -374,16 +374,12 @@ public class PISDR012Test {
 	@Test
 	public void executeRegisterAdditionalInsuranceQuotationVehOK() {
 		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehOK...");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_CHASSIS_ID.getValue())).thenReturn("chassisid");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_VEHICLE_ENGINE_ID.getValue())).thenReturn("engineid");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_VEHICLE_SEAT_NUMBER.getValue())).thenReturn(new BigDecimal("8"));
+		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");;
 		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
 
 		when(jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), argumentsForRegisterQuotationVeh)).thenReturn(new HashMap<>());
 		Map<String, Object> validation = pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
-		assertNull(validation);
-
+		assertNotNull(validation);
 	}
 
 	@Test
@@ -393,14 +389,12 @@ public class PISDR012Test {
 		assertNull(validation);
 	}
 
-	@Test
+    @Test
 	public void executeRegisterAdditionalInsuranceQuotationVehWithNoResultException() {
 		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehWithNoResultException...");
 		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_CHASSIS_ID.getValue())).thenReturn("chassisid");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_VEHICLE_ENGINE_ID.getValue())).thenReturn("engineid");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_VEHICLE_SEAT_NUMBER.getValue())).thenReturn(new BigDecimal("8"));
 		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
+
 		when(jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), argumentsForRegisterQuotationVeh)).thenThrow(new NoResultException(MESSAGE));
 		Map<String, Object> validation = pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
 		assertNull(validation);
