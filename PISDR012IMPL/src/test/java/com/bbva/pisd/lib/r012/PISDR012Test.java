@@ -59,6 +59,8 @@ public class PISDR012Test {
 	private Map<String, Object> argumentsForSaveSimulationQuotationMod;
 	@Mock
 	private Map<String, Object> argumentsForSaveSimulationQuotationVeh;
+	@Mock
+	private Map<String, Object> argumentsForRegisterQuotationVeh;
 
 	@Before
 	public void setUp() {
@@ -369,4 +371,32 @@ public class PISDR012Test {
 		assertNull(validation);
 	}
 
+	@Test
+	public void executeRegisterAdditionalInsuranceQuotationVehOK() {
+		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehOK...");
+		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");;
+		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
+
+		when(jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), argumentsForRegisterQuotationVeh)).thenReturn(new HashMap<>());
+		Map<String, Object> validation = pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeRegisterAdditionalInsuranceQuotationVehWithParametersEvaluationFalse() {
+		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehWithParametersEvaluationFalse...");
+		Map<String, Object> validation = pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
+		assertNull(validation);
+	}
+
+    @Test
+	public void executeRegisterAdditionalInsuranceQuotationVehWithNoResultException() {
+		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehWithNoResultException...");
+		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
+		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
+
+		when(jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), argumentsForRegisterQuotationVeh)).thenThrow(new NoResultException(MESSAGE));
+		Map<String, Object> validation = pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
+		assertNull(validation);
+	}
 }
