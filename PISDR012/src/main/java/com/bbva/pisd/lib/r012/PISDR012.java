@@ -20,5 +20,8 @@ public interface PISDR012 {
 	void executeSaveInsuranceQuotationMod(Map<String, Object> arguments);
 	void executeSaveInsuranceQuotationVeh(Map<String, Object> arguments);
 	Map<String, Object> executeGetCompanyDescById(BigDecimal companyId);
-	Map<String, Object> executeRegisterAdditionalQuotationVeh(Map<String, Object> arguments);
+	void executeRegisterAdditionalQuotationVeh(Map<String, Object> arguments);
+	Map<String, Object> executeRegisterAdditionalCompanyQuotaId(String companyQuotaId);
+	void executeRegisterAdditionalQuotationBranch(Map<String, Object> arguments);
+	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
 }
