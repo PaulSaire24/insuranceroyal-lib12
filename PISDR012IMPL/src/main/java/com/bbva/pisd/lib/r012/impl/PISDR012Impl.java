@@ -255,27 +255,68 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
-	public Map<String, Object> executeRegisterAdditionalQuotationVeh(Map<String, Object> arguments) {
+	public void executeRegisterAdditionalQuotationVeh(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationVeh START *****");
-		Map<String, Object> response = null;
 
-		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue(),
-				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())) {
 
-			try {
-				LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationVeh - PARAMETERS OK ... EXECUTING *****");
-				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), arguments);
-				response.forEach((key, value)  -> LOGGER.info("[PISD.UPDATE_INSURANCE_QUOTATION_VEH] Result -> Key {} with value: {}", key, value));
+			LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationVeh - PARAMETERS OK ... EXECUTING *****");
+			this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), arguments);
+		} else {
 
-			} catch (NoResultException ex) {
-				LOGGER.info("executeGetCompanyDescById - QUERY EMPTY RESULT [PISD.UPDATE_INSURANCE_QUOTATION_VEH]");
-				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
-			}
+			LOGGER.info("executeRegisterAdditionalQuotationVeh - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSURANCE_QUOTATION_VEH]");
 		}
 
 		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationVeh END *****");
+	}
+
+
+	@Override
+	public Map<String, Object> executeRegisterAdditionalCompanyQuotaId(String companyQuotaId) {
+		LOGGER.info("***** PISDR012Impl - executeRegisterAdditionalCompanyQuotaId START *****");
+		Map<String, Object> response = null;
+		try {
+			response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_COMPANY_BY_COMPANY_REGISTER.getValue(), companyQuotaId);
+
+			response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_QUOTATION_REGISTER] Result -> Key {} with value: {}", key, value));
+		} catch (NoResultException ex) {
+			LOGGER.info("executeRegisterAdditionalCompanyQuotaId - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_QUOTATION_REGISTER]");
+			this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+		}
+		LOGGER.info("***** PISDR012Impl - executeRegisterAdditionalCompanyQuotaId END *****");
 		return response;
 	}
 
+	@Override
+	public void executeRegisterAdditionalQuotationBranch(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranch START *****");
+
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_LAST_CHANGE_BRANCH_ID.getValue())) {
+
+			LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranch - PARAMETERS OK ... EXECUTING *****");
+			this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_QUOTATION_REGISTER.getValue(), arguments);
+		} else {
+
+			LOGGER.info("executeRegisterAdditionalQuotationBranch - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSURANCE_QUOTATION]");
+		}
+
+		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranch END *****");
+	}
+
+	@Override
+	public void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranchMod START *****");
+
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_LAST_CHANGE_BRANCH_ID.getValue())) {
+
+			LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranchMod - PARAMETERS OK ... EXECUTING *****");
+			this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSRNC_QUOTATION_MOD_REGISTER.getValue(), arguments);
+		} else {
+
+			LOGGER.info("executeRegisterAdditionalQuotationBranchMod - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSRNC_QUOTATION_MOD]");
+		}
+
+		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranchMod END *****");
+	}
 
 }

@@ -375,28 +375,64 @@ public class PISDR012Test {
 	public void executeRegisterAdditionalInsuranceQuotationVehOK() {
 		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehOK...");
 		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");;
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
 
-		when(jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), argumentsForRegisterQuotationVeh)).thenReturn(new HashMap<>());
-		Map<String, Object> validation = pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
-		assertNotNull(validation);
+		pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
 	}
 
 	@Test
 	public void executeRegisterAdditionalInsuranceQuotationVehWithParametersEvaluationFalse() {
 		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehWithParametersEvaluationFalse...");
-		Map<String, Object> validation = pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
+		pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
+		verify(jdbcUtils, never()).update(anyString(), anyMap());
+	}
+
+	@Test
+	public void executeGetRegisterAdditionalByIdOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetRegisterAdditionalByIdOK...");
+		when(jdbcUtils.queryForMap(anyString(),  anyString())).thenReturn(new HashMap<>());
+		Map<String, Object> validation = pisdr012.executeRegisterAdditionalCompanyQuotaId("companyQuotaId");
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetRegisterAdditionalByIdWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetRegisterAdditionalByIdWithNoResultException...");
+		when(jdbcUtils.queryForMap(anyString(), anyString())).thenThrow(new NoResultException(MESSAGE));
+		Map<String, Object> validation = pisdr012.executeRegisterAdditionalCompanyQuotaId("12345");
 		assertNull(validation);
 	}
 
-    @Test
-	public void executeRegisterAdditionalInsuranceQuotationVehWithNoResultException() {
-		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehWithNoResultException...");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
-		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
+	@Test
+	public void executeRegisterAdditionalInsuranceQuotationBranchOK() {
+		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationBranchOK...");
+		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_LAST_CHANGE_BRANCH_ID.getValue())).thenReturn("aaaa");;
 
-		when(jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_QUOTATION_REGISTER_ADDITIONAL_VEH.getValue(), argumentsForRegisterQuotationVeh)).thenThrow(new NoResultException(MESSAGE));
-		Map<String, Object> validation = pisdr012.executeRegisterAdditionalQuotationVeh(argumentsForRegisterQuotationVeh);
-		assertNull(validation);
+		pisdr012.executeRegisterAdditionalQuotationBranch(argumentsForRegisterQuotationVeh);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
 	}
+
+	@Test
+	public void executeRegisterAdditionalInsuranceQuotationBranchWithParametersEvaluationFalse() {
+		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationBranchWithParametersEvaluationFalse...");
+		pisdr012.executeRegisterAdditionalQuotationBranch(argumentsForRegisterQuotationVeh);
+		verify(jdbcUtils, never()).update(anyString(), anyMap());
+	}
+
+	@Test
+	public void executeRegisterAdditionalInsuranceQuotationBranchModOK() {
+		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationBranchModOK...");
+		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_LAST_CHANGE_BRANCH_ID.getValue())).thenReturn("aaaa");;
+
+		pisdr012.executeRegisterAdditionalQuotationBranchMod(argumentsForRegisterQuotationVeh);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+	}
+
+	@Test
+	public void executeRegisterAdditionalInsuranceQuotationBranchModWithParametersEvaluationFalse() {
+		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationBranchModWithParametersEvaluationFalse...");
+		pisdr012.executeRegisterAdditionalQuotationBranchMod(argumentsForRegisterQuotationVeh);
+		verify(jdbcUtils, never()).update(anyString(), anyMap());
+	}
+
 }
