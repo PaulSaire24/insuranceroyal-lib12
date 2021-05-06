@@ -1,7 +1,6 @@
 package com.bbva.pisd.lib.r012;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
 public interface PISDR012 {
@@ -14,7 +13,9 @@ public interface PISDR012 {
 	boolean executeSaveSimulation(Map<String, Object> arguments);
 	void executeSaveSimulationProduct(Map<String, Object> arguments);
 	void executeSaveSimulationVehicle(Map<String, Object> arguments);
-	List<Map<String, Object>> executeGetInsuranceQuotation(String quotationId);
+
+	Map<String, Object> executeGetInsuranceQuotation(String quotationId);
+
 	Map<String, Object> executeGetInsuranceSimulationIdAndExpiredDate(String quotationId);
 	void executeSaveInsuranceQuotation(Map<String, Object> arguments);
 	void executeSaveInsuranceQuotationMod(Map<String, Object> arguments);
