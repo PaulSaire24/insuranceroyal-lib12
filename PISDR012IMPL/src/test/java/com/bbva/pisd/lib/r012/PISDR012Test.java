@@ -21,7 +21,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -244,39 +243,24 @@ public class PISDR012Test {
 	}
 
 	@Test
-	public void executeGetInsuranceQuotationNullEmptyTest() {
-		LOGGER.info("PISDR012Test - Executing executeGetInsuranceQuotationNullEmptyTest...");
+	public void executeGetInsuranceQuotationOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceQuotationOK...");
 
-		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(null);
+		when(jdbcUtils.queryForList(anyString(), anyString())).thenReturn(new ArrayList<>());
+		Map<String, Object> validation = pisdr012.executeGetInsuranceQuotation("66666");
 
-		List<Map<String, Object>> resp = pisdr012.executeGetInsuranceQuotation("123456");
-		assertNull(resp);
-
-		resp = pisdr012.executeGetInsuranceQuotation("");
-		assertEquals(resp, new ArrayList<>());
-
-		resp = pisdr012.executeGetInsuranceQuotation(null);
-		assertEquals(resp, new ArrayList<>());
+		assertNotNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
 	@Test
 	public void executeGetInsuranceQuotationWithNoResultException() {
 		LOGGER.info("PISDR012Test - Executing executeGetInsuranceQuotationWithNoResultException...");
 
-		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException(MESSAGE));
-		pisdr012.executeGetInsuranceQuotation("888888");
+		when(jdbcUtils.queryForList(anyString(), anyString())).thenThrow(new NoResultException(MESSAGE));
+		Map<String, Object> validation = pisdr012.executeGetInsuranceQuotation("888888");
 
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 		assertEquals(PISDErrors.ERROR_NO_RESULT_JDBC_INSRC_QUOTATION.getAdviceCode(), this.pisdr012.getAdviceList().get(0).getCode());
-	}
-
-	@Test
-	public void executeGetInsuranceQuotationOK() {
-		LOGGER.info("PISDR012Test - Executing executeGetInsuranceQuotationOK...");
-
-		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(new ArrayList<>());
-		List<Map<String, Object>> resp = pisdr012.executeGetInsuranceQuotation("66666");
-
-		assertNotNull(resp);
 	}
 
 	@Test
@@ -299,7 +283,7 @@ public class PISDR012Test {
 
 	@Test
 	public void executeSaveInsuranceQuotationOK() {
-		LOGGER.info("PISDR012Test - Executing executeGetInsuranceQuotationOK...");
+		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceQuotationOK...");
 		when(argumentsForSaveSimulationQuotation.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("policy_value");
 		when(argumentsForSaveSimulationQuotation.get(PISDProperties.FIELD_INSURANCE_SIMULATION_ID.getValue())).thenReturn(new BigDecimal("827"));
 		when(argumentsForSaveSimulationQuotation.get(PISDProperties.FIELD_INSURANCE_COMPANY_QUOTA_ID.getValue())).thenReturn("aaaaaa");

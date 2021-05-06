@@ -8,7 +8,6 @@ import com.bbva.pisd.dto.insurance.utils.PISDProperties;
 import java.math.BigDecimal;
 
 import java.util.Map;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Objects;
@@ -150,27 +149,20 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
-	public List<Map<String, Object>> executeGetInsuranceQuotation(String quotationId) {
+	public Map<String, Object> executeGetInsuranceQuotation(String quotationId) {
 		LOGGER.info("***** PISDR012Impl - executeGetInsuranceQuotation START *****");
-		if (quotationId == null || quotationId.isEmpty()) {
-			LOGGER.info("***** PISDR012Impl - executeGetInsuranceQuotation ***** quotationId null or empty");
-			return new ArrayList<>();
-		}
-
-		Map<String, Object> arguments = new HashMap<>();
-		arguments.put(PISDProperties.KEY_REQUEST_INSRC_QUOTATION.getValue(), quotationId);
 		List<Map<String, Object>> response = null;
 
 		try {
-			LOGGER.info("***** PISDR012Impl - executeGetInsuranceQuotation ***** Access jdbcUtils - quotationId: {}", quotationId);
-			response = this.jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSRC_QUOTATION.getValue(), arguments);
-			LOGGER.info("***** PISDR012Impl - executeGetInsuranceQuotation ***** response: {}", response);
+			response = this.jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSRC_QUOTATION.getValue(), quotationId);
+			response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_QUOTATION] Result -> Key {} with value: {}", key, value)));
 		} catch (NoResultException ex) {
-			LOGGER.info("PISDR012Impl - executeGetInsuranceQuotation ex : {}", ex.getMessage());
+			LOGGER.info("executeGetInsuranceQuotation - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_QUOTATION]");
 			this.addAdvice(PISDErrors.ERROR_NO_RESULT_JDBC_INSRC_QUOTATION.getAdviceCode());
 		}
 
-		return response;
+		LOGGER.info("***** PISDR012Impl - executeGetInsuranceQuotation END *****");
+		return buildResult(response);
 	}
 
 	@Override
@@ -244,16 +236,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return response;
 	}
 
-	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
-		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
-	}
-
-	private Map<String, Object> buildResult(List<Map<String, Object>> response) {
-		Map<String, Object> result = new HashMap<>();
-		result.put(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue(), response);
-		return result;
-	}
-
 	@Override
 	public void executeRegisterAdditionalQuotationVeh(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationVeh START *****");
@@ -317,6 +299,16 @@ public class PISDR012Impl extends PISDR012Abstract {
 		}
 
 		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranchMod END *****");
+	}
+
+	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
+		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
+	}
+
+	private Map<String, Object> buildResult(List<Map<String, Object>> response) {
+		Map<String, Object> result = new HashMap<>();
+		result.put(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue(), response);
+		return result;
 	}
 
 }
