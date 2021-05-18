@@ -25,4 +25,6 @@ public interface PISDR012 {
 	Map<String, Object> executeRegisterAdditionalCompanyQuotaId(String companyQuotaId);
 	void executeRegisterAdditionalQuotationBranch(Map<String, Object> arguments);
 	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
+
+	int executeSaveContract(Map<String, Object> arguments);
 }

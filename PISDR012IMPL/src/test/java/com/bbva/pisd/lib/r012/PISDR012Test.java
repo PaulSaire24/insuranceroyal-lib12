@@ -61,6 +61,8 @@ public class PISDR012Test {
 	private Map<String, Object> argumentsForSaveSimulationQuotationVeh;
 	@Mock
 	private Map<String, Object> argumentsForRegisterQuotationVeh;
+	@Mock
+	private Map<String, Object> argumentsForSaveContract;
 
 	@Before
 	public void setUp() {
@@ -418,6 +420,61 @@ public class PISDR012Test {
 		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationBranchModWithParametersEvaluationFalse...");
 		pisdr012.executeRegisterAdditionalQuotationBranchMod(argumentsForRegisterQuotationVeh);
 		verify(jdbcUtils, never()).update(anyString(), anyMap());
+	}
+
+	@Test
+	public void executeSaveContractOK() {
+		LOGGER.info("PISDR0012Test - Executing executeSaveContractOK...");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("contract_entity");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("contract_branch");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("contract_int");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn("insrce_product");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn("insrce_modality");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_COMPANY_ID.getValue())).thenReturn("insrce_company");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn("policy_id");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_START_DATE.getValue())).thenReturn("insrce_contract_start");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_END_DATE.getValue())).thenReturn("insrce_contract_end");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_CUSTOMER_ID.getValue())).thenReturn("customer_id");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSRNC_CO_CONTRACT_STATUS_TYPE.getValue())).thenReturn("contract_status");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user_audit");
+
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
+
+		int validation = pisdr012.executeSaveContract(argumentsForSaveContract);
+
+		verify(this.jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(1, validation);
+	}
+
+	@Test
+	public void executeSaveContractWithNoResultException() {
+		LOGGER.info("PISDR0012Test - Executing executeSaveContractWithNoResultException...");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("contract_entity");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("contract_branch");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("contract_int");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn("insrce_product");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn("insrce_modality");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_COMPANY_ID.getValue())).thenReturn("insrce_company");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn("policy_id");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_START_DATE.getValue())).thenReturn("insrce_contract_start");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_END_DATE.getValue())).thenReturn("insrce_contract_end");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_CUSTOMER_ID.getValue())).thenReturn("customer_id");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSRNC_CO_CONTRACT_STATUS_TYPE.getValue())).thenReturn("contract_status");
+		when(argumentsForSaveContract.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user_audit");
+
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenThrow(new NoResultException("PISD00111990", "ERROR EN LA BASE DE DATOS"));
+
+		int validation = pisdr012.executeSaveContract(argumentsForSaveContract);
+		verify(this.jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(-1, validation);
+	}
+
+	@Test
+	public void executeSaveContractWithMissingParameters() {
+		LOGGER.info("PISDR0012Test - Executing executeSaveContractWithMissingParameters...");
+		int validation = pisdr012.executeSaveContract(argumentsForSaveContract);
+		verify(this.jdbcUtils, never()).update(anyString(), anyMap());
+		assertEquals(0, validation);
 	}
 
 }

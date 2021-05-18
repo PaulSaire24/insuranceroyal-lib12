@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.List;
 
+import com.bbva.pisd.dto.insurance.utils.PISDValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -299,6 +300,30 @@ public class PISDR012Impl extends PISDR012Abstract {
 		}
 
 		LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranchMod END *****");
+	}
+
+	@Override
+	public int executeSaveContract(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeSaveContract START *****");
+		int affectedRows = 0;
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),
+				PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(), PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue(),
+				PISDProperties.FIELD_INSURANCE_COMPANY_ID.getValue(), PISDProperties.FIELD_POLICY_ID.getValue(),
+				PISDProperties.FIELD_INSURANCE_CONTRACT_START_DATE.getValue(), PISDProperties.FIELD_INSURANCE_CONTRACT_END_DATE.getValue(),
+				PISDProperties.FIELD_CUSTOMER_ID.getValue(), PISDProperties.FIELD_INSRNC_CO_CONTRACT_STATUS_TYPE.getValue(),
+				PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(), PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+			LOGGER.info("***** PISDR012Impl - executeSaveContract - PARAMETERS OK ... EXECUTING *****");
+			try {
+				affectedRows = this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_CONTRACT.getValue(), arguments);
+			} catch (NoResultException ex) {
+				LOGGER.info("***** PISDR012Impl - executeSaveContract - Database exception: {} *****", ex.getMessage());
+				affectedRows = -1;
+			}
+		} else {
+			LOGGER.info("executeSaveContract - MISSING MANDATORY PARAMETERS [PISD.INSERT_CONTRACT]");
+		}
+		LOGGER.info("***** PISDR012Impl - executeSaveContract END *****");
+		return affectedRows;
 	}
 
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
