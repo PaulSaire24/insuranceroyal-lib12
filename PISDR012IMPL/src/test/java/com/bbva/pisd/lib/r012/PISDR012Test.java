@@ -359,6 +359,23 @@ public class PISDR012Test {
 	}
 
 	@Test
+	public void executeQueryForDetailQuotationServiceOK() {
+		LOGGER.info("PISDR012Test - Executing executeQueryForDetailQuotationServiceOK...");
+		when(jdbcUtils.queryForMap(anyString(), anyString())).thenReturn(new HashMap<>());
+		Map<String, Object> validation = pisdr012.executeQueryForDetailQuotationService("policyQuotaInternal");
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeQueryForDetailQuotationServiceWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeQueryForDetailQuotationServiceWithNoResultException...");
+		when(jdbcUtils.queryForMap(anyString(), anyString())).thenThrow(new NoResultException(MESSAGE));
+		Map<String, Object> validation = pisdr012.executeQueryForDetailQuotationService("policyQuotaInternal");
+		assertNull(validation);
+		assertEquals("PISD00120026", this.pisdr012.getAdviceList().get(0).getCode());
+	}
+
+	@Test
 	public void executeRegisterAdditionalInsuranceQuotationVehOK() {
 		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationVehOK...");
 		when(argumentsForRegisterQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");;

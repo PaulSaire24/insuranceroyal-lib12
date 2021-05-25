@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 public class PISDR012Impl extends PISDR012Abstract {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR012Impl.class);
+	private static final String ID_QUERY_GET_QUOTATION_DETAIL = "PISD.QUERY_FOR_GET_QUOTATION_SERVICE";
+	private static final String NON_EXISTENT_QUOTATION = "PISD00120026";
 
 	@Override
 	public Map<String, Object> executeInsuranceProduct(Map<String, Object> arguments) {
@@ -234,6 +236,21 @@ public class PISDR012Impl extends PISDR012Abstract {
 			this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 		}
 		LOGGER.info("***** PISDR012Impl - executeGetCompanyDescById END *****");
+		return response;
+	}
+
+	@Override
+	public Map<String, Object> executeQueryForDetailQuotationService(String policyQuotaInternalId) {
+		LOGGER.info("***** PISDR012Impl - executeQueryForDetailQuotationService START *****");
+		Map<String, Object> response = null;
+		try {
+			response = this.jdbcUtils.queryForMap(ID_QUERY_GET_QUOTATION_DETAIL, policyQuotaInternalId);
+			response.forEach((key, value) -> LOGGER.info("[PISD.QUERY_FOR_GET_QUOTATION_SERVICE] Result -> Key {} with value: {}", key, value));
+		} catch (NoResultException ex) {
+			LOGGER.info("executeQueryForDetailQuotationService - QUERY EMPTY RESULT [PISD.QUERY_FOR_GET_QUOTATION_SERVICE]");
+			this.addAdvice(NON_EXISTENT_QUOTATION);
+		}
+		LOGGER.info("***** PISDR012Impl - executeQueryForDetailQuotationService END *****");
 		return response;
 	}
 
