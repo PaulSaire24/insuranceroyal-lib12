@@ -63,6 +63,8 @@ public class PISDR012Test {
 	private Map<String, Object> argumentsForRegisterQuotationVeh;
 	@Mock
 	private Map<String, Object> argumentsForSaveContract;
+	@Mock
+	private Map<String, Object> argumentsForInsrncModalityByRimacIds;
 
 	@Before
 	public void setUp() {
@@ -356,6 +358,40 @@ public class PISDR012Test {
 		when(jdbcUtils.queryForMap(anyString(), any(BigDecimal.class))).thenThrow(new NoResultException(MESSAGE));
 		Map<String, Object> validation = pisdr012.executeGetCompanyDescById(BigDecimal.valueOf(1));
 		assertNull(validation);
+	}
+
+	@Test
+	public void executeGetPlansBBVAWithParametersEvaluationFalse() {
+		LOGGER.info("PISDR012Test - Executing executeGetPlansBBVAWithParametersEvaluationFalse...");
+		Map<String, Object> validation = pisdr012.executeGetPlansBBVA(argumentsForInsrncModalityByRimacIds);
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetPlansBBVAWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetPlansBBVAWithNoResultException...");
+
+		when(argumentsForInsrncModalityByRimacIds.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(1L);
+		when(argumentsForInsrncModalityByRimacIds.get(PISDProperties.FIELD_INSURANCE_COMPANY_MODALITY_ID.getValue())).thenReturn(new ArrayList<>());
+		when(jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSRNC_PRD_MODALITY_BY_RIMAC_IDS.getValue(), argumentsForInsrncModalityByRimacIds)).thenThrow(new NoResultException(MESSAGE));
+
+		Map<String, Object> validation = pisdr012.executeGetPlansBBVA(argumentsForInsrncModalityByRimacIds);
+
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+		assertEquals("PISD00120000", this.pisdr012.getAdviceList().get(0).getCode());
+	}
+
+	@Test
+	public void executeGetPlansBBVA_OK() {
+		LOGGER.info("PISDR012Test - Executing executeGetPlansBBVAWithNoResultException...");
+
+		when(argumentsForInsrncModalityByRimacIds.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(1L);
+		when(argumentsForInsrncModalityByRimacIds.get(PISDProperties.FIELD_INSURANCE_COMPANY_MODALITY_ID.getValue())).thenReturn(new ArrayList<>());
+		when(jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSRNC_PRD_MODALITY_BY_RIMAC_IDS.getValue(), argumentsForInsrncModalityByRimacIds)).thenReturn(new ArrayList<>());
+
+		Map<String, Object> validation = pisdr012.executeGetPlansBBVA(argumentsForInsrncModalityByRimacIds);
+
+		assertNotNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
 	@Test

@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.List;
 
-import com.bbva.pisd.dto.insurance.utils.PISDValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +20,6 @@ import org.slf4j.LoggerFactory;
 public class PISDR012Impl extends PISDR012Abstract {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR012Impl.class);
-	private static final String ID_QUERY_GET_QUOTATION_DETAIL = "PISD.QUERY_FOR_GET_QUOTATION_SERVICE";
-	private static final String NON_EXISTENT_QUOTATION = "PISD00120026";
 
 	@Override
 	public Map<String, Object> executeInsuranceProduct(Map<String, Object> arguments) {
@@ -240,15 +237,35 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
+	public Map<String, Object> executeGetPlansBBVA(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeGetPlansBBVA START *****");
+		List<Map<String, Object>> response = null;
+
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(),
+				PISDProperties.FIELD_INSURANCE_COMPANY_MODALITY_ID.getValue())) {
+			try {
+				LOGGER.info("***** PISDR012Impl - executeGetPlansBBVA PARAMETERS OK ... EXECUTING *****");
+				response = this.jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSRNC_PRD_MODALITY_BY_RIMAC_IDS.getValue(), arguments);
+				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSRNC_PRD_MODALITY_BY_COMPANY_MODALITY_ID] Result -> Key {} with value: {}", key, value)));
+			} catch (NoResultException ex) {
+				LOGGER.info("executeGetPlansBBVA - QUERY EMPTY RESULT [PISD.SELECT_INSRNC_PRD_MODALITY_BY_COMPANY_MODALITY_ID]");
+				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			}
+		}
+		LOGGER.info("***** PISDR012Impl - executeGetPlansBBVA END *****");
+		return buildResult(response);
+	}
+
+	@Override
 	public Map<String, Object> executeQueryForDetailQuotationService(String policyQuotaInternalId) {
 		LOGGER.info("***** PISDR012Impl - executeQueryForDetailQuotationService START *****");
 		Map<String, Object> response = null;
 		try {
-			response = this.jdbcUtils.queryForMap(ID_QUERY_GET_QUOTATION_DETAIL, policyQuotaInternalId);
+			response = this.jdbcUtils.queryForMap(PISDProperties.ID_QUERY_GET_QUOTATION_DETAIL.getValue(), policyQuotaInternalId);
 			response.forEach((key, value) -> LOGGER.info("[PISD.QUERY_FOR_GET_QUOTATION_SERVICE] Result -> Key {} with value: {}", key, value));
 		} catch (NoResultException ex) {
 			LOGGER.info("executeQueryForDetailQuotationService - QUERY EMPTY RESULT [PISD.QUERY_FOR_GET_QUOTATION_SERVICE]");
-			this.addAdvice(NON_EXISTENT_QUOTATION);
+			this.addAdvice(PISDErrors.NON_EXISTENT_QUOTATION.getAdviceCode());
 		}
 		LOGGER.info("***** PISDR012Impl - executeQueryForDetailQuotationService END *****");
 		return response;
