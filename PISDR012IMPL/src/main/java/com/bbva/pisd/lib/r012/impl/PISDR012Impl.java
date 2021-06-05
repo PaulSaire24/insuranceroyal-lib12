@@ -360,6 +360,19 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return affectedRows;
 	}
 
+	@Override
+	public Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments) {
+		Map<String, Object> response = null;
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_ID.getValue())) {
+			try {
+				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);	
+			} catch(NoResultException ex) {
+				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			}
+		}
+		return response;
+	}
+
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
 		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
 	}
@@ -369,5 +382,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		result.put(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue(), response);
 		return result;
 	}
+
+	
 
 }
