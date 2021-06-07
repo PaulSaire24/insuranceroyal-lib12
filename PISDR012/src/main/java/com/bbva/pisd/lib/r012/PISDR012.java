@@ -31,4 +31,6 @@ public interface PISDR012 {
 	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
 
 	int executeSaveContract(Map<String, Object> arguments);
+
+	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
 }
