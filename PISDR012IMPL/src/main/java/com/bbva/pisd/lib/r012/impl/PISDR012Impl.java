@@ -367,7 +367,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeGetPolicyContract - PARAMETERS OK ... EXECUTING *****");
 			try {
-				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);	
+				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);
 			} catch(NoResultException ex) {
 				LOGGER.info("***** PISDR012Impl - executeGetPolicyContract - Database exception: {} *****", ex.getMessage());
 				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
