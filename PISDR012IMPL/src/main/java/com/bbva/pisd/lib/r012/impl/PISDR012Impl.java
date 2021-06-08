@@ -329,7 +329,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranchMod - PARAMETERS OK ... EXECUTING *****");
 			this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSRNC_QUOTATION_MOD_REGISTER.getValue(), arguments);
 		} else {
-
+			
 			LOGGER.info("executeRegisterAdditionalQuotationBranchMod - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSRNC_QUOTATION_MOD]");
 		}
 
@@ -379,6 +379,23 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return response;
 	}
 
+	@Override
+	public void executeUpdateInsuranceContract(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract START *****");
+
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())) {
+
+			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract - PARAMETERS OK ... EXECUTING *****");
+			this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSRNC_QUOTATION_MOD_REGISTER.getValue(), arguments);
+		} else {
+
+			LOGGER.info("executeUpdateInsuranceContract - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSRNC_QUOTATION_MOD]");
+		}
+
+		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract END *****");
+
+	}
+
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
 		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
 	}
@@ -388,7 +405,4 @@ public class PISDR012Impl extends PISDR012Abstract {
 		result.put(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue(), response);
 		return result;
 	}
-
-	
-
 }
