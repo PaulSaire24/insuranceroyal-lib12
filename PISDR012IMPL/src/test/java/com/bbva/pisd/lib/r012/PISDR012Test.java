@@ -65,6 +65,10 @@ public class PISDR012Test {
 	private Map<String, Object> argumentsForSaveContract;
 	@Mock
 	private Map<String, Object> argumentsForInsrncModalityByRimacIds;
+	@Mock
+	private Map<String, Object> argumentsForGetPolicyContract;
+	@Mock
+	private Map<String, Object> argumentsForUpdateInsuranceContract;
 
 	@Before
 	public void setUp() {
@@ -528,6 +532,24 @@ public class PISDR012Test {
 		int validation = pisdr012.executeSaveContract(argumentsForSaveContract);
 		verify(this.jdbcUtils, never()).update(anyString(), anyMap());
 		assertEquals(0, validation);
+	}
+
+	@Test
+	public void executeGetPolicyContractOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetPolicyContract...");
+		when(argumentsForGetPolicyContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn(957685);
+		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentsForGetPolicyContract)).thenReturn(new HashMap<>());
+		Map<String, Object> validation = pisdr012.executeGetPolicyContract(argumentsForGetPolicyContract);
+		assertNotNull(validation);
+	}
+	
+	@Test
+	public void executeUpdateInsuranceContractOK() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContract...");
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn(957685);
+	    when(jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(new HashMap<>());
+		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
+		assertTrue(validation);
 	}
 
 }
