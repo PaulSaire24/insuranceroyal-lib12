@@ -33,4 +33,5 @@ public interface PISDR012 {
 	int executeSaveContract(Map<String, Object> arguments);
 
 	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
+	void executeUpdateInsuranceContract(Map<String, Object> arguments);
 }
