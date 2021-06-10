@@ -329,7 +329,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("***** PISDR0012Impl - executeRegisterAdditionalQuotationBranchMod - PARAMETERS OK ... EXECUTING *****");
 			this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSRNC_QUOTATION_MOD_REGISTER.getValue(), arguments);
 		} else {
-			
+
 			LOGGER.info("executeRegisterAdditionalQuotationBranchMod - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSRNC_QUOTATION_MOD]");
 		}
 
@@ -405,4 +405,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		result.put(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue(), response);
 		return result;
 	}
+
+
+	
 }
