@@ -380,7 +380,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
-	public void executeUpdateInsuranceContract(Map<String, Object> arguments) {
+	public boolean executeUpdateInsuranceContract(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract START *****");
 
 		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())) {
@@ -393,7 +393,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		}
 
 		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract END *****");
-
+		return true;
 	}
 
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
@@ -407,5 +407,5 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 
-	
+
 }
