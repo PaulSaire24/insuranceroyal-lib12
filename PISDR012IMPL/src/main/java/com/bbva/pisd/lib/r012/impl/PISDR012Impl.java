@@ -1,5 +1,7 @@
 package com.bbva.pisd.lib.r012.impl;
 
+import com.bbva.apx.exception.APXException;
+import com.bbva.apx.exception.db.DBException;
 import com.bbva.apx.exception.db.NoResultException;
 
 import com.bbva.pisd.dto.insurance.utils.PISDErrors;
@@ -368,10 +370,14 @@ public class PISDR012Impl extends PISDR012Abstract {
 		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeGetPolicyContract - PARAMETERS OK ... EXECUTING *****");
 			try {
+				arguments.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_CONTRACT] Result -> Key {} with value: {}", key, value));
 				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);
-				response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_CONTRACT] Result -> Key {} with value: {}", key, value));
-			} catch(Exception ex) {
-				LOGGER.info("***** PISDR012Impl - executeGetPolicyContract - Database exception: {} *****", ex.getMessage());
+		
+			} catch(DBException ex) {
+				LOGGER.info("***** PISDR012Impl - [DBException] - Database exception: {} *****", ex.getMessage());
+				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			} catch(APXException ex) {
+				LOGGER.info("***** PISDR012Impl - [APXException] - Database exception: {} *****", ex.getMessage());
 				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 		}else {
