@@ -114,8 +114,7 @@
 							org.springframework.aop;version="${osgi.version.manifest}",
 							org.springframework.aop.framework;version="${osgi.version.manifest}",
 							org.aopalliance.aop;version="${osgi.version.manifest}",
-							*;version="${osgi.version.manifest}"
-						</Import-Package>
+							*;version="${osgi.version.manifest}"</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>

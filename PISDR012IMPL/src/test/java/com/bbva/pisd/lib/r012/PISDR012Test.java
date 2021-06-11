@@ -9,6 +9,7 @@ import com.bbva.elara.utility.jdbc.JdbcUtils;
 import com.bbva.pisd.dto.insurance.utils.PISDErrors;
 import com.bbva.pisd.dto.insurance.utils.PISDProperties;
 import com.bbva.pisd.lib.r012.impl.PISDR012Impl;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
