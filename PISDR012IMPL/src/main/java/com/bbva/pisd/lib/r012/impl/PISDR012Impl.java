@@ -363,12 +363,14 @@ public class PISDR012Impl extends PISDR012Abstract {
 	@Override
 	public Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeGetPolicyContract START *****");
+		
 		Map<String, Object> response = null;
 		if(parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeGetPolicyContract - PARAMETERS OK ... EXECUTING *****");
 			try {
-				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);	
-			} catch(NoResultException ex) {
+				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);
+				response.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_CONTRACT] Result -> Key {} with value: {}", key, value));
+			} catch(Exception ex) {
 				LOGGER.info("***** PISDR012Impl - executeGetPolicyContract - Database exception: {} *****", ex.getMessage());
 				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
