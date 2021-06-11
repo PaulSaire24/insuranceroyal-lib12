@@ -1,7 +1,5 @@
 package com.bbva.pisd.lib.r012.impl;
 
-import com.bbva.apx.exception.APXException;
-import com.bbva.apx.exception.db.DBException;
 import com.bbva.apx.exception.db.NoResultException;
 
 import com.bbva.pisd.dto.insurance.utils.PISDErrors;
@@ -458,4 +456,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return result;
 	}
 
+
+	
 }
