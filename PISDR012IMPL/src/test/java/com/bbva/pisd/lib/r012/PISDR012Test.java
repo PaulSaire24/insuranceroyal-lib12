@@ -543,14 +543,27 @@ public class PISDR012Test {
 		Map<String, Object> validation = pisdr012.executeGetPolicyContract(argumentsForGetPolicyContract);
 		assertNotNull(validation);
 	}
-	
+
 	@Test
 	public void executeUpdateInsuranceContractOK() {
 		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContract...");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn(957685);
-	    when(jdbcUtils.queryForMap(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(new HashMap<>());
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+	    when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(1);
 		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
 		assertTrue(validation);
+	}
+
+	@Test
+	public void executeUpdateInsuranceContractError() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContract...");
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+	    when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(0);
+		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
+		assertFalse(validation);
 	}
 
 }
