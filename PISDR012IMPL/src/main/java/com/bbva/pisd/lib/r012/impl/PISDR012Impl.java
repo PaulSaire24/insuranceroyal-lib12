@@ -429,15 +429,20 @@ public class PISDR012Impl extends PISDR012Abstract {
 	@Override
 	public boolean executeUpdateInsuranceContract(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract START *****");
-
-		if (parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())) {
+		int result;
+		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
+		PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
 
 			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract - PARAMETERS OK ... EXECUTING *****");
-			this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), arguments);
+			result = this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), arguments);
+			if(result==0){
+				return false;
+			}
 		} else {
 
 			LOGGER.info(
 					"executeUpdateInsuranceContract - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSRNC_QUOTATION_MOD]");
+					return false;
 		}
 
 		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract END *****");
