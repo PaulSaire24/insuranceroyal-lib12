@@ -430,11 +430,13 @@ public class PISDR012Impl extends PISDR012Abstract {
 	public boolean executeUpdateInsuranceContract(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract START *****");
 		int result;
+		arguments.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_CONTRACT] Result -> Key {} with value: {}", key, value));
 		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
 		PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
-
+			arguments.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSURANCE_CONTRACT] Result -> Key {} with value: {}", key, value));
 			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract - PARAMETERS OK ... EXECUTING *****");
 			result = this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), arguments);
+			LOGGER.info("[PISD.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS] Result -> {}", result);
 			if(result==0){
 				return false;
 			}
