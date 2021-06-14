@@ -437,18 +437,20 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract - PARAMETERS OK ... EXECUTING *****");
 			result = this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), arguments);
 			LOGGER.info("[PISD.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS] Result -> {}", result);
-			if(result==0){
+			if(result==0)
 				return false;
+			else{
+				LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract END *****");
+				return true;
 			}
+			
 		} else {
 
 			LOGGER.info(
 					"executeUpdateInsuranceContract - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSRNC_QUOTATION_MOD]");
 					return false;
 		}
-
-		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContract END *****");
-		return true;
+	
 	}
 
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
