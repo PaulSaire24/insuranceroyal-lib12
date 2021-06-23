@@ -453,6 +453,26 @@ public class PISDR012Impl extends PISDR012Abstract {
 	
 	}
 
+	@Override
+	public Map<String, Object> executeQueryForGerInsuranceCompanyQuotaId(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeQueryForGerInsuranceCompanyQuotaId START *****");
+		Map<String, Object> response = null;
+
+		try {
+			response = this.jdbcUtils.queryForMap(
+					PISDProperties.ID_QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID.getValue(), arguments);
+			response.forEach((key, value) -> LOGGER
+					.info("[PISD.QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID] Result -> Key {} with value: {}", key, value));
+		} catch (NoResultException ex) {
+			LOGGER.info(
+					"executeQueryForGerInsuranceCompanyQuotaId - QUERY EMPTY RESULT [PISD.QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID]");
+			this.addAdvice(PISDErrors.QUERY_EMPTY_POLICY_QUOTA_INTERNAL_ID.getAdviceCode());
+		}
+
+		LOGGER.info("***** PISDR012Impl - executeQueryForGerInsuranceCompanyQuotaId END *****");
+		return response;
+	}
+
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
 		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
 	}
