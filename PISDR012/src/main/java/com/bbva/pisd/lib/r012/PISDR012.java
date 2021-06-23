@@ -31,6 +31,8 @@ public interface PISDR012 {
 	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
 
 	int executeSaveContract(Map<String, Object> arguments);
+	int executeSaveFirstReceipt(Map<String, Object> firstReceiptMap);
+	int[] executeSaveParticipants(Map<String, Object>[] participantsMap);
 
 	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
 	boolean executeUpdateInsuranceContract(Map<String, Object> arguments);
