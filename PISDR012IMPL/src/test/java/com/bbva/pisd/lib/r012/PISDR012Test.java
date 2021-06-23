@@ -576,4 +576,15 @@ public class PISDR012Test {
 		assertNotNull(validation);
 	}
 
+	@Test
+	public void executeQueryForGerInsuranceCompanyQuotaIdWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeQueryForGerInsuranceCompanyQuotaIdWithNoResultException...");
+
+		when(jdbcUtils.queryForList(PISDProperties.ID_QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID.getValue(), argumentsForGerInsuranceCompanyQuotaId)).thenThrow(new NoResultException(MESSAGE));
+
+		Map<String, Object> validation = pisdr012.executeQueryForGerInsuranceCompanyQuotaId(argumentsForGerInsuranceCompanyQuotaId);
+
+		assertNull(validation.get(PISDProperties.FIELD_INSURANCE_SIMULATION_ID.getValue()));
+	}
+
 }
