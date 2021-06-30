@@ -424,25 +424,48 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
-	public int[] executeSaveParticipants(Map<String, Object>[] participantsMap) {
+	public int executeSaveContractMove(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeSaveContractMove START *****");
+		int affectedRows = 0;
+		if(parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
+				RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
+				RBVDProperties.FIELD_POLICY_MOVEMENT_NUMBER.getValue(), RBVDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+			LOGGER.info("***** PISDR012Impl - executeSaveContractMove - PARAMETERS OK ... EXECUTING *****");
+			try {
+				affectedRows = this.jdbcUtils.update(RBVDProperties.QUERY_INSERT_INSRNC_CONTRACT_MOV.getValue(), arguments);
+			} catch (NoResultException ex) {
+				LOGGER.info("***** PISDR012Impl - executeSaveContractMove - Database exception: {} *****", ex.getMessage());
+				affectedRows = -1;
+			}
+		} else {
+			LOGGER.info("executeSaveContractMove - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_CONTRACT_MOV]");
+		}
+
+		LOGGER.info("***** PISDR012Impl - executeSaveContractMove | Number of rows inserted: {}", affectedRows);
+		LOGGER.info("***** PISDR012Impl - executeSaveContractMove END *****");
+		return affectedRows;
+	}
+
+	@Override
+	public int executeSaveParticipants(Map<String, Object> participantsMap) {
 		LOGGER.info("***** PISDR012Impl - executeSaveParticipants START *****");
-		int[] affectedRows = null;
-		if(Arrays.stream(participantsMap).
-				allMatch(map -> parametersEvaluation(map, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
-					RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
-						RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue()))) {
+		int affectedRows = 0;
+		if(parametersEvaluation(participantsMap, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
+				RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
+				RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(),
+				RBVDProperties.FIELD_USER_AUDIT_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeSaveParticipants - PARAMETERS OK ... EXECUTING *****");
 			try {
-				affectedRows = this.jdbcUtils.batchUpdate(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), participantsMap);
+				affectedRows = this.jdbcUtils.update(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), participantsMap);
 			} catch (NoResultException ex) {
 				LOGGER.info("***** PISDR012Impl - executeSaveParticipants - Database exception: {} *****", ex.getMessage());
-				affectedRows = new int[0];
+				affectedRows = -1;
 			}
 		} else {
 			LOGGER.info("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_CTR_PARTICIPANT]");
 		}
 
-		LOGGER.info("***** PISDR012Impl - executeSaveParticipants | Number of rows inserted: {}", Objects.nonNull(affectedRows) ? affectedRows.length : null);
+		LOGGER.info("***** PISDR012Impl - executeSaveParticipants | Number of rows inserted: {}", affectedRows);
 		LOGGER.info("***** PISDR012Impl - executeSaveParticipants END *****");
 		return affectedRows;
 	}
