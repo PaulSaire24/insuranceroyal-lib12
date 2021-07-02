@@ -632,48 +632,124 @@ public class PISDR012Test {
 	@Test
 	public void executeSaveParticipants_OK() {
 		LOGGER.info("PISDR0012Test - Executing executeSaveParticipants_OK...");
+		Map<String, Object> firstArgumentsForSaveParticipants = new HashMap<>();
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), "entityId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), "branchId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(), "accountId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), BigDecimal.valueOf(1));
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(), BigDecimal.valueOf(1));
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_USER_AUDIT_ID.getValue(), "userAudit");
 
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("entityId");
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("branchId");
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("accountId");
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue())).thenReturn(BigDecimal.valueOf(1));
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue())).thenReturn(BigDecimal.valueOf(1));
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("userAudit");
+		Map<String, Object> secondArgumentsForSaveParticipants = new HashMap<>();
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), "entityId");
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), "branchId");
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(), "accountId");
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), BigDecimal.valueOf(1));
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(), BigDecimal.valueOf(1));
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_USER_AUDIT_ID.getValue(), "userAudit");
 
-		when(this.jdbcUtils.update(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), argumentsForSaveCtrParticipant)).thenReturn(1);
+		List<Map<String, Object>> mapList = new ArrayList<>();
+		mapList.add(firstArgumentsForSaveParticipants);
+		mapList.add(secondArgumentsForSaveParticipants);
 
-		int validation = pisdr012.executeSaveParticipants(argumentsForSaveCtrParticipant);
+		Map<String, Object>[] arguments = new Map[mapList.size()];
+		arguments = mapList.toArray(arguments);
 
-		verify(this.jdbcUtils, times(1)).update(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), argumentsForSaveCtrParticipant);
-		assertEquals(1, validation);
+		when(this.jdbcUtils.batchUpdate(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), arguments)).thenReturn(new int[2]);
+
+		int[] validation = pisdr012.executeSaveParticipants(arguments);
+
+		verify(this.jdbcUtils, times(1)).batchUpdate(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), arguments);
+		assertEquals(2, validation.length);
 	}
 
 	@Test
 	public void executeSaveParticipantsWithNoResultException() {
 		LOGGER.info("PISDR0012Test - Executing executeSaveParticipantsWithNoResultException...");
+		Map<String, Object> firstArgumentsForSaveParticipants = new HashMap<>();
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), "entityId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), "branchId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(), "accountId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), BigDecimal.valueOf(1));
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(), BigDecimal.valueOf(1));
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_USER_AUDIT_ID.getValue(), "userAudit");
 
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("entityId");
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("branchId");
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("accountId");
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue())).thenReturn(BigDecimal.valueOf(1));
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue())).thenReturn(BigDecimal.valueOf(1));
-		when(argumentsForSaveCtrParticipant.get(RBVDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("userAudit");
+		Map<String, Object> secondArgumentsForSaveParticipants = new HashMap<>();
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), "entityId");
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), "branchId");
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(), "accountId");
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), BigDecimal.valueOf(1));
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(), BigDecimal.valueOf(1));
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_USER_AUDIT_ID.getValue(), "userAudit");
 
-		when(this.jdbcUtils.update(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), argumentsForSaveCtrParticipant)).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+		List<Map<String, Object>> mapList = new ArrayList<>();
+		mapList.add(firstArgumentsForSaveParticipants);
+		mapList.add(secondArgumentsForSaveParticipants);
 
-		int validation = pisdr012.executeSaveParticipants(argumentsForSaveCtrParticipant);
+		Map<String, Object>[] arguments = new Map[mapList.size()];
+		arguments = mapList.toArray(arguments);
 
-		verify(this.jdbcUtils, times(1)).update(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), argumentsForSaveCtrParticipant);
-		assertEquals(-1, validation);
+		when(this.jdbcUtils.batchUpdate(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), arguments)).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+
+		int[] validation = pisdr012.executeSaveParticipants(arguments);
+
+		verify(this.jdbcUtils, times(1)).batchUpdate(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), arguments);
+		assertEquals(0, validation.length);
 	}
 
 	@Test
 	public void executeSaveParticipantsWithMissingParameters() {
 		LOGGER.info("PISDR0012Test - Executing executeSaveParticipantsWithMissingParameters...");
+		Map<String, Object> firstArgumentsForSaveParticipants = new HashMap<>();
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), "entityId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), "branchId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(), "accountId");
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), BigDecimal.valueOf(1));
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(), BigDecimal.valueOf(1));
+		firstArgumentsForSaveParticipants.put(RBVDProperties.FIELD_USER_AUDIT_ID.getValue(), "userAudit");
 
-		int validation = pisdr012.executeSaveParticipants(argumentsForSaveCtrParticipant);
-		verify(this.jdbcUtils, never()).update(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), argumentsForSaveCtrParticipant);
-		assertEquals(0, validation);
+		Map<String, Object> secondArgumentsForSaveParticipants = new HashMap<>();
+		secondArgumentsForSaveParticipants.put(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), "entityId");
+
+		List<Map<String, Object>> mapList = new ArrayList<>();
+		mapList.add(firstArgumentsForSaveParticipants);
+		mapList.add(secondArgumentsForSaveParticipants);
+
+		Map<String, Object>[] arguments = new Map[mapList.size()];
+		arguments = mapList.toArray(arguments);
+
+		int[] validation = pisdr012.executeSaveParticipants(arguments);
+		verify(this.jdbcUtils, never()).batchUpdate(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), arguments);
+		assertNull(validation);
+	}
+
+	@Test
+	public void executeGetRolesByProductAndModality_OK() {
+		LOGGER.info("PISDR012Test - Executing executeGetRolesByProductAndModality_OK...");
+		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSRNC_ROLE_MODALITY.getValue(), BigDecimal.valueOf(1), "modalityType"))
+				.thenReturn(new ArrayList<>());
+
+		Map<String, Object> validation = pisdr012.executeGetRolesByProductAndModality(BigDecimal.valueOf(1), "modalityType");
+		assertNotNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetRolesByProductAndModalityWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetRolesByProductAndModalityWithNoResultException...");
+		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSRNC_ROLE_MODALITY.getValue(), BigDecimal.valueOf(1), "modalityType"))
+				.thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+
+		Map<String, Object> validation = pisdr012.executeGetRolesByProductAndModality(BigDecimal.valueOf(1), "modalityType");
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetRolesByProductAndModalityWithMissingParameters() {
+		LOGGER.info("PISDR012Test - Executing executeGetRolesByProductAndModality...");
+		Map<String, Object> validation = pisdr012.executeGetRolesByProductAndModality(null, "modalityType");
+
+		verify(this.jdbcUtils, never()).queryForList(anyString(), any(), anyString());
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
 	@Test
