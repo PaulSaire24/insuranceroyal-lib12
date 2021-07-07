@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.List;
 
+import com.bbva.rbvd.dto.insrncsale.utils.RBVDErrors;
 import com.bbva.rbvd.dto.insrncsale.utils.RBVDProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -447,27 +448,62 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
-	public int executeSaveParticipants(Map<String, Object> participantsMap) {
+	public int[] executeSaveParticipants(Map<String, Object>[] participantsMap) {
 		LOGGER.info("***** PISDR012Impl - executeSaveParticipants START *****");
-		int affectedRows = 0;
-		if(parametersEvaluation(participantsMap, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
-				RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
-				RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(),
-				RBVDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+		int[] affectedRows = null;
+		if(Arrays.stream(participantsMap).
+				allMatch(map -> parametersEvaluation(map, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
+						RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
+						RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(),
+						RBVDProperties.FIELD_USER_AUDIT_ID.getValue()))) {
 			LOGGER.info("***** PISDR012Impl - executeSaveParticipants - PARAMETERS OK ... EXECUTING *****");
 			try {
-				affectedRows = this.jdbcUtils.update(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), participantsMap);
+				affectedRows = this.jdbcUtils.batchUpdate(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), participantsMap);
 			} catch (NoResultException ex) {
 				LOGGER.info("***** PISDR012Impl - executeSaveParticipants - Database exception: {} *****", ex.getMessage());
-				affectedRows = -1;
+				affectedRows = new int[0];
 			}
 		} else {
 			LOGGER.info("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_CTR_PARTICIPANT]");
 		}
 
-		LOGGER.info("***** PISDR012Impl - executeSaveParticipants | Number of rows inserted: {}", affectedRows);
+		LOGGER.info("***** PISDR012Impl - executeSaveParticipants | Number of rows inserted: {}", Objects.nonNull(affectedRows) ? affectedRows.length : null);
 		LOGGER.info("***** PISDR012Impl - executeSaveParticipants END *****");
 		return affectedRows;
+	}
+
+	@Override
+	public Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType) {
+		LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality START *****");
+		List<Map<String, Object>> response = null;
+		if(Objects.nonNull(productId) && Objects.nonNull(modalityType)) {
+			try {
+				LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality PARAMETERS OK ... EXECUTING *****");
+				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSRNC_ROLE_MODALITY.getValue(), productId, modalityType);
+				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSRNC_ROLE_MODALITY] Result -> Key {} with value: {}", key, value)));
+			} catch (NoResultException ex) {
+				LOGGER.info("executeGetRolesByProductAndModality - NO ROLES ERROR: {}", RBVDErrors.NO_ROLES.getMessage());
+			}
+		} else {
+			LOGGER.info("executeGetRolesByProductAndModality - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSRNC_ROLE_MODALITY]");
+		}
+		LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality END *****");
+		return buildResult(response);
+	}
+
+	@Override
+	public Long executeGetPaymentFrequencyId(String paymentFrequencyType) {
+		LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId START *****");
+		Long frequencyId = null;
+		try {
+			frequencyId = this.jdbcUtils.queryForLong(RBVDProperties.QUERY_GET_PAYMENT_FREQUENCY_ID.getValue(), paymentFrequencyType);
+			LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId | Response: {} *****", frequencyId);
+			LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId END *****");
+			return frequencyId;
+		} catch (NoResultException ex) {
+			LOGGER.warn("executeGetPaymentFrequencyId - There is no payment frequency with type: {}", paymentFrequencyType);
+			return null;
+		}
 	}
 
 	@Override
