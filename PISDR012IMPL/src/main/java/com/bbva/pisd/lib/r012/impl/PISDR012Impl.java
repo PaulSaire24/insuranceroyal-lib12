@@ -492,6 +492,21 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
+	public Long executeGetPaymentFrequencyId(String paymentFrequencyType) {
+		LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId START *****");
+		Long frequencyId = null;
+		try {
+			frequencyId = this.jdbcUtils.queryForLong(RBVDProperties.QUERY_GET_PAYMENT_FREQUENCY_ID.getValue(), paymentFrequencyType);
+			LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId | Response: {} *****", frequencyId);
+			LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId END *****");
+			return frequencyId;
+		} catch (NoResultException ex) {
+			LOGGER.warn("executeGetPaymentFrequencyId - There is no payment frequency with type: {}", paymentFrequencyType);
+			return null;
+		}
+	}
+
+	@Override
 	public Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeGetPolicyContract START *****");
 

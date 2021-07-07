@@ -36,6 +36,7 @@ public interface PISDR012 {
 	int[] executeSaveParticipants(Map<String, Object>[] participantsMap);
 
 	Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType);
+	Long executeGetPaymentFrequencyId(String paymentFrequencyType);
 
 	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
 	boolean executeUpdateInsuranceContract(Map<String, Object> arguments);
