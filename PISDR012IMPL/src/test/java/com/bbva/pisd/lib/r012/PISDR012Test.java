@@ -753,6 +753,23 @@ public class PISDR012Test {
 	}
 
 	@Test
+	public void executeGetPaymentFrequencyIdOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetPaymentFrequencyIdOK...");
+		when(jdbcUtils.queryForLong(RBVDProperties.QUERY_GET_PAYMENT_FREQUENCY_ID.getValue(), "paymentFrequencyType")).thenReturn(1L);
+		Long validation = pisdr012.executeGetPaymentFrequencyId("paymentFrequencyType");
+		assertEquals(new Long(1), validation);
+	}
+
+	@Test
+	public void executeGetPaymentFrequencyIdWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetPaymentFrequencyIdWithNoResultException...");
+		when(jdbcUtils.queryForLong(RBVDProperties.QUERY_GET_PAYMENT_FREQUENCY_ID.getValue(), "paymentFrequencyType"))
+				.thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+		Long validation = pisdr012.executeGetPaymentFrequencyId("paymentFrequencyType");
+		assertNull(validation);
+	}
+
+	@Test
 	public void executeGetPolicyContractOK() {
 		LOGGER.info("PISDR012Test - Executing executeGetPolicyContract...");
 		when(argumentsForGetPolicyContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn(957685);
