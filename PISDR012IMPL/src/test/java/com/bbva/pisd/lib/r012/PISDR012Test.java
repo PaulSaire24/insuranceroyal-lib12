@@ -773,7 +773,13 @@ public class PISDR012Test {
 	public void executeGetPolicyContractOK() {
 		LOGGER.info("PISDR012Test - Executing executeGetPolicyContract...");
 		when(argumentsForGetPolicyContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn(957685);
-		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentsForGetPolicyContract)).thenReturn(new HashMap<>());
+		List<Map<String,Object>> ex = new ArrayList<>();
+		Map<String,Object> ex1 = new HashMap<>();
+		ex1.put("prueba1", "prueba2");
+		ex1.put("prueba3", "prueba4");
+		ex.add(ex1);
+
+		when(jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentsForGetPolicyContract)).thenReturn(ex);
 		Map<String, Object> validation = pisdr012.executeGetPolicyContract(argumentsForGetPolicyContract);
 		assertNotNull(validation);
 	}
