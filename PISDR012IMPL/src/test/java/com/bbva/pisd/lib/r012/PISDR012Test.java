@@ -76,6 +76,8 @@ public class PISDR012Test {
 	@Mock
 	private Map<String, Object> argumentsForUpdateInsuranceContract;
 	@Mock
+	private Map<String, Object> argumentsForexecuteUpdatePaymentSchedule;
+	@Mock
 	private Map<String, Object> argumentsForGerInsuranceCompanyQuotaId;
 
 	@Before
@@ -771,7 +773,7 @@ public class PISDR012Test {
 
 	@Test
 	public void executeGetPolicyContractOK() {
-		LOGGER.info("PISDR012Test - Executing executeGetPolicyContract...");
+		LOGGER.info("PISDR012Test - Executing executeGetPolicyContractOK...");
 		when(argumentsForGetPolicyContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn(957685);
 		List<Map<String,Object>> ex = new ArrayList<>();
 		Map<String,Object> ex1 = new HashMap<>();
@@ -786,7 +788,7 @@ public class PISDR012Test {
 
 	@Test
 	public void executeUpdateInsuranceContractOK() {
-		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContract...");
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractOK...");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
@@ -797,12 +799,36 @@ public class PISDR012Test {
 
 	@Test
 	public void executeUpdateInsuranceContractError() {
-		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContract...");
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractError...");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
 	    when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(0);
 		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
+		assertFalse(validation);
+	}
+
+	@Test
+	public void executeUpdatePaymentScheduleOK() {
+		LOGGER.info("PISDR012Test - Executing executeUpdatePaymentScheduleOK...");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_POLICY_RECEIPT_ID.getValue())).thenReturn("1");
+	    when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), argumentsForexecuteUpdatePaymentSchedule)).thenReturn(1);
+		boolean validation = pisdr012.executeUpdatePaymentSchedule(argumentsForexecuteUpdatePaymentSchedule);
+		assertTrue(validation);
+	}
+	
+	@Test
+	public void executeUpdatePaymentScheduleError() {
+		LOGGER.info("PISDR012Test - Executing executeUpdatePaymentScheduleError...");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_POLICY_RECEIPT_ID.getValue())).thenReturn("1");
+	    when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), argumentsForexecuteUpdatePaymentSchedule)).thenReturn(0);
+		boolean validation = pisdr012.executeUpdatePaymentSchedule(argumentsForexecuteUpdatePaymentSchedule);
 		assertFalse(validation);
 	}
 
