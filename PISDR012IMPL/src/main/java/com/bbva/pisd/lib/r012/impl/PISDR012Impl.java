@@ -376,6 +376,21 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
+	public Map<String, Object> executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId) {
+		LOGGER.info("***** PISDR012Impl - executeGetRequiredFieldsForEmissionService START *****");
+		try {
+			Map<String, Object> response = this.jdbcUtils.queryForMap(RBVDProperties.DYNAMIC_QUERY_FOR_INSURANCE_CONTRACT.getValue(), policyQuotaInternalId);
+			response.forEach((key, value) ->
+					LOGGER.info("[PISD.SELECT_REQUIRED_FIELDS_FOR_INSURANCE_CONTRACT] Result -> Key {} with value: {}", key, value));
+			LOGGER.info("***** PISDR012Impl - executeGetRequiredFieldsForEmissionService END *****");
+			return response;
+		} catch (NoResultException ex) {
+			LOGGER.error("executeGetRequiredFieldsForEmissionService - NON_EXISTENT_QUOTATION: {}", RBVDErrors.NON_EXISTENT_QUOTATION.getMessage());
+			return null;
+		}
+	}
+
+	@Override
 	public int executeSaveContract(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeSaveContract START *****");
 		int affectedRows = 0;
@@ -402,24 +417,25 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
-	public int executeSaveFirstReceipt(Map<String, Object> firstReceiptMap) {
+	public int[] executeSaveReceipts(Map<String, Object>[] receipts) {
 		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt START *****");
-		int affectedRows = 0;
-		if(parametersEvaluation(firstReceiptMap, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
-				RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
-				RBVDProperties.FIELD_POLICY_RECEIPT_ID.getValue(),RBVDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+		int[] affectedRows = null;
+		if(Arrays.stream(receipts).
+				allMatch(map -> parametersEvaluation(map, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
+						RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
+						RBVDProperties.FIELD_POLICY_RECEIPT_ID.getValue(),RBVDProperties.FIELD_USER_AUDIT_ID.getValue()))) {
 			LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt - PARAMETERS OK ... EXECUTING *****");
 			try {
-				affectedRows = this.jdbcUtils.update(RBVDProperties.QUERY_INSERT_INSURANCE_CTR_RECEIPTS.getValue(),
-						firstReceiptMap);
+				affectedRows = this.jdbcUtils.batchUpdate(RBVDProperties.QUERY_INSERT_INSURANCE_CTR_RECEIPTS.getValue(),
+						receipts);
 			} catch (NoResultException ex) {
 				LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt - Database exception: {} *****", ex.getMessage());
-				affectedRows = -1;
+				affectedRows = new int[0];
 			}
 		} else {
 			LOGGER.info("executeSaveFirstReceipt - MISSING MANDATORY PARAMETERS [PISD.INSERT_CTR_RECEIPTS]");
 		}
-		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt | Number of rows inserted: {}", affectedRows);
+		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt | Number of rows inserted: {}", Objects.nonNull(affectedRows) ? affectedRows.length : null);
 		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt END *****");
 		return affectedRows;
 	}
@@ -448,6 +464,25 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
+	public Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType) {
+		LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality START *****");
+		List<Map<String, Object>> response = null;
+		if(Objects.nonNull(productId) && Objects.nonNull(modalityType)) {
+			try {
+				LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality PARAMETERS OK ... EXECUTING *****");
+				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSRNC_ROLE_MODALITY.getValue(), productId, modalityType);
+				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSRNC_ROLE_MODALITY] Result -> Key {} with value: {}", key, value)));
+			} catch (NoResultException ex) {
+				LOGGER.info("executeGetRolesByProductAndModality - NO ROLES ERROR: {}", RBVDErrors.NO_ROLES.getMessage());
+			}
+		} else {
+			LOGGER.info("executeGetRolesByProductAndModality - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSRNC_ROLE_MODALITY]");
+		}
+		LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality END *****");
+		return buildResult(response);
+	}
+
+	@Override
 	public int[] executeSaveParticipants(Map<String, Object>[] participantsMap) {
 		LOGGER.info("***** PISDR012Impl - executeSaveParticipants START *****");
 		int[] affectedRows = null;
@@ -470,40 +505,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 		LOGGER.info("***** PISDR012Impl - executeSaveParticipants | Number of rows inserted: {}", Objects.nonNull(affectedRows) ? affectedRows.length : null);
 		LOGGER.info("***** PISDR012Impl - executeSaveParticipants END *****");
 		return affectedRows;
-	}
-
-	@Override
-	public Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType) {
-		LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality START *****");
-		List<Map<String, Object>> response = null;
-		if(Objects.nonNull(productId) && Objects.nonNull(modalityType)) {
-			try {
-				LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality PARAMETERS OK ... EXECUTING *****");
-				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSRNC_ROLE_MODALITY.getValue(), productId, modalityType);
-				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSRNC_ROLE_MODALITY] Result -> Key {} with value: {}", key, value)));
-			} catch (NoResultException ex) {
-				LOGGER.info("executeGetRolesByProductAndModality - NO ROLES ERROR: {}", RBVDErrors.NO_ROLES.getMessage());
-			}
-		} else {
-			LOGGER.info("executeGetRolesByProductAndModality - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSRNC_ROLE_MODALITY]");
-		}
-		LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality END *****");
-		return buildResult(response);
-	}
-
-	@Override
-	public Long executeGetPaymentFrequencyId(String paymentFrequencyType) {
-		LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId START *****");
-		Long frequencyId = null;
-		try {
-			frequencyId = this.jdbcUtils.queryForLong(RBVDProperties.QUERY_GET_PAYMENT_FREQUENCY_ID.getValue(), paymentFrequencyType);
-			LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId | Response: {} *****", frequencyId);
-			LOGGER.info("***** PISDR012Impl - executeGetPaymentFrequencyId END *****");
-			return frequencyId;
-		} catch (NoResultException ex) {
-			LOGGER.warn("executeGetPaymentFrequencyId - There is no payment frequency with type: {}", paymentFrequencyType);
-			return null;
-		}
 	}
 
 	@Override
