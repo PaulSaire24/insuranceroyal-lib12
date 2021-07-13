@@ -39,6 +39,7 @@ public interface PISDR012 {
 
 	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
 	boolean executeUpdateInsuranceContract(Map<String, Object> arguments);
+	boolean executeUpdatePaymentSchedule(Map<String, Object> arguments);
 
 	Map<String, Object> executeQueryForGerInsuranceCompanyQuotaId(Map<String, Object>  policyQuotaInternalId);
 
