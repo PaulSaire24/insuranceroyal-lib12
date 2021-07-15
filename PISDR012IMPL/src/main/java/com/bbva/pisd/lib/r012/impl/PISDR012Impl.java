@@ -578,7 +578,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		} else {
 
 			LOGGER.info(
-					"executeUpdatePaymentSchedule - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSRNC_QUOTATION_MOD]");
+					"executeUpdatePaymentSchedule - MISSING MANDATORY PARAMETERS [PISD.UPDATE_CTR_RECEIPTS]");
 					return false;
 		}
 	
