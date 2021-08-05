@@ -283,6 +283,128 @@ pisdR012.executeSaveInsuranceQuotationVeh(Map<String, Object> arguments);
 Map<String, Object> responseQuerySelectInsuranceCompany = pisdR012.executeGetCompanyDescById(BigDecimal companyId);
 ```
 
+#### 2.15 Método 15: executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId)
+> Método que hace una consulta a la tabla T_PISD_INSRNC_QUOTATION_MOD junto con unos joins a las tablas T_PISD_INSRNC_PRD_MODALITY, 
+> T_PISD_INSRNC_PAYMENT_PERIOD, T_PISD_INSURANCE_QUOTATION, T_PISD_INSURANCE_PRODUCT.
+
+##### 2.15.1 Datos de Entrada
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| policyQuotaInternalId | String | Código de cotización del BBVA |
+
+##### 2.15.2 Datos de Salida
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| responseQueryGetRequiredFieldsForEmission | Map | Mapa que contiene el valor de los campos devueltos |
+
+##### 2.15.3 Ejemplo
+```java
+Map<String, Object> responseQueryGetRequiredFieldsForEmission = pisdR012.executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId);
+```
+
+#### 2.16 Método 16: executeSaveContract(Map<String, Object> arguments)
+> Método que realiza un registro en la tabla T_PISD_INSURANCE_CONTRACT
+
+##### 2.16.1 Datos de Entrada
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| arguments | Map | Mapa que contiene el nombre y el valor de los campos a insertar en la tabla |
+
+##### 2.16.2 Datos de Salida
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| insertedRows | Integer | Cantidad de registros realizados a la tabla |
+
+##### 2.16.3 Ejemplo
+```java
+int insertedRows = pisdR012.executeSaveContract(Map<String, Object> arguments);
+```
+
+#### 2.17 Método 17: executeSaveReceipts(Map<String, Object>[] arguments)
+> Método que realiza más de un registro en la tabla T_PISD_INSURANCE_CTR_RECEIPTS
+
+##### 2.17.1 Datos de Entrada
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| arguments | Map[] | Arreglo de mapas que contienen el nombre y el valor de los campos a insertar en la tabla |
+
+##### 2.17.2 Datos de Salida
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| insertedRows | Integer[] | Cantidad de registros realizados a la tabla |
+
+##### 2.17.3 Ejemplo
+```java
+int[] insertedRows = pisdR012.executeSaveReceipts(Map<String, Object>[] arguments);
+```
+
+#### 2.18 Método 18: executeSaveContractMove(Map<String, Object> arguments)
+> Método que realiza un registro en la tabla T_PISD_INSRNC_CONTRACT_MOV
+
+##### 2.18.1 Datos de Entrada
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| arguments | Map | Mapa que contiene el nombre y el valor de los campos a insertar en la tabla |
+
+##### 2.18.2 Datos de Salida
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| insertedRows | Integer | Cantidad de registros realizados a la tabla |
+
+##### 2.18.3 Ejemplo
+```java
+int insertedRows = pisdR012.executeSaveContractMove(Map<String, Object> arguments);
+```
+
+#### 2.19 Método 19: executeGetRolesByProductAndModality(BigDecimal productId, String modalityType)
+> Método que hace una consulta a la tabla T_PISD_INSRNC_ROLE_MODALITY
+
+##### 2.19.1 Datos de Entrada
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| productId | BigDecimal | Código del producto |
+|2| modalityType | String | Código del plan |
+
+##### 2.19.2 Datos de Salida
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| responseQueryGetRoles | Map | Mapa que contiene el valor de los campos devueltos |
+
+##### 2.19.3 Ejemplo
+```java
+Map<String, Object> responseQueryGetRoles = pisdR012.executeGetRolesByProductAndModality(BigDecimal productId, String modalityType);
+```
+
+#### 2.20 Método 20: executeSaveParticipants(Map<String, Object>[] arguments)
+> Método que realiza más de un registro en la tabla T_PISD_INSRNC_CTR_PARTICIPANT
+
+##### 2.20.1 Datos de Entrada
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| arguments | Map[] | Arreglo de mapas que contienen el nombre y el valor de los campos a insertar en la tabla |
+
+##### 2.20.2 Datos de Salida
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| insertedRows | Integer[] | Cantidad de registros realizados a la tabla |
+
+##### 2.20.3 Ejemplo
+```java
+int[] insertedRows = pisdR012.executeSaveParticipants(Map<String, Object>[] arguments);
+```
+
 ### 3.  Mensajes:
 
 #### 3.1  Código PISD00120000:
@@ -294,4 +416,4 @@ Map<String, Object> responseQuerySelectInsuranceCompany = pisdR012.executeGetCom
 ### 4.  Versiones:
 #### 4.1  Versión 0.1.1-SNAPSHOT
 
-+ Versión 0.1.1-SNAPSHOT: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004.
++ Versión 0.1.1-SNAPSHOT: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004 y RBVDT201.
