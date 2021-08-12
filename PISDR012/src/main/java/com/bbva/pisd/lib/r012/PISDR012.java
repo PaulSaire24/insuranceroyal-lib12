@@ -31,6 +31,7 @@ public interface PISDR012 {
 	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
 
 	Map<String, Object> executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId);
+	Map<String, Object> executeGetPaymentPeriod(String frequencyType);
 	int executeSaveContract(Map<String, Object> arguments);
 	int[] executeSaveReceipts(Map<String, Object>[] firstReceiptMap);
 	int executeSaveContractMove(Map<String, Object> arguments);

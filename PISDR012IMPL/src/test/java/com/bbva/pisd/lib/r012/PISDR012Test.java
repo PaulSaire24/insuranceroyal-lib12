@@ -506,6 +506,26 @@ public class PISDR012Test {
 	}
 
 	@Test
+	public void executeGetPaymentPeriodOK() {
+		LOGGER.info("PISDR0012Test - Executing executeGetPaymentPeriodOK...");
+
+		when(this.jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_PAYMENT_PERIOD.getValue(), "frequencyType")).thenReturn(new HashMap<>());
+
+		Map<String, Object> validation = pisdr012.executeGetPaymentPeriod("frequencyType");
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetPaymentPeriodWithNoResultException() {
+		LOGGER.info("PISDR0012Test - Executing executeGetPaymentPeriodWithNoResultException...");
+
+		when(this.jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_PAYMENT_PERIOD.getValue(), "frequencyType")).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+
+		Map<String, Object> validation = pisdr012.executeGetPaymentPeriod("frequencyType");
+		assertNull(validation);
+	}
+
+	@Test
 	public void executeSaveContractOK() {
 		LOGGER.info("PISDR0012Test - Executing executeSaveContractOK...");
 		when(argumentsForSaveContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("contract_entity");

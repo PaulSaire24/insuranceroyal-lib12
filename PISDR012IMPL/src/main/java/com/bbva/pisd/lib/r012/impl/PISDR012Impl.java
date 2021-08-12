@@ -391,6 +391,21 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
+	public Map<String, Object> executeGetPaymentPeriod(String frequencyType) {
+		LOGGER.info("***** PISDR012Impl - executeGetPaymentPeriod START *****");
+		try {
+			Map<String, Object> response = this.jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_PAYMENT_PERIOD.getValue(), frequencyType);
+			response.forEach((key, value) ->
+					LOGGER.info("[PISD.SELECT_PAYMENT_PERIOD] Result -> Key {} with value: {}", key, value));
+			LOGGER.info("***** PISDR012Impl - executeGetPaymentPeriod END *****");
+			return response;
+		} catch (NoResultException ex) {
+			LOGGER.debug("executeGetPaymentPeriod - Incorrect frequency type");
+			return null;
+		}
+	}
+
+	@Override
 	public int executeSaveContract(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeSaveContract START *****");
 		int affectedRows = 0;
