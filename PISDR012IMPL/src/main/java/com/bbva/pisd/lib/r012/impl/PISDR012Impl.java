@@ -18,6 +18,8 @@ import com.bbva.rbvd.dto.insrncsale.utils.RBVDProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import oracle.jdbc.util.RepConversion;
+
 public class PISDR012Impl extends PISDR012Abstract {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR012Impl.class);
@@ -667,29 +669,28 @@ public class PISDR012Impl extends PISDR012Abstract {
 
 	@Override
 	public Map<String, Object> executeGetInsuranceContractStartDate(Map<String, Object> arguments) {
-	// 	LOGGER.info("***** PISDR0012Impl - executeGetInsuranceContractStartDate START *****");
-		
-	// 	if (parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
-	// 	RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
-	// 	RBVDProperties.FIELD_POLICY_RECEIPT_ID.getValue())) {
-	// 		arguments.forEach((key, value) -> LOGGER.info("[PISD.UPDATE_CTR_RECEIPTS] Result -> Key2 {} with value: {}", key, value));
-	// 		LOGGER.info("***** PISDR0012Impl - executeGetInsuranceContractStartDate - PARAMETERS OK ... EXECUTING *****");
-	// 		result = this.jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), arguments);
-	// 		LOGGER.info("[PISD.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS] Result -> {}", result);
-	// 		if(result==0)
-	// 			return false;
-	// 		else{
-	// 			LOGGER.info("***** PISDR0012Impl - executeGetInsuranceContractStartDate END *****");
-	// 			return true;
-	// 		}
-			
-	// 	} else {
+		LOGGER.info("***** PISDR0012Impl - executeGetInsuranceContractStartDate START *****");
+		Map<String, Object> response = null;
+		if (parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
+		RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
+			try{
+				response = this.jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE.getValue(), arguments);
+				response.forEach((key, value) -> LOGGER.info("[PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE] Result -> Key {} with value: {}", key, value));
+				LOGGER.info("***** PISDR012Impl - executeGetInsuranceContractStartDate END *****");
+				return response;
+			}
+			catch (NoResultException ex){
+				LOGGER.info(
+					"executeGetInsuranceContractStartDate - QUERY EMPTY RESULT [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
+			this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			}	
+		} else {
 
-	// 		LOGGER.info(
-	// 				"executeUpdatePaymentSchedule - MISSING MANDATORY PARAMETERS [PISD.UPDATE_CTR_RECEIPTS]");
-	// 				return false;
-	// 	}
-		return null;
+			LOGGER.info(
+					"executeUpdatePaymentSchedule - MISSING MANDATORY PARAMETERS [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
+					return response;
+		}
+		return response;
 	}
 
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
