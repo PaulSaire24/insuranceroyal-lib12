@@ -75,6 +75,8 @@ public class PISDR012Test {
 	private Map<String, Object> argumentsForexecuteUpdatePaymentSchedule;
 	@Mock
 	private Map<String, Object> argumentsForGerInsuranceCompanyQuotaId;
+	@Mock
+	private Map<String, Object> argumentsForexecuteGetInsuranceContractStartDate;
 
 	@Before
 	public void setUp() {
@@ -913,6 +915,28 @@ public class PISDR012Test {
 		boolean validation = pisdr012.executeUpdatePaymentSchedule(argumentsForexecuteUpdatePaymentSchedule);
 		assertFalse(validation);
 	}
+    
+	@Test
+	public void executeGetInsuranceContractStartDateOK(){
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceContractStartDateOK...");
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE.getValue(), argumentsForexecuteGetInsuranceContractStartDate)).thenReturn(new HashMap<>());
+	    Map<String,Object> validation = pisdr012.executeGetInsuranceContractStartDate(argumentsForexecuteGetInsuranceContractStartDate);
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetInsuranceContractStartDateWithNoResultException(){
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceContractStartDateWithNoResultException...");
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE.getValue(), argumentsForexecuteGetInsuranceContractStartDate)).thenThrow(new NoResultException(MESSAGE));
+	    Map<String,Object> validation = pisdr012.executeGetInsuranceContractStartDate(argumentsForexecuteGetInsuranceContractStartDate);
+		assertNull(validation);
+	}
 
 	@Test
 	public void executeQueryForGerInsuranceCompanyQuotaId() {
@@ -921,6 +945,7 @@ public class PISDR012Test {
 		Map<String, Object> validation = pisdr012.executeQueryForGerInsuranceCompanyQuotaId(argumentsForGerInsuranceCompanyQuotaId);
 		assertNotNull(validation);
 	}
+    
 
 	@Test
 	public void executeQueryForGerInsuranceCompanyQuotaIdWithNoResultException() {

@@ -620,6 +620,32 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return response;
 	}
 
+	@Override
+	public Map<String, Object> executeGetInsuranceContractStartDate(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR0012Impl - executeGetInsuranceContractStartDate START *****");
+		Map<String, Object> response = null;
+		if (parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
+		RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
+			try{
+				response = this.jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE.getValue(), arguments);
+				response.forEach((key, value) -> LOGGER.info("[PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE] Result -> Key {} with value: {}", key, value));
+				LOGGER.info("***** PISDR012Impl - executeGetInsuranceContractStartDate END *****");
+				return response;
+			}
+			catch (NoResultException ex){
+				LOGGER.info(
+					"executeGetInsuranceContractStartDate - QUERY EMPTY RESULT [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
+			this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			}	
+		} else {
+
+			LOGGER.info(
+					"executeUpdatePaymentSchedule - MISSING MANDATORY PARAMETERS [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
+					return response;
+		}
+		return response;
+	}
+
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
 		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
 	}

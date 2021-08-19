@@ -44,4 +44,5 @@ public interface PISDR012 {
 
 	Map<String, Object> executeQueryForGerInsuranceCompanyQuotaId(Map<String, Object>  policyQuotaInternalId);
 
+	Map<String, Object> executeGetInsuranceContractStartDate(Map<String, Object> arguments);
 }
