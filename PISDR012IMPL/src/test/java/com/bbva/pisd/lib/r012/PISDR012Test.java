@@ -845,17 +845,29 @@ public class PISDR012Test {
 
 	@Test
 	public void executeGetPolicyContractOK() {
-		LOGGER.info("PISDR012Test - Executing executeGetPolicyContractOK...");
+		LOGGER.info("PISDR012Test - Executing executeGetPolicyContract...");
 		when(argumentsForGetPolicyContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn(957685);
-		List<Map<String,Object>> ex = new ArrayList<>();
-		Map<String,Object> ex1 = new HashMap<>();
-		ex1.put("prueba1", "prueba2");
-		ex1.put("prueba3", "prueba4");
-		ex.add(ex1);
-
-		when(jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentsForGetPolicyContract)).thenReturn(ex);
+		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentsForGetPolicyContract)).thenReturn(new HashMap<>());
 		Map<String, Object> validation = pisdr012.executeGetPolicyContract(argumentsForGetPolicyContract);
 		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetPolicyContractError() {
+		LOGGER.info("PISDR012Test - Executing executeGetPolicyContract...");
+		when(argumentsForGetPolicyContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn(957685);
+		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentsForGetPolicyContract)).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+		Map<String, Object> validation = pisdr012.executeGetPolicyContract(argumentsForGetPolicyContract);
+		assertNull(validation);
+	}
+
+	@Test
+	public void executeGetPolicyContractValidationError() {
+		LOGGER.info("PISDR012Test - Executing executeGetPolicyContract...");
+		when(argumentsForGetPolicyContract.get(PISDProperties.FIELD_POLICY_ID.getValue())).thenReturn(null);
+		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentsForGetPolicyContract)).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+		Map<String, Object> validation = pisdr012.executeGetPolicyContract(argumentsForGetPolicyContract);
+		assertNull(validation);
 	}
 
 	@Test
