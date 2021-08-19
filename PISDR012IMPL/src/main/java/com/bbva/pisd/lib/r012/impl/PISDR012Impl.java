@@ -18,8 +18,6 @@ import com.bbva.rbvd.dto.insrncsale.utils.RBVDProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import oracle.jdbc.util.RepConversion;
-
 public class PISDR012Impl extends PISDR012Abstract {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR012Impl.class);
@@ -619,52 +617,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 
 		LOGGER.info("***** PISDR012Impl - executeQueryForGerInsuranceCompanyQuotaId END *****");
 		return response;
-	}
-
-	@Override
-	public Map<String, Object> executeGetInsuranceContractStatus() {
-		LOGGER.info("***** PISDR012Impl - executeGetInsuranceContractStatus START *****");
-
-		List<Map<String, Object>> response = null;
- 			
-			LOGGER.info("***** PISDR012Impl - executeGetInsuranceContractStatus - PARAMETERS OK ... EXECUTING *****");
-			try {
-				
-				LOGGER.info("PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT_DOCUMENT_STATUS ==> {}", RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue());
-				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue());
-			} catch (NoResultException ex) {
-				LOGGER.info("***** PISDR012Impl - [DBException] - Database exception: {} *****", ex.getMessage());
-				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
-			}
-
-		LOGGER.info("***** PISDR012Impl - executeGetInsuranceContractStatus END *****");
-		return buildResult(response);
-	}
-
-	@Override
-	public boolean executeUpdateInsuranceContractDocStatus(Map<String, Object> arguments) {
-		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocStatus START *****");
-		int result;
-		if (parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
-		RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
-			arguments.forEach((key, value) -> LOGGER.info("[PISD.UPDATE_CONTRACT_DOCUMENT_STATUS] Result -> Key2 {} with value: {}", key, value));
-			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocStatus - PARAMETERS OK ... EXECUTING *****");
-			result = this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), arguments);
-			LOGGER.info("[PISD.UPDATE_CONTRACT_DOCUMENT_STATUS] Result -> {}", result);
-			if(result==0)
-				return false;
-			else{
-				LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocStatus END *****");
-				return true;
-			}
-			
-		} else {
-
-			LOGGER.info(
-					"executeUpdateInsuranceContract - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSURANCE_CONTRACT]");
-					return false;
-		}
-	
 	}
 
 	@Override
