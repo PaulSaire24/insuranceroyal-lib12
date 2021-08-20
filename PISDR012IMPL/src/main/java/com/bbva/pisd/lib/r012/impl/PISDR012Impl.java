@@ -655,7 +655,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue());
 				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSRNC_ROLE_MODALITY] Result -> Key {} with value: {}", key, value)));
 			} catch (NoResultException ex) {
-				LOGGER.info("executeGetInsuranceContractStatus - NO ROLES ERROR: {}");
+				LOGGER.info("executeGetInsuranceContractStatus - NO QUERY_EMPTY_RESULT ERROR");
 				this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 
