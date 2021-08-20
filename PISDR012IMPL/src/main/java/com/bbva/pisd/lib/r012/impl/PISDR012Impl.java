@@ -673,11 +673,11 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocument - PARAMETERS OK ... EXECUTING *****");
 			result = this.jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue(), arguments);
 			LOGGER.info("[PISD.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS] Result -> {}", result);
-			if(result==0)
-				return false;
+			if(result>0)
+				return true;
 			else{
 				LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocument END *****");
-				return true;
+				return false;
 			}
 		} else {
 			LOGGER.info(
