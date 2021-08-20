@@ -640,11 +640,52 @@ public class PISDR012Impl extends PISDR012Abstract {
 		} else {
 
 			LOGGER.info(
-					"executeUpdatePaymentSchedule - MISSING MANDATORY PARAMETERS [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
+					"executeGetInsuranceContractStartDate - MISSING MANDATORY PARAMETERS [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
 					return response;
 		}
 		return response;
 	}
+
+	@Override
+	public Map<String, Object> executeGetInsuranceContractStatus() {
+		LOGGER.info("***** PISDR012Impl - executeGetInsuranceContractStatus START *****");
+		List<Map<String, Object>> response = null;
+		
+			try {
+				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue());
+				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSRNC_ROLE_MODALITY] Result -> Key {} with value: {}", key, value)));
+			} catch (NoResultException ex) {
+				LOGGER.info("executeGetInsuranceContractStatus - NO ROLES ERROR: {}");
+				this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			}
+
+		LOGGER.info("***** PISDR012Impl - executeGetInsuranceContractStatus END *****");
+		return buildResult(response);
+	}
+	
+	@Override
+	public Boolean executeUpdateInsuranceContractDocument(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocument START *****");
+		int result;
+		if (parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
+		RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
+			arguments.forEach((key, value) -> LOGGER.info("[PISD.UPDATE_INSURANCE_CONTRACT] Result -> Key2 {} with value: {}", key, value));
+			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocument - PARAMETERS OK ... EXECUTING *****");
+			result = this.jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue(), arguments);
+			LOGGER.info("[PISD.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS] Result -> {}", result);
+			if(result==0)
+				return false;
+			else{
+				LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocument END *****");
+				return true;
+			}
+		} else {
+			LOGGER.info(
+					"executeUpdateInsuranceContractDocument - MISSING MANDATORY PARAMETERS [PISD.UPDATE_INSURANCE_CONTRACT]");
+					return false;
+		}
+	}
+	
 
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
 		return Arrays.stream(keys).allMatch(key -> Objects.nonNull(arguments.get(key)));
