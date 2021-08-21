@@ -77,6 +77,10 @@ public class PISDR012Test {
 	private Map<String, Object> argumentsForGerInsuranceCompanyQuotaId;
 	@Mock
 	private Map<String, Object> argumentsForexecuteGetInsuranceContractStartDate;
+	@Mock
+	private List<Map<String, Object>> argumentsForGetInsuranceContractStatus;
+	@Mock
+	private Map<String, Object> argumentsUpdateInsuranceContractDocument;
 
 	@Before
 	public void setUp() {
@@ -956,5 +960,57 @@ public class PISDR012Test {
 		assertNull(validation);
 		assertEquals("PISD00120032", this.pisdr012.getAdviceList().get(0).getCode());
 	}
+
+	@Test
+	public void executeGetInsuranceContractStatusOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceContractStatusOK...");
+
+		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue())).thenReturn(argumentsForGetInsuranceContractStatus);
+		Map<String, Object> validation = pisdr012.executeGetInsuranceContractStatus();
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetInsuranceContractStatusError() {
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceContractStatusError...");
+
+		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue())).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+		Map<String, Object> validation = pisdr012.executeGetInsuranceContractStatus();
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeUpdateInsuranceContractDocumentOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceContractStatusOK...");
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+		when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue(),argumentsUpdateInsuranceContractDocument)).thenReturn(1);
+		Boolean validation = pisdr012.executeUpdateInsuranceContractDocument(argumentsUpdateInsuranceContractDocument);
+		assertTrue(validation);
+	}
+
+	@Test
+	public void executeUpdateInsuranceContractDocumentValidationError() {
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceContractStatusError...");
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn(null);
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn(null);
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn(null);
+		when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue(),argumentsUpdateInsuranceContractDocument)).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+		Boolean validation = pisdr012.executeUpdateInsuranceContractDocument(argumentsUpdateInsuranceContractDocument);
+		assertFalse(validation);
+	}
+
+	@Test
+	public void executeUpdateInsuranceContractDocumentNoUpdate() {
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceContractStatusError...");
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+		when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue(),argumentsUpdateInsuranceContractDocument)).thenReturn(0);
+		Boolean validation = pisdr012.executeUpdateInsuranceContractDocument(argumentsUpdateInsuranceContractDocument);
+		assertFalse(validation);
+	}
+	
 
 }
