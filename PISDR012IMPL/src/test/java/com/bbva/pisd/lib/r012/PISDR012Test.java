@@ -81,6 +81,8 @@ public class PISDR012Test {
 	private List<Map<String, Object>> argumentsForGetInsuranceContractStatus;
 	@Mock
 	private Map<String, Object> argumentsUpdateInsuranceContractDocument;
+	@Mock
+	private Map<String, Object> argumentGetOffer;
 
 	@Before
 	public void setUp() {
@@ -1011,6 +1013,34 @@ public class PISDR012Test {
 		Boolean validation = pisdr012.executeUpdateInsuranceContractDocument(argumentsUpdateInsuranceContractDocument);
 		assertFalse(validation);
 	}
-	
+	//Nuevo
+	@Test
+	public void executeGetOfferOK(){
+		LOGGER.info("PISDR012Test - Executing executeGetOfferOK...");
+		//No se sabe el atributo de la db 
+		when(argumentGetOffer.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn("0011");
+		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_OFFER.getValue(), argumentGetOffer)).thenReturn(new HashMap<>());
+	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetOfferWithNoResultException(){
+		LOGGER.info("PISDR012Test - Executing executeGetOfferWithNoResultException...");
+		//No se sabe el atributo de la db 
+		when(argumentGetOffer.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn("0011");
+		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_OFFER.getValue(), argumentGetOffer)).thenThrow(new NoResultException(MESSAGE));
+	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
+		assertNull(validation);
+	}
+
+	@Test
+	public void executeGetOfferWithNull(){
+		LOGGER.info("PISDR012Test - Executing executeGetOfferWithNull...");
+		//No se sabe el atributo de la db 
+		when(argumentGetOffer.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn(null);
+	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
+		assertNull(validation);
+	}
 
 }
