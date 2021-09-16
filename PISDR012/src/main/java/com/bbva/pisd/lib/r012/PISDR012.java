@@ -30,13 +30,22 @@ public interface PISDR012 {
 	void executeRegisterAdditionalQuotationBranch(Map<String, Object> arguments);
 	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
 
+	Map<String, Object> executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId);
+	Map<String, Object> executeGetPaymentPeriod(String frequencyType);
 	int executeSaveContract(Map<String, Object> arguments);
-	int executeSaveFirstReceipt(Map<String, Object> firstReceiptMap);
+	int[] executeSaveReceipts(Map<String, Object>[] firstReceiptMap);
+	int executeSaveContractMove(Map<String, Object> arguments);
+	Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType);
 	int[] executeSaveParticipants(Map<String, Object>[] participantsMap);
 
 	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
 	boolean executeUpdateInsuranceContract(Map<String, Object> arguments);
+	boolean executeUpdatePaymentSchedule(Map<String, Object> arguments);
 
 	Map<String, Object> executeQueryForGerInsuranceCompanyQuotaId(Map<String, Object>  policyQuotaInternalId);
 
+	Map<String, Object> executeGetInsuranceContractStartDate(Map<String, Object> arguments);
+
+	Map<String,Object> executeGetInsuranceContractStatus();
+	Boolean executeUpdateInsuranceContractDocument(Map<String,Object> arguments);
 }
