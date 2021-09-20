@@ -1018,20 +1018,21 @@ public class PISDR012Test {
 	public void executeGetOfferOK(){
 		LOGGER.info("PISDR012Test - Executing executeGetOfferOK...");
 		//No se sabe el atributo de la db 
-		when(argumentGetOffer.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn("0011");
-		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_OFFER.getValue(), argumentGetOffer)).thenReturn(new HashMap<>());
+		when(argumentGetOffer.get(RBVDProperties.FIELD_PRODUCT_OFFER_ID.getValue())).thenReturn("0011");
+		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_OFFER.getValue(), argumentGetOffer)).thenReturn(new ArrayList<>());
 	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
-		assertNotNull(validation);
+		assertNotNull(validation.get(RBVDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
+
 
 	@Test
 	public void executeGetOfferWithNoResultException(){
 		LOGGER.info("PISDR012Test - Executing executeGetOfferWithNoResultException...");
 		//No se sabe el atributo de la db 
-		when(argumentGetOffer.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn("0011");
-		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_OFFER.getValue(), argumentGetOffer)).thenThrow(new NoResultException(MESSAGE));
+		when(argumentGetOffer.get(RBVDProperties.FIELD_PRODUCT_OFFER_ID.getValue())).thenReturn("0011");
+		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_OFFER.getValue(), argumentGetOffer)).thenThrow(new NoResultException(MESSAGE));
 	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
-		assertNull(validation);
+		assertNull(validation.get(RBVDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
 	@Test
@@ -1040,7 +1041,7 @@ public class PISDR012Test {
 		//No se sabe el atributo de la db 
 		when(argumentGetOffer.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn(null);
 	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
-		assertNull(validation);
+		assertNull(validation.get(RBVDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
 }

@@ -691,25 +691,24 @@ public class PISDR012Impl extends PISDR012Abstract {
 	public Map<String, Object> executeGetOffer(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeGetOffer START *****");
 
-		Map<String, Object> response = null;
+		List<Map<String, Object>> response = null;
 		//No se sabe que atributo de la db es 
-		if (parametersEvaluation(arguments, RBVDProperties.FIELD_POLICY_ID.getValue())) {
+		if (parametersEvaluation(arguments, RBVDProperties.FIELD_PRODUCT_OFFER_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeGetOffer - PARAMETERS OK ... EXECUTING *****");
 			try {
 				arguments.forEach((key, value) -> LOGGER.info("[PISD.SELECT_OFFER] Result -> Key {} with value: {}", key, value));
 				LOGGER.info("PISDProperties.QUERY_SELECT_OFFER.getValue() ==> {}", RBVDProperties.QUERY_SELECT_OFFER.getValue());
-				response = this.jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_OFFER.getValue(), arguments);
-				
+				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_OFFER.getValue(), arguments);
+				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_OFFER] Result -> Key {} with value: {}", key, value)));
 			} catch (NoResultException ex) {
 				LOGGER.info("***** PISDR012Impl - [DBException] - Database exception: {} *****", ex.getMessage());
 				this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 		} else {
 			LOGGER.info("executeGetOffer - MISSING MANDATORY PARAMETERS [PISD.SELECT_OFFER]");
-			return response;
 		}
 		LOGGER.info("***** PISDR012Impl - executeGetOffer END *****");
-		return response;
+		return buildResult(response);
 	}
 
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
