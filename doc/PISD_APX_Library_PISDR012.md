@@ -717,6 +717,6 @@ Map<String, Object> responseQueryGetPaymentPeriod = pisdR012.executeGetPaymentPe
 # ![createVehicleInsurancesQuotation](images/diseno-componentes-apx-lib12.png)
 
 ### 5.  Versiones:
-#### 5.1  Versión 0.19.4
+#### 5.1  Versión 0.19.6
 
-+ Versión 0.19.4: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
++ Versión 0.19.6: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
