@@ -686,13 +686,11 @@ public class PISDR012Impl extends PISDR012Abstract {
 		}
 	}
 	
-	//Nuevo
 	@Override
 	public Map<String, Object> executeGetOffer(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeGetOffer START *****");
 
 		List<Map<String, Object>> response = null;
-		//No se sabe que atributo de la db es 
 		if (parametersEvaluation(arguments, RBVDProperties.FIELD_PRODUCT_OFFER_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeGetOffer - PARAMETERS OK ... EXECUTING *****");
 			try {
