@@ -23,64 +23,52 @@ public class PISDR012Impl extends PISDR012Abstract {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR012Impl.class);
 
 	@Override
-	public Map<String, Object> executeInsuranceProduct(Map<String, Object> arguments) {
-		LOGGER.info("***** PISDR012Impl - executeInsuranceProduct START *****");
+	public Map<String, Object> executeGetProductInformation(String insuranceProductType) {
+		LOGGER.info("***** PISDR012Impl - executeGetProductInformation START *****");
 		Map<String, Object> response = null;
-		if (parametersEvaluation(arguments, PISDProperties.FILTER_INSURANCE_PRODUCT_TYPE.getValue())) {
-			try {
-				LOGGER.info("***** PISDR012Impl - executeInsuranceProduct PARAMETERS OK ... EXECUTING *****");
-				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSRC_PRODUCT.getValue(), arguments);
-				response.forEach((key, value) -> LOGGER
-						.info("[PISD.SELECT_INSURANCE_PRODUCT] Result -> Key {} with value: {}", key, value));
-			} catch (NoResultException ex) {
-				LOGGER.info("executeInsuranceProduct - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_PRODUCT]");
-				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
-			}
+		try {
+			response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_GET_PRODUCT_INFORMATION.getValue(), insuranceProductType);
+			response.forEach((key, value) ->
+					LOGGER.info("[PISD.GET_PRODUCT_INFORMATION] Result -> Key {} with value: {}", key, value));
+		} catch (NoResultException ex) {
+			LOGGER.debug("[PISD.GET_PRODUCT_INFORMATION] - NON EXISTENT PRODUCT TYPE");
 		}
-		LOGGER.info("***** PISDR012Impl - executeInsuranceProduct END *****");
+		LOGGER.info("***** PISDR012Impl - executeGetProductInformation END *****");
 		return response;
 	}
 
 	@Override
-	public Map<String, Object> executeGetProductIdForRimac(Map<String, Object> arguments) {
-		LOGGER.info("***** PISDR012Impl - executeGetProductIdForRimac START *****");
-		Map<String, Object> response = null;
-		if (parametersEvaluation(arguments, PISDProperties.FIELD_OR_FILTER_INSURANCE_RISK_BUSINESS_ID.getValue())) {
-			try {
-				LOGGER.info("***** PISDR012Impl - executeGetProductIdForRimac PARAMETERS OK ... EXECUTING *****");
-				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSRC_PRODUCT_FOR_RIMAC.getValue(),
-						arguments);
-				response.forEach((key, value) -> LOGGER
-						.info("[PISD.SELECT_INSURANCE_BUSINESS] Result -> Key {} with value: {}", key, value));
-			} catch (NoResultException ex) {
-				LOGGER.info("executeGetProductIdForRimac - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_BUSINESS]");
-				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
-			}
-		}
-		LOGGER.info("***** PISDR012Impl - executeGetProductIdForRimac END *****");
-		return response;
-	}
-
-	@Override
-	public Map<String, Object> executeInsuranceProductModality(Map<String, Object> arguments) {
-		LOGGER.info("***** PISDR012Impl - executeInsuranceProductModality START *****");
+	public Map<String, Object> executeGetProductModalitiesInformation(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeGetProductModalitiesInformation START *****");
 		List<Map<String, Object>> response = null;
-		if (parametersEvaluation(arguments, PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(),
-				PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())) {
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(),
+				PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue(), PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())) {
 			try {
-				LOGGER.info("***** PISDR012Impl - executeInsuranceProductModality PARAMETERS OK ... EXECUTING *****");
-				response = this.jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSRNC_PRD_MODALITY.getValue(),
-						arguments);
-				response.stream().forEach((map -> map.forEach((key, value) -> LOGGER
-						.info("[PISD.SELECT_INSRNC_PRD_MODALITY] Result -> Key {} with value: {}", key, value))));
+				response = this.jdbcUtils.queryForList(PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION.getValue(), arguments);
+				response.stream().forEach(map -> map.
+						forEach((key, value) -> LOGGER.info("[PISD.GET_PRODUCT_MODALITIES_INFORMATION] Result -> Key {} with value: {}", key,value)));
 			} catch (NoResultException ex) {
-				LOGGER.info("executeInsuranceProductModality - RESPONSE EMPTY [PISD.SELECT_INSRNC_PRD_MODALITY]");
-				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+				LOGGER.debug("[PISD.GET_PRODUCT_MODALITIES_INFORMATION] - EMPTY RESULT");
 			}
 		}
-		LOGGER.info("***** PISDR012Impl - executeInsuranceProductModality END *****");
+		LOGGER.info("***** PISDR012Impl - executeGetProductModalitiesInformation END *****");
 		return buildResult(response);
 	}
+
+	@Override
+	public Map<String, Object> executeGetProductModalitySelected(String insuranceModalityType) {
+		LOGGER.info("***** PISDR012Impl - executeGetProductModalitySelected START *****");
+		Map<String, Object> response = null;
+		try {
+			response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_GET_PRODUCT_MODALITY_SELECTED.getValue(), insuranceModalityType);
+			response.forEach((key, value) -> LOGGER.info("[PISD.GET_PRODUCT_MODALITY_SELECTED] Result -> Key {} with value: {}", key, value));
+		} catch (NoResultException ex) {
+			LOGGER.debug("[PISD.GET_PRODUCT_MODALITY_SELECTED] - NON EXISTENT MODALITY");
+		}
+		LOGGER.info("***** PISDR012Impl - executeGetProductModalitySelected END *****");
+		return response;
+	}
+
 
 	@Override
 	public Map<String, Object> executeGetConsiderations(Map<String, Object> arguments) {
@@ -385,7 +373,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("***** PISDR012Impl - executeGetRequiredFieldsForEmissionService END *****");
 			return response;
 		} catch (NoResultException ex) {
-			LOGGER.error("executeGetRequiredFieldsForEmissionService - NON_EXISTENT_QUOTATION: {}", RBVDErrors.NON_EXISTENT_QUOTATION.getMessage());
+			LOGGER.debug("executeGetRequiredFieldsForEmissionService - NON_EXISTENT_QUOTATION: {}", RBVDErrors.NON_EXISTENT_QUOTATION.getMessage());
 			return null;
 		}
 	}

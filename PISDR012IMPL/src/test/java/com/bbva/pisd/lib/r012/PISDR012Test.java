@@ -11,6 +11,7 @@ import com.bbva.pisd.dto.insurance.utils.PISDProperties;
 import com.bbva.pisd.lib.r012.impl.PISDR012Impl;
 
 import com.bbva.rbvd.dto.insrncsale.utils.RBVDProperties;
+import org.apache.felix.resolver.util.ArrayMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +21,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -36,15 +39,15 @@ import static org.mockito.Mockito.*;
 public class PISDR012Test {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR012Test.class);
+	private static final String CODE = "adviceCode";
 	private static final String MESSAGE = "No se encontró data";
 
 	private final PISDR012Impl pisdr012 = new PISDR012Impl();
 	private JdbcUtils jdbcUtils;
 
 	@Mock
-	private Map<String, Object> argumentsForInsuranceProduct;
-	@Mock
-	private Map<String, Object> argumentsForGetProductId;
+	private Map<String, Object> argumentsForGetModalitiesInformation;
+
 	@Mock
 	private Map<String, Object> argumentsForInsuranceProductModalityOrConsiderations;
 	@Mock
@@ -95,82 +98,79 @@ public class PISDR012Test {
 	}
 
 	@Test
-	public void executeInsuranceProductOK() {
-		LOGGER.info("PISDR012Test - Executing executeInsuranceProductOK...");
-		when(argumentsForInsuranceProduct.get(PISDProperties.FILTER_INSURANCE_PRODUCT_TYPE.getValue())).thenReturn("827");
-		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSRC_PRODUCT.getValue(), argumentsForInsuranceProduct)).thenReturn(new HashMap<>());
-		Map<String, Object> validation = pisdr012.executeInsuranceProduct(argumentsForInsuranceProduct);
+	public void executeGetProductInformationOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductInformationOK...");
+		when(this.jdbcUtils.queryForMap(PISDProperties.QUERY_GET_PRODUCT_INFORMATION.getValue(), "830")).thenReturn(new HashMap<>());
+		Map<String, Object> validation = pisdr012.executeGetProductInformation("830");
 		assertNotNull(validation);
 	}
 
 	@Test
-	public void executeInsuranceProductWithParametersEvaluationFalse() {
-		LOGGER.info("PISDR012Test - Executing executeInsuranceProductWithParametersEvaluationFalse...");
-		Map<String, Object> validation = pisdr012.executeInsuranceProduct(argumentsForInsuranceProduct);
-		assertNull(validation);
+	public void executeGetProductInformationWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductInformationWithNoResultException...");
+		when(this.jdbcUtils.queryForMap(PISDProperties.QUERY_GET_PRODUCT_INFORMATION.getValue(), "827")).thenThrow(new NoResultException(CODE, MESSAGE));
+		Map<String, Object> validation = pisdr012.executeGetProductInformation("827");
+		assertTrue(isEmpty(validation));
 	}
 
 	@Test
-	public void executeInsuranceProductWithNoResultException() {
-		LOGGER.info("PISDR012Test - Executing executeInsuranceProductWithNoResultException...");
-		when(argumentsForInsuranceProduct.get(PISDProperties.FILTER_INSURANCE_PRODUCT_TYPE.getValue())).thenReturn("827");
-		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSRC_PRODUCT.getValue(), argumentsForInsuranceProduct)).thenThrow(new NoResultException(MESSAGE));
-		Map<String, Object> validation = pisdr012.executeInsuranceProduct(argumentsForInsuranceProduct);
-		assertNull(validation);
-	}
+	public void executeGetProductModalitiesInformationOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitiesInformationOK...");
 
-	@Test
-	public void executeGetProductIdForRimacOK() {
-		LOGGER.info("PISDR012Test - Executing executeGetProductIdForRimacOK...");
-		when(argumentsForGetProductId.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_RISK_BUSINESS_ID.getValue())).thenReturn(912L);
-		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSRC_PRODUCT_FOR_RIMAC.getValue(), argumentsForGetProductId)).thenReturn(new HashMap<>());
-		Map<String, Object> validation = pisdr012.executeGetProductIdForRimac(argumentsForGetProductId);
-		assertNotNull(validation);
-	}
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn("830");
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())).thenReturn("BI");
 
-	@Test
-	public void executeGetProductIdForRimacWithParametersEvaluationFalse() {
-		LOGGER.info("PISDR012Test - Executing executeGetProductIdForRimacWithParametersEvaluationFalse...");
-		Map<String, Object> validation = pisdr012.executeGetProductIdForRimac(argumentsForGetProductId);
-		assertNull(validation);
-	}
-
-	@Test
-	public void executeGetProductIdForRimacWithNoResultException() {
-		LOGGER.info("PISDR012Test - Executing executeGetProductIdForRimacWithNoResultException...");
-		when(argumentsForGetProductId.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_RISK_BUSINESS_ID.getValue())).thenReturn(912L);
-		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSRC_PRODUCT_FOR_RIMAC.getValue(), argumentsForGetProductId)).thenThrow(new NoResultException(MESSAGE));
-		Map<String, Object> validation = pisdr012.executeGetProductIdForRimac(argumentsForGetProductId);
-		assertNull(validation);
-	}
-
-	@Test
-	public void executeInsuranceProductModalityOK() {
-		LOGGER.info("PISDR012Test - Executing executeInsuranceProductModalityOK...");
-		when(argumentsForInsuranceProductModalityOrConsiderations.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(356L);
-		when(argumentsForInsuranceProductModalityOrConsiderations.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
-		when(jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSRNC_PRD_MODALITY.getValue(), argumentsForInsuranceProductModalityOrConsiderations)).
+		when(this.jdbcUtils.queryForList(PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION.getValue(), argumentsForGetModalitiesInformation)).
 				thenReturn(new ArrayList<>());
-		Map<String, Object> validation = pisdr012.executeInsuranceProductModality(argumentsForInsuranceProductModalityOrConsiderations);
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInformation(argumentsForGetModalitiesInformation);
 		assertNotNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
 	@Test
-	public void executeInsuranceProductModalityWithParametersEvaluationFalse() {
-		LOGGER.info("PISDR012Test - Executing executeInsuranceProductModalityWithParametersEvaluationFalse...");
-		Map<String, Object> validation = pisdr012.executeInsuranceProductModality(argumentsForInsuranceProductModalityOrConsiderations);
+	public void executeGetProductModalitiesInformationWithParametersEvaluationFalse() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitiesInformationWithParametersEvaluationFalse...");
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInformation(argumentsForGetModalitiesInformation);
 		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
 	@Test
-	public void executeInsuranceProductModalityWithNoResultException() {
-		LOGGER.info("PISDR012Test - Executing executeInsuranceProductModalityWithNoResultException...");
-		when(argumentsForInsuranceProductModalityOrConsiderations.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(356L);
-		when(argumentsForInsuranceProductModalityOrConsiderations.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
-		when(jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_INSRNC_PRD_MODALITY.getValue(), argumentsForInsuranceProductModalityOrConsiderations)).
-				thenThrow(new NoResultException(MESSAGE));
-		Map<String, Object> validation = pisdr012.executeInsuranceProductModality(argumentsForInsuranceProductModalityOrConsiderations);
+	public void executeGetProductModalitiesInformationWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitiesInformationWithNoResultException...");
+
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn("830");
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())).thenReturn("BI");
+
+		when(this.jdbcUtils.queryForList(PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION.getValue(), argumentsForGetModalitiesInformation)).
+				thenThrow(new NoResultException(CODE, MESSAGE));
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInformation(argumentsForGetModalitiesInformation);
 		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetProductModalitySelectedOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitySelectedOK...");
+
+		when(this.jdbcUtils.queryForMap(PISDProperties.QUERY_GET_PRODUCT_MODALITY_SELECTED.getValue(), "01")).
+				thenReturn(new HashMap<>());
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitySelected("01");
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetProductModalitySelectedWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitySelectedWithNoResultException...");
+
+		when(this.jdbcUtils.queryForMap(PISDProperties.QUERY_GET_PRODUCT_MODALITY_SELECTED.getValue(), "04")).
+				thenThrow(new NoResultException(CODE, MESSAGE));
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitySelected("04");
+		assertTrue(isEmpty(validation));
 	}
 
 	@Test
@@ -197,7 +197,7 @@ public class PISDR012Test {
 		when(argumentsForInsuranceProductModalityOrConsiderations.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(356L);
 		when(argumentsForInsuranceProductModalityOrConsiderations.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
 		when(jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_CONSIDERATIONS.getValue(), argumentsForInsuranceProductModalityOrConsiderations)).
-				thenThrow(new NoResultException(MESSAGE));
+				thenThrow(new NoResultException(CODE, MESSAGE));
 		Map<String, Object> validation = pisdr012.executeGetConsiderations(argumentsForInsuranceProductModalityOrConsiderations);
 		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}

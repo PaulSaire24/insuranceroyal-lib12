@@ -5,9 +5,9 @@ import java.util.Map;
 
 public interface PISDR012 {
 
-	Map<String, Object> executeInsuranceProduct(Map<String, Object> arguments);
-	Map<String, Object> executeGetProductIdForRimac(Map<String, Object> arguments);
-	Map<String, Object> executeInsuranceProductModality(Map<String, Object> arguments);
+	Map<String, Object> executeGetProductInformation(String insuranceProductType);
+	Map<String, Object> executeGetProductModalitiesInformation(Map<String, Object> arguments);
+	Map<String, Object> executeGetProductModalitySelected(String insuranceModalityType);
 	Map<String, Object> executeGetConsiderations(Map<String, Object> arguments);
 	Map<String, Object> executeGetSimulationId();
 	boolean executeSaveSimulation(Map<String, Object> arguments);
