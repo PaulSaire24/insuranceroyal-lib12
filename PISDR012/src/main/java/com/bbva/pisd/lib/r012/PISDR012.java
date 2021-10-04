@@ -20,7 +20,6 @@ public interface PISDR012 {
 	void executeSaveInsuranceQuotation(Map<String, Object> arguments);
 	void executeSaveInsuranceQuotationMod(Map<String, Object> arguments);
 	void executeSaveInsuranceQuotationVeh(Map<String, Object> arguments);
-	Map<String, Object> executeGetCompanyDescById(BigDecimal companyId);
 
 	Map<String, Object> executeGetPlansBBVA(Map<String, Object> arguments);
 	Map<String, Object> executeQueryForDetailQuotationService(String policyQuotaInternalId);

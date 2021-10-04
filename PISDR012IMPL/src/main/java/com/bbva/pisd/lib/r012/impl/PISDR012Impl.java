@@ -232,23 +232,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
-	public Map<String, Object> executeGetCompanyDescById(BigDecimal companyId) {
-		LOGGER.info("***** PISDR012Impl - executeGetCompanyDescById START *****");
-		Map<String, Object> response = null;
-		try {
-			response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_COMPANY_BY_COMPANYID.getValue(),
-					companyId);
-			response.forEach((key, value) -> LOGGER
-					.info("[PISD.SELECT_INSURANCE_COMPANY] Result -> Key {} with value: {}", key, value));
-		} catch (NoResultException ex) {
-			LOGGER.info("executeGetCompanyDescById - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_COMPANY]");
-			this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
-		}
-		LOGGER.info("***** PISDR012Impl - executeGetCompanyDescById END *****");
-		return response;
-	}
-
-	@Override
 	public Map<String, Object> executeGetPlansBBVA(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeGetPlansBBVA START *****");
 		List<Map<String, Object>> response = null;

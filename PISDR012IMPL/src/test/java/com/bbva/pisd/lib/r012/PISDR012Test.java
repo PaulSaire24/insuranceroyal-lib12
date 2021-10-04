@@ -363,22 +363,6 @@ public class PISDR012Test {
 	}
 
 	@Test
-	public void executeGetCompanyDescByIdOK() {
-		LOGGER.info("PISDR012Test - Executing executeGetCompanyDescByIdOK...");
-		when(jdbcUtils.queryForMap(anyString(), any(BigDecimal.class))).thenReturn(new HashMap<>());
-		Map<String, Object> validation = pisdr012.executeGetCompanyDescById(BigDecimal.valueOf(1));
-		assertNotNull(validation);
-	}
-
-	@Test
-	public void executeGetCompanyDescByIdWithNoResultException() {
-		LOGGER.info("PISDR012Test - Executing executeGetCompanyDescByIdWithNoResultException...");
-		when(jdbcUtils.queryForMap(anyString(), any(BigDecimal.class))).thenThrow(new NoResultException(MESSAGE));
-		Map<String, Object> validation = pisdr012.executeGetCompanyDescById(BigDecimal.valueOf(1));
-		assertNull(validation);
-	}
-
-	@Test
 	public void executeGetPlansBBVAWithParametersEvaluationFalse() {
 		LOGGER.info("PISDR012Test - Executing executeGetPlansBBVAWithParametersEvaluationFalse...");
 		Map<String, Object> validation = pisdr012.executeGetPlansBBVA(argumentsForInsrncModalityByRimacIds);
