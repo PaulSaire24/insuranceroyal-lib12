@@ -312,15 +312,19 @@ public class PISDR012Test {
 		when(argumentsForSaveSimulationQuotation.get(PISDProperties.FIELD_INSURANCE_COMPANY_QUOTA_ID.getValue())).thenReturn("aaaaaa");
 		when(argumentsForSaveSimulationQuotation.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
 
-		pisdr012.executeSaveInsuranceQuotation(argumentsForSaveSimulationQuotation);
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
+
+		int validation = pisdr012.executeSaveInsuranceQuotation(argumentsForSaveSimulationQuotation);
 		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(1, validation);
 	}
 
 	@Test
 	public void executeSaveInsuranceQuotationWithParametersEvaluationFalse() {
 		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceQuotationWithParametersEvaluationFalse...");
-		pisdr012.executeSaveInsuranceQuotation(argumentsForSaveSimulationQuotation);
+		int validation = pisdr012.executeSaveInsuranceQuotation(argumentsForSaveSimulationQuotation);
 		verify(jdbcUtils, never()).update(anyString(), anyMap());
+		assertEquals(0, validation);
 	}
 
 	@Test
@@ -332,15 +336,20 @@ public class PISDR012Test {
 		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())).thenReturn("channelCode");
 		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
 
-		pisdr012.executeSaveInsuranceQuotationMod(argumentsForSaveSimulationQuotationMod);
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
+
+		int validation = pisdr012.executeSaveInsuranceQuotationMod(argumentsForSaveSimulationQuotationMod);
 		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(1, validation);
 	}
 
 	@Test
 	public void executeSaveInsuranceQuotationModWithParametersEvaluationFalse() {
 		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceQuotationModWithParametersEvaluationFalse...");
-		pisdr012.executeSaveInsuranceQuotationMod(argumentsForSaveSimulationQuotationMod);
+
+		int validation = pisdr012.executeSaveInsuranceQuotationMod(argumentsForSaveSimulationQuotationMod);
 		verify(jdbcUtils, never()).update(anyString(), anyMap());
+		assertEquals(0, validation);
 	}
 
 	@Test
@@ -351,15 +360,20 @@ public class PISDR012Test {
 		when(argumentsForSaveSimulationQuotationVeh.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn("modality");
 		when(argumentsForSaveSimulationQuotationVeh.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
 
-		pisdr012.executeSaveInsuranceQuotationVeh(argumentsForSaveSimulationQuotationVeh);
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
+
+		int validation = pisdr012.executeSaveInsuranceQuotationVeh(argumentsForSaveSimulationQuotationVeh);
 		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(1, validation);
 	}
 
 	@Test
 	public void executeSaveInsuranceQuotationVehWithParametersEvaluationFalse() {
 		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceQuotationVehWithParametersEvaluationFalse...");
-		pisdr012.executeSaveInsuranceQuotationVeh(argumentsForSaveSimulationQuotationVeh);
+
+		int validation = pisdr012.executeSaveInsuranceQuotationVeh(argumentsForSaveSimulationQuotationVeh);
 		verify(jdbcUtils, never()).update(anyString(), anyMap());
+		assertEquals(0, validation);
 	}
 
 	@Test

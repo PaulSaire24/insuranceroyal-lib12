@@ -15,28 +15,28 @@ El objetivo de este documento es proveer informacion relacionada de la Libreria 
 
 > Esta **librería** brinda la capacidad a los aplicativos de poder realizar las operaciones necesarias en la BD.
 
-#### 2.1 Método 1: executeInsuranceProduct(Map<String, Object> arguments)
+#### 2.1 Método 1: executeGetProductInformation(String insuranceProductType)
 > Método que hace una consulta a la tabla T_PISD_INSURANCE_PRODUCT
 
 ##### 2.1.1 Datos de Entrada
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| arguments | Map | Mapa que contiene el nombre y el valor de los filtros de la consulta sql |
+|1| insuranceProductType | String | Código de producto |
 
 ##### 2.1.2 Datos de Salida
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| responseInsuranceProduct | Map | Mapa que contiene el valor de los campos de la fila devuelta |
+|1| responseGetProductInformation | Map | Mapa que contiene el valor de los campos de la fila devuelta |
 
 ##### 2.1.3 Ejemplo
 ```java
-Map<String, Object> responseInsuranceProduct = pisdR012.executeInsuranceProduct(Map<String, Object> arguments);
+Map<String, Object> responseGetProductInformation = pisdR012.executeGetProductInformation(String insuranceProductType);
 ```
 
-#### 2.2 Método 2: executeGetProductIdForRimac(Map<String, Object> arguments)
-> Método que hace una consulta a la tabla T_PISD_INSURANCE_BUSINESS
+#### 2.2 Método 2: executeGetProductModalitiesInformation(Map<String, Object> arguments)
+> Método que hace una consulta a la tabla T_PISD_INSRNC_PRD_MODALITY
 
 ##### 2.2.1 Datos de Entrada
 
@@ -48,31 +48,31 @@ Map<String, Object> responseInsuranceProduct = pisdR012.executeInsuranceProduct(
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| responseInsuranceBusiness | Map | Mapa que contiene el valor de los campos de la fila devuelta |
+|1| responseGetProductModalitiesInformation | Map | Mapa que contiene el valor de los campos de la fila devuelta |
 
 ##### 2.2.3 Ejemplo
 ```java
-Map<String, Object> responseInsuranceBusiness = pisdR012.executeGetProductIdForRimac(Map<String, Object> arguments);
+Map<String, Object> responseGetProductModalitiesInformation = pisdR012.executeGetProductModalitiesInformation(Map<String, Object> arguments);
 ```
 
-#### 2.3 Método 3: executeInsuranceProductModality(Map<String, Object> arguments)
+#### 2.3 Método 3: executeGetProductModalitySelected(String insuranceModalityType)
 > Método que hace una consulta a la tabla T_PISD_INSRNC_PRD_MODALITY
 
 ##### 2.3.1 Datos de Entrada
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| arguments | Map | Mapa que contiene el nombre y el valor de los filtros de la consulta sql |
+|1| insuranceModalityType | String | Código del plan seleccionado |
 
 ##### 2.3.2 Datos de Salida
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| responseInsuranceProductModality | Map | Mapa que contiene el listado de campos de las filas devueltas |
+|1| responseGetProductModalitySelected | Map | Mapa que contiene el listado de campos de las filas devueltas |
 
 ##### 2.3.3 Ejemplo
 ```java
-Map<String, Object> responseInsuranceProductModality = pisdR012.executeInsuranceProductModality(Map<String, Object> arguments);
+Map<String, Object> responseGetProductModalitySelected = pisdR012.executeGetProductModalitySelected(String insuranceModalityType);
 ```
 
 #### 2.4 Método 4: executeGetConsiderations(Map<String, Object> arguments)
@@ -719,4 +719,4 @@ Map<String, Object> responseQueryGetPaymentPeriod = pisdR012.executeGetPaymentPe
 ### 5.  Versiones:
 #### 5.1  Versión 0.19.6
 
-+ Versión 0.19.6: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
++ Versión 0.20.0: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.

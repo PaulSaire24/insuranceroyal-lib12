@@ -81,8 +81,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				response = this.jdbcUtils.queryForList(PISDProperties.QUERY_SELECT_CONSIDERATIONS.getValue(),
 						arguments);
 			} catch (NoResultException ex) {
-				LOGGER.info("executeConsiderationsIds - RESPONSE EMPTY [PISD.SELECT_CONSIDERATIONS_IDS]");
-				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+				LOGGER.debug("executeConsiderationsIds - RESPONSE EMPTY [PISD.SELECT_CONSIDERATIONS_IDS]");
 			}
 		}
 		LOGGER.info("***** PISDR012Impl - executeGetConsiderations END *****");
@@ -108,7 +107,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("***** PISDR012Impl - executeSaveSimulation - PARAMETER OK ... EXECUTING *****");
 			this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_SIMULATION.getValue(), arguments);
 		} else {
-			LOGGER.info("executeSaveSimulation - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_SIMULATION]");
+			LOGGER.debug("executeSaveSimulation - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_SIMULATION]");
 			return false;
 		}
 
@@ -125,7 +124,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("***** PISDR012Impl - executeSaveSimulationProduct - PARAMETERS OK ... EXECUTING *****");
 			this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSRNC_SIMLT_PRD.getValue(), arguments);
 		} else {
-			LOGGER.info("executeSaveSimulationProduct - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_SIMLT_PRD]");
+			LOGGER.debug("executeSaveSimulationProduct - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_SIMLT_PRD]");
 		}
 
 		LOGGER.info("***** PISDR012Impl - executeSaveSimulationProduct END *****");
@@ -140,8 +139,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("***** PISDR012Impl - executeSaveSimulationVehicle - PARAMETERS OK ... EXECUTING *****");
 			this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSRNC_SIMLT_VEHICLE.getValue(), arguments);
 		} else {
-			LOGGER.info(
-					"executeSaveSimulationVehicle - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_SIMLT_VEHICLE]");
+			LOGGER.debug("executeSaveSimulationVehicle - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_SIMLT_VEHICLE]");
 		}
 
 		LOGGER.info("***** PISDR012Impl - executeSaveSimulationVehicle END *****");
@@ -157,7 +155,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			response.forEach(map -> map.forEach((key, value) -> LOGGER
 					.info("[PISD.SELECT_INSURANCE_QUOTATION] Result -> Key {} with value: {}", key, value)));
 		} catch (NoResultException ex) {
-			LOGGER.info("executeGetInsuranceQuotation - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_QUOTATION]");
+			LOGGER.debug("executeGetInsuranceQuotation - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_QUOTATION]");
 			this.addAdvice(PISDErrors.ERROR_NO_RESULT_JDBC_INSRC_QUOTATION.getAdviceCode());
 		}
 
@@ -175,60 +173,67 @@ public class PISDR012Impl extends PISDR012Abstract {
 			response.forEach((key, value) -> LOGGER.info(
 					"[PISD.SELECT_INSURANCE_SIMULATION_BY_QUOTATIONID] Result -> Key {} with value: {}", key, value));
 		} catch (NoResultException ex) {
-			LOGGER.info(
-					"executeGetInsuranceSimulationIdAndExpiredDate - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_SIMULATION_BY_QUOTATIONID]");
-			this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			LOGGER.debug("executeGetInsuranceSimulationIdAndExpiredDate - QUERY EMPTY RESULT [PISD.SELECT_INSURANCE_SIMULATION_BY_QUOTATIONID]");
 		}
 		LOGGER.info("***** PISDR012Impl - executeGetInsuranceSimulationIdAndExpiredDate END *****");
 		return response;
 	}
 
 	@Override
-	public void executeSaveInsuranceQuotation(Map<String, Object> arguments) {
+	public int executeSaveInsuranceQuotation(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotation START *****");
+		int affectedRows = 0;
 		if (parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue(),
 				PISDProperties.FIELD_INSURANCE_SIMULATION_ID.getValue(),
 				PISDProperties.FIELD_INSURANCE_COMPANY_QUOTA_ID.getValue(),
 				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotation - PARAMETERS OK ... EXECUTING *****");
-			this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_QUOTATION.getValue(), arguments);
+			affectedRows = this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_QUOTATION.getValue(), arguments);
 		} else {
-			LOGGER.info(
-					"executeSaveInsuranceQuotation - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION]");
+			LOGGER.debug("executeSaveInsuranceQuotation - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION]");
 		}
+
+		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotation | Number of inserted rows: {} *****", affectedRows);
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotation END *****");
+		return affectedRows;
 	}
 
 	@Override
-	public void executeSaveInsuranceQuotationMod(Map<String, Object> arguments) {
+	public int executeSaveInsuranceQuotationMod(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationMod START *****");
+		int affectedRows = 0;
 		if (parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue(),
 				PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(),
 				PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue(),
 				PISDProperties.FIELD_SALE_CHANNEL_ID.getValue(), PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationMod - PARAMETERS OK ... EXECUTING *****");
-			this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_QUOTATION_MOD.getValue(), arguments);
+			affectedRows = this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_QUOTATION_MOD.getValue(), arguments);
 		} else {
-			LOGGER.info(
-					"executeSaveInsuranceQuotationMod - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION_MOD]");
+			LOGGER.debug("executeSaveInsuranceQuotationMod - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION_MOD]");
 		}
+
+		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationMod | Number of inserted rows: {} *****", affectedRows);
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationMod END *****");
+		return affectedRows;
 	}
 
 	@Override
-	public void executeSaveInsuranceQuotationVeh(Map<String, Object> arguments) {
+	public int executeSaveInsuranceQuotationVeh(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationVeh START *****");
+		int affectedRows = 0;
 		if (parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue(),
 				PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(),
 				PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue(),
 				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
 			LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationVeh - PARAMETERS OK ... EXECUTING *****");
-			this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_QUOTATION_VEH.getValue(), arguments);
+			affectedRows = this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_QUOTATION_VEH.getValue(), arguments);
 		} else {
-			LOGGER.info(
-					"executeSaveInsuranceQuotationVeh - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION_VEH]");
+			LOGGER.debug("executeSaveInsuranceQuotationVeh - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION_VEH]");
 		}
+
+		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationVeh | Number of inserted rows: {} *****", affectedRows);
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationVeh END *****");
+		return affectedRows;
 	}
 
 	@Override
@@ -397,7 +402,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		} else {
 			LOGGER.info("executeSaveContract - MISSING MANDATORY PARAMETERS [PISD.INSERT_CONTRACT]");
 		}
-		LOGGER.info("***** PISDR012Impl - executeSaveContract | Number of rows inserted: {}", affectedRows);
+		LOGGER.info("***** PISDR012Impl - executeSaveContract | Number of inserted rows: {} *****", affectedRows);
 		LOGGER.info("***** PISDR012Impl - executeSaveContract END *****");
 		return affectedRows;
 	}
@@ -421,7 +426,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		} else {
 			LOGGER.info("executeSaveFirstReceipt - MISSING MANDATORY PARAMETERS [PISD.INSERT_CTR_RECEIPTS]");
 		}
-		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt | Number of rows inserted: {}", Objects.nonNull(affectedRows) ? affectedRows.length : null);
+		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt | Number of inserted rows: {} *****", Objects.nonNull(affectedRows) ? affectedRows.length : null);
 		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt END *****");
 		return affectedRows;
 	}
@@ -444,7 +449,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("executeSaveContractMove - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_CONTRACT_MOV]");
 		}
 
-		LOGGER.info("***** PISDR012Impl - executeSaveContractMove | Number of rows inserted: {}", affectedRows);
+		LOGGER.info("***** PISDR012Impl - executeSaveContractMove | Number of inserted rows: {} *****", affectedRows);
 		LOGGER.info("***** PISDR012Impl - executeSaveContractMove END *****");
 		return affectedRows;
 	}
@@ -488,7 +493,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_CTR_PARTICIPANT]");
 		}
 
-		LOGGER.info("***** PISDR012Impl - executeSaveParticipants | Number of rows inserted: {}", Objects.nonNull(affectedRows) ? affectedRows.length : null);
+		LOGGER.info("***** PISDR012Impl - executeSaveParticipants | Number of inserted rows: {} *****", Objects.nonNull(affectedRows) ? affectedRows.length : null);
 		LOGGER.info("***** PISDR012Impl - executeSaveParticipants END *****");
 		return affectedRows;
 	}
