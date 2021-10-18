@@ -86,6 +86,8 @@ public class PISDR012Test {
 	private Map<String, Object> argumentsUpdateInsuranceContractDocument;
 	@Mock
 	private Map<String, Object> argumentGetOffer;
+	@Mock
+	private Map<String, Object> argumentGetContract;
 
 	@Before
 	public void setUp() {
@@ -1037,6 +1039,30 @@ public class PISDR012Test {
 		when(argumentGetOffer.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn(null);
 	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
 		assertNull(validation.get(RBVDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetContractBIEN(){
+		LOGGER.info("PISDR012Test - Executing executeGetOfferOK...");
+		when(argumentGetContract.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn("0011");
+		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_CONTRACT.getValue(), argumentGetContract)).thenReturn(new HashMap<>());
+	    Map<String,Object> validation = pisdr012.executeGetContract(argumentGetContract);
+		assertNotNull(validation);
+	}
+	@Test
+	public void executeGetContractrWithNoResultException(){
+		LOGGER.info("PISDR012Test - Executing executeGetOfferWithNoResultException...");
+		when(argumentGetContract.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn("0011");
+		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_CONTRACT.getValue(), argumentGetContract)).thenThrow(new NoResultException(MESSAGE));
+	    Map<String,Object> validation = pisdr012.executeGetContract(argumentGetContract);
+		assertNull(validation);
+	}
+	@Test
+	public void executeGetContractWithNull(){
+		LOGGER.info("PISDR012Test - Executing executeGetOfferWithNull...");
+		when(argumentGetContract.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn(null);
+	    Map<String,Object> validation = pisdr012.executeGetContract(argumentGetContract);
+		assertNull(validation);
 	}
 
 }
