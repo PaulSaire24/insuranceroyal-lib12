@@ -511,7 +511,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);
 				
 			} catch (NoResultException ex) {
-				LOGGER.info("***** PISDR012Impl - [DBException] - Database exception: {} *****", ex.getMessage());
+				LOGGER.info("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSURANCE_CONTRACT]", ex.getMessage());
 				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 		} else {
@@ -675,7 +675,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_OFFER.getValue(), arguments);
 				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_OFFER] Result -> Key {} with value: {}", key, value)));
 			} catch (NoResultException ex) {
-				LOGGER.info("***** PISDR012Impl - [DBException] - Database exception: {} *****", ex.getMessage());
+				LOGGER.info("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.SELECT_OFFER]", ex.getMessage());
 				this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 		} else {
@@ -683,6 +683,29 @@ public class PISDR012Impl extends PISDR012Abstract {
 		}
 		LOGGER.info("***** PISDR012Impl - executeGetOffer END *****");
 		return buildResult(response);
+	}
+
+	@Override
+	public Map<String, Object> executeGetContract(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeGetContract START *****");
+
+		Map<String, Object> response = null;
+		if (parametersEvaluation(arguments, RBVDProperties.FIELD_POLICY_ID.getValue())) {
+			LOGGER.info("***** PISDR012Impl - executeGetContract - PARAMETERS OK ... EXECUTING *****");
+			try {
+				arguments.forEach((key, value) -> LOGGER.info("[PISD.SELECT_CONTRACT] Result -> Key {} with value: {}", key, value));
+				LOGGER.info("PISDProperties.QUERY_SELECT_CONTRACT.getValue() ==> {}", RBVDProperties.QUERY_SELECT_CONTRACT.getValue());
+				response = this.jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_CONTRACT.getValue(), arguments);
+				
+			} catch (NoResultException ex) {
+				LOGGER.info("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.SELECT_CONTRACT]", ex.getMessage());
+				this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			}
+		} else {
+			LOGGER.info("executeGetContract - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSURANCE_CONTRACT]");
+		}
+		LOGGER.info("***** PISDR012Impl - executeGetContract END *****");
+		return response;
 	}
 
 	private boolean parametersEvaluation(Map<String, Object> arguments, String... keys) {
