@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>com.bbva.pisd</groupId>
 		<artifactId>PISDR012-parent</artifactId>
-		<version>0.19.6</version>
+		<version>0.20.0</version>
 	</parent>
 	<groupId>com.bbva.pisd</groupId>
 	<artifactId>PISDR012</artifactId>
 	<name>PISDR012</name>
-	<version>0.19.6</version>
+	<version>0.20.0</version>
 	<packaging>bundle</packaging>
 	<description>Library to get a Oracele DB connection</description>
 	<properties>
