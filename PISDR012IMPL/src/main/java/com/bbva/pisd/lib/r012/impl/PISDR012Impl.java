@@ -645,10 +645,10 @@ public class PISDR012Impl extends PISDR012Abstract {
 		int result;
 		if (parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
 		RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
-			arguments.forEach((key, value) -> LOGGER.info("[PISD.UPDATE_INSURANCE_CONTRACT] Result -> Key2 {} with value: {}", key, value));
+			arguments.forEach((key, value) -> LOGGER.info("[PISD.UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS] Result -> Key2 {} with value: {}", key, value));
 			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocument - PARAMETERS OK ... EXECUTING *****");
 			result = this.jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue(), arguments);
-			LOGGER.info("[PISD.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS] Result -> {}", result);
+			LOGGER.info("[PISD.UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS] Result -> {}", result);
 			if(result>0)
 				return true;
 			else{
