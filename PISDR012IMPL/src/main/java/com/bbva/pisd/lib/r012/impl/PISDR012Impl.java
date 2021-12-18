@@ -511,7 +511,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);
 				
 			} catch (NoResultException ex) {
-				LOGGER.info("***** PISDR012Impl - [DBException] - Database exception: {} *****", ex.getMessage());
+				LOGGER.debug("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSURANCE_CONTRACT]");
 				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 		} else {
@@ -675,7 +675,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_OFFER.getValue(), arguments);
 				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_OFFER] Result -> Key {} with value: {}", key, value)));
 			} catch (NoResultException ex) {
-				LOGGER.info("***** PISDR012Impl - [DBException] - Database exception: {} *****", ex.getMessage());
+				LOGGER.debug("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.SELECT_OFFER]");
 				this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 		} else {

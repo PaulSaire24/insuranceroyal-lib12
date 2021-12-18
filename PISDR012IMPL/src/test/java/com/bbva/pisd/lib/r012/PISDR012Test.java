@@ -86,6 +86,8 @@ public class PISDR012Test {
 	private Map<String, Object> argumentsUpdateInsuranceContractDocument;
 	@Mock
 	private Map<String, Object> argumentGetOffer;
+	@Mock
+	private Map<String, Object> argumentGetContract;
 
 	@Before
 	public void setUp() {
