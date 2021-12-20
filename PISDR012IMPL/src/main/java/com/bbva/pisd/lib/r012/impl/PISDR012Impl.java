@@ -103,7 +103,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 	public boolean executeSaveSimulation(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeSaveSimulation START *****");
 		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_SIMULATION_ID.getValue(),
-				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {//Open Market
 			LOGGER.info("***** PISDR012Impl - executeSaveSimulation - PARAMETER OK ... EXECUTING *****");
 			this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_SIMULATION.getValue(), arguments);
 		} else {
