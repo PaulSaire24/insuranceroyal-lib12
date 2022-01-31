@@ -48,4 +48,7 @@ public interface PISDR012 {
 	Map<String,Object> executeGetInsuranceContractStatus();
 	Boolean executeUpdateInsuranceContractDocument(Map<String,Object> arguments);
     Map<String,Object> executeGetOffer(Map<String,Object> arguments);
+	//Inicio Open Market
+	int executeUpdate(String nameProp, Map<String, Object> parameters);
+	//Fin Open Market
 }

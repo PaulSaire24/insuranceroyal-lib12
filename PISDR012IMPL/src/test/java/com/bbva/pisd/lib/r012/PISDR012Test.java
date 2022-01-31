@@ -1041,4 +1041,19 @@ public class PISDR012Test {
 		assertNull(validation.get(RBVDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
+	//Inicio Open Market
+	@Test
+	public void executeUpdateOK() {
+		LOGGER.info("PISDR012Test - Executing executeSaveSimulationVehicleOK...");
+		when(argumentsForSaveSimulationVehicle.get(PISDProperties.FIELD_INSURANCE_SIMULATION_ID.getValue())).thenReturn(new BigDecimal("1"));
+		when(argumentsForSaveSimulationVehicle.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(new BigDecimal("1"));
+		when(argumentsForSaveSimulationVehicle.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("something");
+
+		pisdr012.executeUpdate(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), argumentsForSaveSimulationVehicle);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+
+		pisdr012.executeUpdate(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), null);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+	}
+	//Fin Open Market
 }
