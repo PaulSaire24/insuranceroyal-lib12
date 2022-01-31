@@ -695,6 +695,19 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return result;
 	}
 
+	//Inicio Open Market
+	public int executeUpdate(String nameProp, Map<String, Object> parameters){
+		int response = 0;
 
+		if(parameters != null && !parameters.isEmpty()){
+			parameters.forEach((key, value) -> LOGGER.info("[" + nameProp + "] Result -> Key2 {} with value: {}", key, value));
+			response = this.jdbcUtils.update(nameProp, parameters);
+		}else{
+			LOGGER.info("executeUpdate - MISSING MANDATORY PARAMETERS [{}]", nameProp);
+		}
+
+		return response;
+	}
+	//Fin Open Market
 
 }
