@@ -701,6 +701,26 @@ pisdR012.executeRegisterAdditionalQuotationBranchMod(Map<String, Object> argumen
 Map<String, Object> responseQueryGetPaymentPeriod = pisdR012.executeGetPaymentPeriod(String frequencyType);
 ```
 
+#### 2.35 Método 35: executeSaveContractEndoserment(Map<String, Object> arguments)
+> Método que realiza un registro en la tabla T_PISD_ENDORSEMENT_INSRNC_CTR
+
+##### 2.35.1 Datos de Entrada
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| arguments | Map | Mapa que contiene el nombre y el valor de los campos a insertar en la tabla |
+
+##### 2.35.2 Datos de Salida
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| insertedRows | Integer | Cantidad de registros realizados a la tabla |
+
+##### 2.35.3 Ejemplo
+```java
+int insertedRows = pisdR012.executeSaveContractEndoserment(Map<String, Object> arguments);
+```
+
 ### 3.  Mensajes de Error:
 
 #### 3.1  Código PISD00120000:
@@ -719,4 +739,4 @@ Map<String, Object> responseQueryGetPaymentPeriod = pisdR012.executeGetPaymentPe
 ### 5.  Versiones:
 #### 5.1  Versión 0.19.6
 
-+ Versión 0.20.0: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
++ Versión 0.20.1: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
