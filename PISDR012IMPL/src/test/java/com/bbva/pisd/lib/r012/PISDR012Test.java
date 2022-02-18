@@ -67,8 +67,6 @@ public class PISDR012Test {
 	@Mock
 	private Map<String, Object> argumentsForSaveContract;
 	@Mock
-	private Map<String, Object> argumentsForSaveContractEndoserment;
-	@Mock
 	private Map<String, Object> argumentsForSaveContractMov;
 	@Mock
 	private Map<String, Object> argumentsForInsrncModalityByRimacIds;
@@ -586,61 +584,6 @@ public class PISDR012Test {
 	public void executeSaveContractWithMissingParameters() {
 		LOGGER.info("PISDR0012Test - Executing executeSaveContractWithMissingParameters...");
 		int validation = pisdr012.executeSaveContract(argumentsForSaveContract);
-		verify(this.jdbcUtils, never()).update(anyString(), anyMap());
-		assertEquals(0, validation);
-	}
-
-	@Test
-	public void executeSaveContractEndosermentOK() {
-		LOGGER.info("PISDR0012Test - Executing executeSaveContractEndosermentOK...");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("contract_entity");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("contract_branch");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("contract_int");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_DOCUMENT_TYPE_ID.getValue())).thenReturn("document_type_id");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_DOCUMENT_ID.getValue())).thenReturn("document_id");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_ENDORSEMENT_SEQUENCE_NUMBER.getValue())).thenReturn("endorsement_sequence_number");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_ENDORSEMENT_POLICY_ID.getValue())).thenReturn("endorsement_policy_id");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_ENDORSEMENT_EFF_START_DATE.getValue())).thenReturn("endorsement_contract_start");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_ENDORSEMENT_EFF_END_DATE.getValue())).thenReturn("endorsement_contract_end");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_POLICY_ENDORSEMENT_PER.getValue())).thenReturn("endorsement_per");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_REGISTRY_SITUATION_TYPE.getValue())).thenReturn("situation_type");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user_audit");
-
-		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
-
-		int validation = pisdr012.executeSaveContractEndoserment(argumentsForSaveContractEndoserment);
-
-		verify(this.jdbcUtils, times(1)).update(anyString(), anyMap());
-		assertEquals(1, validation);
-	}
-
-	@Test
-	public void executeSaveContractEndosermentWithNoResultException() {
-		LOGGER.info("PISDR0012Test - Executing executeSaveContractEndosermentWithNoResultException...");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("entityId");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("branchId");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("accountId");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_DOCUMENT_TYPE_ID.getValue())).thenReturn("docTypeId");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_DOCUMENT_ID.getValue())).thenReturn("docId");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_ENDORSEMENT_SEQUENCE_NUMBER.getValue())).thenReturn("endSeqNum");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_ENDORSEMENT_POLICY_ID.getValue())).thenReturn("endPolId");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_ENDORSEMENT_EFF_START_DATE.getValue())).thenReturn("starDate");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_ENDORSEMENT_EFF_END_DATE.getValue())).thenReturn("endDate");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_POLICY_ENDORSEMENT_PER.getValue())).thenReturn("endPer");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_REGISTRY_SITUATION_TYPE.getValue())).thenReturn("sitType");
-		when(argumentsForSaveContractEndoserment.get(RBVDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("userAudit");
-
-		when(this.jdbcUtils.update(anyString(), anyMap())).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
-
-		int validation = pisdr012.executeSaveContractEndoserment(argumentsForSaveContractEndoserment);
-		verify(this.jdbcUtils, times(1)).update(anyString(), anyMap());
-		assertEquals(-1, validation);
-	}
-
-	@Test
-	public void executeSaveContractEndosermentWithMissingParameters() {
-		LOGGER.info("PISDR0012Test - Executing executeSaveContractEndosermentWithMissingParameters...");
-		int validation = pisdr012.executeSaveContractEndoserment(argumentsForSaveContractEndoserment);
 		verify(this.jdbcUtils, never()).update(anyString(), anyMap());
 		assertEquals(0, validation);
 	}
