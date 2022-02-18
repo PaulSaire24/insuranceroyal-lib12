@@ -419,6 +419,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				affectedRows = this.jdbcUtils.update(RBVDProperties.QUERY_INSERT_POLICY_ENDORSEMENT.getValue(),
 						arguments);
 			} catch (NoResultException ex) {
+
 				LOGGER.info("***** PISDR012Impl - executeSaveContractEndoserment - Database exception: {} *****", ex.getMessage());
 				affectedRows = -1;
 			}
