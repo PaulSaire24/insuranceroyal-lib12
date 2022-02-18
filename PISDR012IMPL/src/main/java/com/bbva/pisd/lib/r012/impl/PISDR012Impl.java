@@ -423,6 +423,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				affectedRows = -1;
 			}
 		} else {
+
 			LOGGER.info("executeSaveContractEndoserment - MISSING MANDATORY PARAMETERS [PISD.INSERT_CONTRACT]");
 		}
 		LOGGER.info("***** PISDR012Impl - executeSaveContractEndoserment | Number of inserted rows: {} *****", affectedRows);
