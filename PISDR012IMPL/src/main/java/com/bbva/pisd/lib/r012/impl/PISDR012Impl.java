@@ -408,6 +408,31 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
+	public int executeSaveContractEndoserment(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeSaveContractEndoserment START *****");
+		int affectedRows = 0;
+		if (parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
+				RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),
+				RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
+			LOGGER.info("***** PISDR012Impl - executeSaveContractEndoserment - PARAMETERS OK ... EXECUTING *****");
+			try {
+				affectedRows = this.jdbcUtils.update(RBVDProperties.QUERY_INSERT_POLICY_ENDORSEMENT.getValue(),
+						arguments);
+			} catch (NoResultException ex) {
+
+				LOGGER.info("***** PISDR012Impl - executeSaveContractEndoserment - Database exception: {} *****", ex.getMessage());
+				affectedRows = -1;
+			}
+		} else {
+
+			LOGGER.info("executeSaveContractEndoserment - MISSING MANDATORY PARAMETERS [PISD.INSERT_CONTRACT]");
+		}
+		LOGGER.info("***** PISDR012Impl - executeSaveContractEndoserment | Number of inserted rows: {} *****", affectedRows);
+		LOGGER.info("***** PISDR012Impl - executeSaveContractEndoserment END *****");
+		return affectedRows;
+	}
+
+	@Override
 	public int[] executeSaveReceipts(Map<String, Object>[] receipts) {
 		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt START *****");
 		int[] affectedRows = null;

@@ -32,6 +32,7 @@ public interface PISDR012 {
 	Map<String, Object> executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId);
 	Map<String, Object> executeGetPaymentPeriod(String frequencyType);
 	int executeSaveContract(Map<String, Object> arguments);
+	int executeSaveContractEndoserment(Map<String, Object> arguments);
 	int[] executeSaveReceipts(Map<String, Object>[] firstReceiptMap);
 	int executeSaveContractMove(Map<String, Object> arguments);
 	Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType);
