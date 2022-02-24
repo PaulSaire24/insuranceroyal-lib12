@@ -737,6 +737,6 @@ int insertedRows = pisdR012.executeSaveContractEndoserment(Map<String, Object> a
 # ![createVehicleInsurancesQuotation](images/diseno-componentes-apx-lib12.png)
 
 ### 5.  Versiones:
-#### 5.1  Versión 0.21.5
+#### 5.1  Versión 0.21.6
 
-+ Versión 0.20.5: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
++ Versión 0.20.6: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
