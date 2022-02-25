@@ -103,7 +103,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 	public boolean executeSaveSimulation(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeSaveSimulation START *****");
 		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_SIMULATION_ID.getValue(),
-				PISDProperties.FIELD_CUSTOMER_ID.getValue(), PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {//Open Market
 			LOGGER.info("***** PISDR012Impl - executeSaveSimulation - PARAMETER OK ... EXECUTING *****");
 			this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_SIMULATION.getValue(), arguments);
 		} else {
@@ -670,10 +670,10 @@ public class PISDR012Impl extends PISDR012Abstract {
 		int result;
 		if (parametersEvaluation(arguments, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(), 
 		RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(),RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())) {
-			arguments.forEach((key, value) -> LOGGER.info("[PISD.UPDATE_INSURANCE_CONTRACT] Result -> Key2 {} with value: {}", key, value));
+			arguments.forEach((key, value) -> LOGGER.info("[PISD.UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS] Result -> Key2 {} with value: {}", key, value));
 			LOGGER.info("***** PISDR0012Impl - executeUpdateInsuranceContractDocument - PARAMETERS OK ... EXECUTING *****");
 			result = this.jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue(), arguments);
-			LOGGER.info("[PISD.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS] Result -> {}", result);
+			LOGGER.info("[PISD.UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS] Result -> {}", result);
 			if(result>0)
 				return true;
 			else{
@@ -720,6 +720,19 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return result;
 	}
 
+	//Inicio Open Market
+	public int executeUpdate(String nameProp, Map<String, Object> parameters){
+		int response = 0;
 
+		if(parameters != null && !parameters.isEmpty()){
+			parameters.forEach((key, value) -> LOGGER.info("[" + nameProp + "] Result -> Key2 {} with value: {}", key, value));
+			response = this.jdbcUtils.update(nameProp, parameters);
+		}else{
+			LOGGER.info("executeUpdate - MISSING MANDATORY PARAMETERS [{}]", nameProp);
+		}
+
+		return response;
+	}
+	//Fin Open Market
 
 }
