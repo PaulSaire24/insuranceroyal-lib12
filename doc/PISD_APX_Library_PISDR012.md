@@ -721,6 +721,27 @@ Map<String, Object> responseQueryGetPaymentPeriod = pisdR012.executeGetPaymentPe
 int insertedRows = pisdR012.executeSaveContractEndoserment(Map<String, Object> arguments);
 ```
 
+#### 2.36 Método 36: executeUpdate(String nameProp, Map<String, Object> parameters)
+> Método que realiza una actualización / inserción en una tabla de la base de datos
+
+##### 2.36.1 Datos de Entrada
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| nameProp | String | Nombre del query a ejecutar la actualización |
+|2| parameters | Map | Mapa que contiene el nombre y el valor de los campos a actualizar / insertar en la tabla de base de datos |
+
+##### 2.36.2 Datos de Salida
+
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| insertedRows | Integer | Cantidad de registros actualizados en la tabla |
+
+##### 2.36.3 Ejemplo
+```java
+int insertedRows = pisdR012.executeUpdate(String nameProp, Map<String, Object> parameters);
+```
+
 ### 3.  Mensajes de Error:
 
 #### 3.1  Código PISD00120000:
@@ -737,6 +758,6 @@ int insertedRows = pisdR012.executeSaveContractEndoserment(Map<String, Object> a
 # ![createVehicleInsurancesQuotation](images/diseno-componentes-apx-lib12.png)
 
 ### 5.  Versiones:
-#### 5.1  Versión 0.21.6
+#### 5.1  Versión 0.22.1
 
-+ Versión 0.20.6: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
++ Versión 0.22.1: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
