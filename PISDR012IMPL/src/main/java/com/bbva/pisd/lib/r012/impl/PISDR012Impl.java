@@ -759,31 +759,30 @@ public class PISDR012Impl extends PISDR012Abstract {
 	public Map<String, Object> executeSelectInsuranceType(Map<String, Object>  arguments){
 		LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType START *****");
 		Map<String, Object> response = null;
-		try {
-			if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())) {
-			LOGGER.info("***** PISDR012Impl -  - PARAMETERS OK ... EXECUTING *****");
-			response = this.jdbcUtils.queryForMap(
-					PISDProperties.QUERY_SELECT_INSURANCE_TYPE.getValue(), arguments);
-			response.forEach((key, value) -> LOGGER
-					.info("[PISD.QUERY_SELECT_INSURANCE_TYPE] Result -> Key {} with value: {}", key, value));
-		}   else{
-			LOGGER.info(
-					"executeSelectInsuranceType - PARAMETERS NULL");
-			}
-			
-		} catch (NoResultException ex) {
-			LOGGER.info(
-					"executeSelectInsuranceType - QUERY EMPTY RESULT [PISD.QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID]");
-		}
 
+		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())) {
+			try {
+				LOGGER.info("***** PISDR012Impl -  - PARAMETERS OK ... EXECUTING *****");
+				LOGGER.info("***** ENTRE *****");
+				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_TYPE.getValue(), arguments);
+				response.forEach((key, value) -> LOGGER
+						.info("[PISD.QUERY_SELECT_INSURANCE_TYPE] Result -> Key {} with value: {}", key, value));
+			
+			}catch (NoResultException ex) {
+				LOGGER.info("***** executeSelectInsuranceType - QUERY EMPTY RESULT [PISD.QUERY_SELECT_INSURANCE_TYPE] *****", ex.getMessage());
+			}	
+		}   else{
+			LOGGER.info("executeSelectInsuranceType - PARAMETERS NULL");
+			}
 
 		LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType END *****");
 		return response;
 	}
 
-	public void rollBack(){
+	public void executeRollBack(){
 		Map<String, Object> response = null;
 		this.jdbcUtils.update(PISDProperties.QUERY_ROLLBACK.getValue(),response);
+		LOGGER.info("***** PISDR012Impl - executerollBack END *****");
 	}
 
 }

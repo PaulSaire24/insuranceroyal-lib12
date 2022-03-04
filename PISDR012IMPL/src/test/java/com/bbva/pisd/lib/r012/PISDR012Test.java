@@ -1122,7 +1122,7 @@ public class PISDR012Test {
 	//InsuranceType
 
 	@Test
-	public void executeSelectInsuranceType() {
+	public void executeInsertInsuranceTypeOK() {
 		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceTypeOK...");
 		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())).thenReturn("1");
 		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_NAME.getValue())).thenReturn("1234");
@@ -1134,6 +1134,17 @@ public class PISDR012Test {
 		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
 		assertEquals(1, validation);
 	}
+	
+
+	@Test
+	public void executeInsertInsuranceTypeNULL() {
+		LOGGER.info("PISDR012Test - Executing executeInsertInsuranceTypeNULL...");
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())).thenReturn(null);
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_NAME.getValue())).thenReturn(null);
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_REGISTRY_SITUATION_TYPE.getValue())).thenReturn(null);
+		int validation = pisdr012.executeSaveInsuranceType(argumentUpdateInsuranceType);
+		assertEquals(0, validation);
+	}
 
 	@Test
 	public void executeSelectInsuranceTypeOK() {
@@ -1142,5 +1153,31 @@ public class PISDR012Test {
 		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentSelectInsuranceType)).thenReturn(new HashMap<>());
 		Map<String, Object> validation = pisdr012.executeSelectInsuranceType(argumentSelectInsuranceType);
 		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeSelectInsuranceTypeNULL() {
+		LOGGER.info("PISDR012Test - Executing executeSelectInsuranceTypeNULL...");
+		when(argumentSelectInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())).thenReturn(null);
+		Map<String, Object> validation = pisdr012.executeSelectInsuranceType(argumentSelectInsuranceType);
+		assertNull(validation);
+	}
+
+	/*@Test
+	public void executeSelectInsuranceTypeERROR() {
+		LOGGER.info("PISDR012Test - Executing executeSelectInsuranceTypeERROR...");
+		when(argumentSelectInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())).thenReturn("15256");
+		when(this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentSelectInsuranceType)).thenThrow(new NoResultException(MESSAGE));
+		Map<String, Object> validation = pisdr012.executeSelectInsuranceType(argumentSelectInsuranceType);
+		assertNull(validation);
+	}*/
+
+	@Test
+	public void executeRollBack() {
+		LOGGER.info("PISDR012Test - Executing executeRollBack...");
+		argumentSelectInsuranceType = null;
+		when(jdbcUtils.update(PISDProperties.QUERY_ROLLBACK.getValue(),argumentSelectInsuranceType)).thenReturn(1);
+		pisdr012.executeRollBack();
+		assertEquals("1", "1");
 	}
 }
