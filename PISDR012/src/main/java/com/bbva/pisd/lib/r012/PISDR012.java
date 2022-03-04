@@ -53,9 +53,4 @@ public interface PISDR012 {
 	int executeUpdate(String nameProp, Map<String, Object> parameters);
 	//Fin Open Market
 
-	//Guardar Informacion sobre InsuranceType
-	int executeSaveInsuranceType(Map<String, Object> arguments);
-	Map<String, Object> executeSelectInsuranceType(Map<String, Object>  arguments);
-	void executeRollBack();
-
 }
