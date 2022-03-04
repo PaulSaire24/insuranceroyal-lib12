@@ -230,7 +230,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 		} else {
 			LOGGER.debug("executeSaveInsuranceQuotationVeh - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION_VEH]");
 		}
-
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationVeh | Number of inserted rows: {} *****", affectedRows);
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationVeh END *****");
 		return affectedRows;
@@ -776,7 +775,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info(
 					"executeSelectInsuranceType - QUERY EMPTY RESULT [PISD.QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID]");
 		}
-		
+
 
 		LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType END *****");
 		return response;
