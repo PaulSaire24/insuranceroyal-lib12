@@ -90,6 +90,10 @@ public class PISDR012Test {
 	private Map<String, Object> argumentGetOffer;
 	@Mock
 	private Map<String, Object> argumentGetContract;
+	@Mock
+	private Map<String, Object> argumentUpdateInsuranceType;
+	@Mock
+	private Map<String, Object> argumentSelectInsuranceType;
 
 	@Before
 	public void setUp() {
@@ -1113,4 +1117,43 @@ public class PISDR012Test {
 		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
 	}
 	//Fin Open Market
+
+
+	//InsuranceType
+	@Test
+	public void executeSaveInsuranceTypeOK() {
+		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceTypeOK...");
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())).thenReturn("1");
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_NAME.getValue())).thenReturn("1234");
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_REGISTRY_SITUATION_TYPE.getValue())).thenReturn("aaaaaa");
+
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
+
+		int validation = pisdr012.executeSaveInsuranceType(argumentUpdateInsuranceType);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(1, validation);
+	}
+
+	@Test
+	public void executeSelectInsuranceType() {
+		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceTypeOK...");
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())).thenReturn("1");
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_NAME.getValue())).thenReturn("1234");
+		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_REGISTRY_SITUATION_TYPE.getValue())).thenReturn("aaaaaa");
+
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
+
+		int validation = pisdr012.executeSaveInsuranceType(argumentUpdateInsuranceType);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(1, validation);
+	}
+
+	@Test
+	public void executeSelectInsuranceTypeOK() {
+		LOGGER.info("PISDR012Test - Executing executeSelectInsuranceTypeOK...");
+		when(argumentSelectInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())).thenReturn("12545465");
+		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentSelectInsuranceType)).thenReturn(new HashMap<>());
+		Map<String, Object> validation = pisdr012.executeSelectInsuranceType(argumentSelectInsuranceType);
+		assertNotNull(validation);
+	}
 }
