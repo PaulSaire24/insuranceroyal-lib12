@@ -755,27 +755,44 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
     //Select Insurance Type
 	
-	@Override
+	/* @Override
 	public Map<String, Object> executeSelectInsuranceType(Map<String, Object>  arguments){
 		LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType START *****");
 		Map<String, Object> response = null;
 
-		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())) {
 			try {
 				LOGGER.info("***** PISDR012Impl -  - PARAMETERS OK ... EXECUTING *****");
 				LOGGER.info("***** ENTRE *****");
 				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_TYPE.getValue(), arguments);
-				response.forEach((key, value) -> LOGGER
-						.info("[PISD.QUERY_SELECT_INSURANCE_TYPE] Result -> Key {} with value: {}", key, value));
-			
-			}catch (NoResultException ex) {
-				LOGGER.info("***** executeSelectInsuranceType - QUERY EMPTY RESULT [PISD.QUERY_SELECT_INSURANCE_TYPE] *****", ex.getMessage());
+				response.forEach((key, value) -> LOGGER.info("[PISD.QUERY_SELECT_INSURANCE_TYPE] Result -> Key {} with value: {}", key, value));
+			}catch(NoResultException ex) {
+				LOGGER.info("***** executeSelectInsuranceType  [PISD.QUERY_SELECT_INSURANCE_TYPE] ***** ");
 			}	
-		}   else{
-			LOGGER.info("executeSelectInsuranceType - PARAMETERS NULL");
-			}
 
 		LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType END *****");
+		return response;
+	} */
+
+	@Override
+	public Map<String, Object> executeSelectInsuranceType(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR0012Impl - executeSelectInsuranceType START *****");
+		Map<String, Object> response = null;
+		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())) {
+			try{
+				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_TYPE.getValue(), arguments);
+				response.forEach((key, value) -> LOGGER.info("[PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE] Result -> Key {} with value: {}", key, value));
+				LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType END *****");
+			}
+			catch (NoResultException ex){
+				LOGGER.info(
+					"executeSelectInsuranceType - QUERY EMPTY RESULT [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
+			this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
+			}	
+		} else {
+
+			LOGGER.info(
+					"executeSelectInsuranceType - MISSING MANDATORY PARAMETERS [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
+		}
 		return response;
 	}
 
