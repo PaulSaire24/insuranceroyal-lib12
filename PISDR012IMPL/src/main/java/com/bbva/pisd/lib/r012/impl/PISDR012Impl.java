@@ -735,53 +735,5 @@ public class PISDR012Impl extends PISDR012Abstract {
 	//Fin Open Market
     
 
-	//InserT Insurance Type
-	@Override
-	public int executeSaveInsuranceType(Map<String, Object> arguments){
-		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceType START *****");
-		int affectedRows = 0;
-		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue(),
-				PISDProperties.FIELD_INSURANCE_TYPE_NAME.getValue(),
-				PISDProperties.FIELD_REGISTRY_SITUATION_TYPE.getValue())) {
-			LOGGER.info("***** PISDR012Impl - executeSaveInsuranceType - PARAMETERS OK ... EXECUTING *****");
-			affectedRows = this.jdbcUtils.update(PISDProperties.QUERY_INSERT_INSURANCE_TYPE.getValue(), arguments);
-		} else {
-			LOGGER.debug("executeSaveInsuranceType - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION_VEH]");
-		}
-
-		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceType | Number of inserted rows: {} *****", affectedRows);
-		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceType END *****");
-		return affectedRows;
-	}
-    //Select Insurance Type
-
-	@Override
-	public Map<String, Object> executeSelectInsuranceType(Map<String, Object> arguments) {
-		LOGGER.info("***** PISDR0012Impl - executeSelectInsuranceType START *****");
-		Map<String, Object> response = null;
-		if (parametersEvaluation(arguments, PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())) {
-			try{
-				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_TYPE.getValue(), arguments);
-				response.forEach((key, value) -> LOGGER.info("[PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE] Result -> Key {} with value: {}", key, value));
-				LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType END *****");
-			}
-			catch (NoResultException ex){
-				LOGGER.info(
-					"executeSelectInsuranceType - QUERY EMPTY RESULT [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
-			}	
-		} else {
-
-			LOGGER.info(
-					"executeSelectInsuranceType - MISSING MANDATORY PARAMETERS [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
-		}
-		return response;
-	}
-
-	@Override
-	public void executeRollBack(){
-		Map<String, Object> response = null;
-		this.jdbcUtils.update(PISDProperties.QUERY_ROLLBACK.getValue(),response);
-		LOGGER.info("***** PISDR012Impl - executerollBack END *****");
-	}
 
 }
