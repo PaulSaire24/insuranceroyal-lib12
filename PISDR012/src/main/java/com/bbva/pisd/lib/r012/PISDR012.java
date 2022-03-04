@@ -56,6 +56,6 @@ public interface PISDR012 {
 	//Guardar Informacion sobre InsuranceType
 	int executeSaveInsuranceType(Map<String, Object> arguments);
 	Map<String, Object> executeSelectInsuranceType(Map<String, Object>  arguments);
-	
+	void executeRollBack();
 
 }
