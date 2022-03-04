@@ -1120,19 +1120,6 @@ public class PISDR012Test {
 
 
 	//InsuranceType
-	@Test
-	public void executeSaveInsuranceTypeOK() {
-		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceTypeOK...");
-		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_ID.getValue())).thenReturn("1");
-		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_INSURANCE_TYPE_NAME.getValue())).thenReturn("1234");
-		when(argumentUpdateInsuranceType.get(PISDProperties.FIELD_REGISTRY_SITUATION_TYPE.getValue())).thenReturn("aaaaaa");
-
-		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
-
-		int validation = pisdr012.executeSaveInsuranceType(argumentUpdateInsuranceType);
-		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
-		assertEquals(1, validation);
-	}
 
 	@Test
 	public void executeSelectInsuranceType() {
