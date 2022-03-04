@@ -754,24 +754,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return affectedRows;
 	}
     //Select Insurance Type
-	
-	/* @Override
-	public Map<String, Object> executeSelectInsuranceType(Map<String, Object>  arguments){
-		LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType START *****");
-		Map<String, Object> response = null;
-
-			try {
-				LOGGER.info("***** PISDR012Impl -  - PARAMETERS OK ... EXECUTING *****");
-				LOGGER.info("***** ENTRE *****");
-				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_TYPE.getValue(), arguments);
-				response.forEach((key, value) -> LOGGER.info("[PISD.QUERY_SELECT_INSURANCE_TYPE] Result -> Key {} with value: {}", key, value));
-			}catch(NoResultException ex) {
-				LOGGER.info("***** executeSelectInsuranceType  [PISD.QUERY_SELECT_INSURANCE_TYPE] ***** ");
-			}	
-
-		LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType END *****");
-		return response;
-	} */
 
 	@Override
 	public Map<String, Object> executeSelectInsuranceType(Map<String, Object> arguments) {
@@ -786,7 +768,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 			catch (NoResultException ex){
 				LOGGER.info(
 					"executeSelectInsuranceType - QUERY EMPTY RESULT [PISD.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE]");
-			this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}	
 		} else {
 
@@ -795,7 +776,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		}
 		return response;
 	}
-	
+
 	@Override
 	public void executeRollBack(){
 		Map<String, Object> response = null;
