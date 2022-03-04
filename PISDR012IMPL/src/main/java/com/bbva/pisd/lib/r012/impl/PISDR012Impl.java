@@ -776,6 +776,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 			LOGGER.info(
 					"executeSelectInsuranceType - QUERY EMPTY RESULT [PISD.QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID]");
 		}
+		
 
 		LOGGER.info("***** PISDR012Impl - executeSelectInsuranceType END *****");
 		return response;
