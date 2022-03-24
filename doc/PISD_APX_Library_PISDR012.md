@@ -758,6 +758,7 @@ int insertedRows = pisdR012.executeUpdate(String nameProp, Map<String, Object> p
 # ![createVehicleInsurancesQuotation](images/diseno-componentes-apx-lib12.png)
 
 ### 5.  Versiones:
-#### 5.1  Versión 0.22.1
+#### 5.1  Versión 0.23.0
 
 + Versión 0.22.1: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
++ Versión 0.23.0: Esta versión se agrego campos de las querys que permite realizar las operaciones necesarias en la BD para las transacciones RBVDT207, 208.
