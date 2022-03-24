@@ -90,6 +90,10 @@ public class PISDR012Test {
 	private Map<String, Object> argumentGetOffer;
 	@Mock
 	private Map<String, Object> argumentGetContract;
+	@Mock
+	private Map<String, Object> argumentUpdateInsuranceType;
+	@Mock
+	private Map<String, Object> argumentSelectInsuranceType;
 
 	@Before
 	public void setUp() {
@@ -945,6 +949,16 @@ public class PISDR012Test {
 	}
 
 	@Test
+	public void executeUpdateInsuranceContractNULL() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractOK...");
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn(null);
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn(null);
+		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn(null);
+		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
+		assertFalse(validation);
+	}
+
+	@Test
 	public void executeUpdateInsuranceContractError() {
 		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractError...");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
@@ -968,6 +982,17 @@ public class PISDR012Test {
 	}
 
 	@Test
+	public void executeUpdatePaymentScheduleNULL() {
+		LOGGER.info("PISDR012Test - Executing executeUpdatePaymentScheduleNULL...");
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn(null);
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn(null);
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn(null);
+		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_POLICY_RECEIPT_ID.getValue())).thenReturn(null);
+		boolean validation = pisdr012.executeUpdatePaymentSchedule(argumentsForexecuteUpdatePaymentSchedule);
+		assertFalse(validation);
+	}
+
+	@Test
 	public void executeUpdatePaymentScheduleError() {
 		LOGGER.info("PISDR012Test - Executing executeUpdatePaymentScheduleError...");
 		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
@@ -988,6 +1013,16 @@ public class PISDR012Test {
 		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE.getValue(), argumentsForexecuteGetInsuranceContractStartDate)).thenReturn(new HashMap<>());
 	    Map<String,Object> validation = pisdr012.executeGetInsuranceContractStartDate(argumentsForexecuteGetInsuranceContractStartDate);
 		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetInsuranceContractStartDateNULL(){
+		LOGGER.info("PISDR012Test - Executing executeGetInsuranceContractStartDateNULL...");
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn(null);
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn(null);
+		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn(null);
+		Map<String,Object> validation = pisdr012.executeGetInsuranceContractStartDate(argumentsForexecuteGetInsuranceContractStartDate);
+		assertNull(validation);
 	}
 
 	@Test
@@ -1047,6 +1082,16 @@ public class PISDR012Test {
 		when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_DOCUMENT_STATUS.getValue(),argumentsUpdateInsuranceContractDocument)).thenReturn(1);
 		Boolean validation = pisdr012.executeUpdateInsuranceContractDocument(argumentsUpdateInsuranceContractDocument);
 		assertTrue(validation);
+	}
+
+	@Test
+	public void executeUpdateInsuranceContractDocumentNULL() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractDocumentNULL...");
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn(null);
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn(null);
+		when(argumentsUpdateInsuranceContractDocument.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn(null);
+		Boolean validation = pisdr012.executeUpdateInsuranceContractDocument(argumentsUpdateInsuranceContractDocument);
+		assertFalse(validation);
 	}
 
 	@Test
@@ -1113,4 +1158,5 @@ public class PISDR012Test {
 		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
 	}
 	//Fin Open Market
+
 }
