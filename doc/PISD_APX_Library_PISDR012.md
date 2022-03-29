@@ -754,11 +754,12 @@ int insertedRows = pisdR012.executeUpdate(String nameProp, Map<String, Object> p
 > Este código de error es devuelto no se encontró resultados con el id de poliza.
 
 ### 4.  Diagrama de Componentes:
+> En este apartado se grafican todos los componentes involucrados en el funcionamiento del recurso.
 
 # ![createVehicleInsurancesQuotation](images/diseno-componentes-apx-lib12.png)
 
 ### 5.  Versiones:
-#### 5.1  Versión 0.23.0
+> En este apartado se detalla un historial de cambios o *changelog* por cada version implementada del recurso. 
 
-+ Versión 0.22.1: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
-+ Versión 0.23.0: Esta versión se agrego campos de las querys que permite realizar las operaciones necesarias en la BD para las transacciones RBVDT207, 208.
+- **Versión 0.22.1**: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
+- **Versión 0.23.1**: Esta versión se agrego campos de las querys que permite realizar las operaciones necesarias en la BD para las transacciones RBVDT207, 208.
