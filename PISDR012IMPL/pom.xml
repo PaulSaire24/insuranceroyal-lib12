@@ -93,16 +93,6 @@
 			<artifactId>elara-utility-jdbc-connector</artifactId>
 			<version>${apx.jdbc.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.bbva.pisd.dto.insurance</groupId>
-			<artifactId>PISDC011</artifactId>
-			<version>0.15.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.bbva.rbvd.dto.insrncsale</groupId>
-			<artifactId>RBVDC201</artifactId>
-			<version>0.9.1</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>
