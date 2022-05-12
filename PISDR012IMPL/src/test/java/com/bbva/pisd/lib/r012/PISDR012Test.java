@@ -2,6 +2,7 @@ package com.bbva.pisd.lib.r012;
 
 import com.bbva.apx.exception.db.NoResultException;
 
+import com.bbva.elara.configuration.manager.application.ApplicationConfigurationService;
 import com.bbva.elara.domain.transaction.Context;
 import com.bbva.elara.domain.transaction.ThreadContext;
 
@@ -41,7 +42,9 @@ public class PISDR012Test {
 	private static final String MESSAGE = "No se encontró data";
 
 	private final PISDR012Impl pisdr012 = new PISDR012Impl();
+
 	private JdbcUtils jdbcUtils;
+	private ApplicationConfigurationService applicationConfigurationService;
 
 	@Mock
 	private Map<String, Object> argumentsForGetModalitiesInformation;
@@ -98,6 +101,9 @@ public class PISDR012Test {
 
 		jdbcUtils = mock(JdbcUtils.class);
 		pisdr012.setJdbcUtils(jdbcUtils);
+
+		applicationConfigurationService = mock(ApplicationConfigurationService.class);
+		pisdr012.setApplicationConfigurationService(applicationConfigurationService);
 
 	}
 
@@ -991,11 +997,20 @@ public class PISDR012Test {
 	}
 
 	@Test
-	public void executeUpdateInsuranceContractNULL() {
-		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractOK...");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn(null);
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn(null);
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn(null);
+	public void executeUpdateInsuranceContractWithFlagActivatedOK() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractWithFlagActivatedOK...");
+		when(this.argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
+		when(this.argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
+		when(this.argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
+		when(this.applicationConfigurationService.getProperty("modifyFlag")).thenReturn("true");
+		when(this.jdbcUtils.update("PISD.UPDATE_INSURANCE_CONTRACT_STATUS_2", argumentsForUpdateInsuranceContract)).thenReturn(1);
+		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
+		assertTrue(validation);
+	}
+
+	@Test
+	public void executeUpdateInsuranceContractWithMissingMandatoryParameters() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractWithMissingMandatoryParameters...");
 		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
 		assertFalse(validation);
 	}
