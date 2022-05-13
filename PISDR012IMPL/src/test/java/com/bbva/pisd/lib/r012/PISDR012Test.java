@@ -2,6 +2,7 @@ package com.bbva.pisd.lib.r012;
 
 import com.bbva.apx.exception.db.NoResultException;
 
+import com.bbva.elara.configuration.manager.application.ApplicationConfigurationService;
 import com.bbva.elara.domain.transaction.Context;
 import com.bbva.elara.domain.transaction.ThreadContext;
 
@@ -41,7 +42,9 @@ public class PISDR012Test {
 	private static final String MESSAGE = "No se encontró data";
 
 	private final PISDR012Impl pisdr012 = new PISDR012Impl();
+
 	private JdbcUtils jdbcUtils;
+	private ApplicationConfigurationService applicationConfigurationService;
 
 	@Mock
 	private Map<String, Object> argumentsForGetModalitiesInformation;
@@ -98,6 +101,9 @@ public class PISDR012Test {
 
 		jdbcUtils = mock(JdbcUtils.class);
 		pisdr012.setJdbcUtils(jdbcUtils);
+
+		applicationConfigurationService = mock(ApplicationConfigurationService.class);
+		pisdr012.setApplicationConfigurationService(applicationConfigurationService);
 
 	}
 
@@ -977,38 +983,6 @@ public class PISDR012Test {
 		when(jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), argumentsForGetPolicyContract)).thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
 		Map<String, Object> validation = pisdr012.executeGetPolicyContract(argumentsForGetPolicyContract);
 		assertNull(validation);
-	}
-
-	@Test
-	public void executeUpdateInsuranceContractOK() {
-		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractOK...");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
-	    when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(1);
-		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
-		assertTrue(validation);
-	}
-
-	@Test
-	public void executeUpdateInsuranceContractNULL() {
-		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractOK...");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn(null);
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn(null);
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn(null);
-		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
-		assertFalse(validation);
-	}
-
-	@Test
-	public void executeUpdateInsuranceContractError() {
-		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceContractError...");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
-		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
-	    when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(0);
-		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
-		assertFalse(validation);
 	}
 
 	@Test
