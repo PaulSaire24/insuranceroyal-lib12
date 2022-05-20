@@ -766,3 +766,4 @@ int insertedRows = pisdR012.executeUpdate(String nameProp, Map<String, Object> p
 - **Versión 0.23.2**: Esta versión se agrego campos de las querys que permite realizar las operaciones necesarias en la BD para las transacciones RBVDT204 y cambios en el pom.
 - **Versión 0.23.3**: Esta versión se remueve la doble llamada a las librerias.
 - **Versión 0.23.4**: Esta versión se agrega la lib 201.
+- **Versión 0.23.5**: Esta versión modifica la query para obtener identificador de producto para Rimac.
