@@ -29,6 +29,7 @@ public interface PISDR012 {
 	void executeRegisterAdditionalQuotationBranch(Map<String, Object> arguments);
 	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
 
+	Map<String, Object> executeValidateIfPolicyExists(String policyQuotaInternalId);
 	Map<String, Object> executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId);
 	Map<String, Object> executeGetPaymentPeriod(String frequencyType);
 	int executeSaveContract(Map<String, Object> contractInformation);

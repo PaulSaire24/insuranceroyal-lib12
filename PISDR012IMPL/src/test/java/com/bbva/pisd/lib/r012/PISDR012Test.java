@@ -11,6 +11,7 @@ import com.bbva.pisd.dto.insurance.utils.PISDErrors;
 import com.bbva.pisd.dto.insurance.utils.PISDProperties;
 import com.bbva.pisd.lib.r012.impl.PISDR012Impl;
 
+import com.bbva.rbvd.dto.insrncsale.utils.RBVDErrors;
 import com.bbva.rbvd.dto.insrncsale.utils.RBVDProperties;
 import org.junit.Before;
 import org.junit.Test;
@@ -499,6 +500,32 @@ public class PISDR012Test {
 		LOGGER.info("PISDR0012Test - Executing executeRegisterAdditionalInsuranceQuotationBranchModWithParametersEvaluationFalse...");
 		pisdr012.executeRegisterAdditionalQuotationBranchMod(argumentsForRegisterQuotationVeh);
 		verify(jdbcUtils, never()).update(anyString(), anyMap());
+	}
+
+	@Test
+	public void executeValidateIfPolicyExistsOK() {
+		LOGGER.info("PISDR0012Test - Executing executeValidateIfPolicyExistsOK...");
+
+		Map<String, Object> response = new HashMap<>();
+		response.put(RBVDProperties.FIELD_RESULT_NUMBER.getValue(), 1);
+
+		when(this.jdbcUtils.queryForMap(anyString(), anyString())).thenReturn(response);
+
+		Map<String, Object> validation = pisdr012.executeValidateIfPolicyExists("policyQuotaInternalId");
+
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeValidateIfPolicyExistsWithNoResultException() {
+		LOGGER.info("PISDR0012Test - Executing executeValidateIfPolicyExistsWithNoResultException...");
+
+		when(this.jdbcUtils.queryForMap(anyString(), anyString())).
+				thenThrow(new NoResultException(RBVDErrors.POLICY_ALREADY_EXISTS.getAdviceCode(), RBVDErrors.POLICY_ALREADY_EXISTS.getMessage()));
+
+		Map<String, Object> validation = pisdr012.executeValidateIfPolicyExists("policyQuotaInternalId");
+
+		assertNull(validation);
 	}
 
 	@Test
