@@ -351,6 +351,21 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
+	public Map<String, Object> executeValidateIfPolicyExists(String policyQuotaInternalId) {
+		LOGGER.info("***** PISDR012Impl - executeValidateIfPolicyExists START *****");
+		Map<String, Object> response = null;
+		try {
+			response = this.jdbcUtils.queryForMap(RBVDProperties.QUERY_VALIDATE_IF_POLICY_EXISTS.getValue(), policyQuotaInternalId);
+			response.forEach((key, value) ->
+					LOGGER.info("[PISD.VALIDATE_IF_POLICY_EXISTS] Result -> Key {} with value: {}", key, value));
+		} catch(NoResultException ex) {
+			LOGGER.info("executeValidateIfPolicyExists - THERE'S NO CONTRACT");
+		}
+		LOGGER.info("***** PISDR012Impl - executeValidateIfPolicyExists END *****");
+		return response;
+	}
+
+	@Override
 	public Map<String, Object> executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId) {
 		LOGGER.info("***** PISDR012Impl - executeGetRequiredFieldsForEmissionService START *****");
 		try {
