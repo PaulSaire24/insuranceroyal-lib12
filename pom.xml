@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.bbva.pisd</groupId>
 	<artifactId>PISDR012-parent</artifactId>
-	<version>0.23.7</version>
+	<version>0.24.0</version>
 	<name>PISDR012-parent</name>
 	<description>Library to get a Oracele DB connection</description>
 	<packaging>pom</packaging>
