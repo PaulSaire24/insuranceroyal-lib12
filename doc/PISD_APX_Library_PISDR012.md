@@ -787,3 +787,4 @@ int insertedRows = pisdR012.executeUpdate(String nameProp, Map<String, Object> p
 - **Versión 0.23.5**: Esta versión modifica la query para obtener identificador de producto para Rimac.
 - **Versión 0.23.7**: En esta versión se añade la query [PISD.VALIDATE_IF_POLICY_EXISTS] para evitar que suceda el último inconveniente productivo 
                       (Realizar doble cobro al cliente al emitir la poliza de su seguro).
+- **Versión 0.24.1**: En esta versión se modifica la query [PISD.SELECT_INSURANCE_QUOTATION]
