@@ -32,16 +32,15 @@ public interface PISDR012 {
 	Map<String, Object> executeValidateIfPolicyExists(String policyQuotaInternalId);
 	Map<String, Object> executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId);
 	Map<String, Object> executeGetPaymentPeriod(String frequencyType);
-	int executeSaveContract(Map<String, Object> contractInformation);
+	int executeSaveContract(Map<String, Object> arguments);
 	int executeSaveContractEndoserment(Map<String, Object> arguments);
-	int executeSaveFirstReceipt(Map<String, Object> firstReceiptInformation);
+	int[] executeSaveReceipts(Map<String, Object>[] firstReceiptMap);
 	int executeSaveContractMove(Map<String, Object> arguments);
 	Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType);
 	int[] executeSaveParticipants(Map<String, Object>[] participantsMap);
-	int executeUpdateContract(Map<String, Object> arguments);
-	int[] executeSaveReceipts(Map<String, Object>[] receiptsInformation);
 
 	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
+	boolean executeUpdateInsuranceContract(Map<String, Object> arguments);
 	boolean executeUpdatePaymentSchedule(Map<String, Object> arguments);
 
 	Map<String, Object> executeQueryForGerInsuranceCompanyQuotaId(Map<String, Object>  policyQuotaInternalId);
