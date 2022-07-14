@@ -54,4 +54,9 @@ public interface PISDR012 {
 	int executeUpdate(String nameProp, Map<String, Object> parameters);
 	//Fin Open Market
 
+	/**
+	 * @author P030557
+	 */
+	Map<String, Object> executeGetRequiredFieldsForCreatedInsrcEvnt(String policyQuotaInternalId);
+
 }

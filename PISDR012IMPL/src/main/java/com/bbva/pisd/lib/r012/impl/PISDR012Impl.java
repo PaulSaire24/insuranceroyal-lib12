@@ -747,8 +747,23 @@ public class PISDR012Impl extends PISDR012Abstract {
 
 		return response;
 	}
-	//Fin Open Market
-    
 
+	//Fin Open Market
+
+	@Override
+	public Map<String, Object> executeGetRequiredFieldsForCreatedInsrcEvnt(String policyQuotaInternalId) {
+		LOGGER.info("***** PISDR012Impl - executeGetRequiredFieldsForCreatedInsrcEvnt START *****");
+		try {
+			Map<String, Object> row = this.jdbcUtils.queryForMap("PISD.SELECT_REQUIRED_FIELDS_FOR_CREATEDINSRC_EVENT", policyQuotaInternalId);
+			row.forEach((key, value) ->
+					LOGGER.info("[SELECT_REQUIRED_FIELDS_FOR_CREATEDINSRC_EVENT] Result -> Key {} with value: {}", key, value)
+			);
+			LOGGER.info("***** PISDR012Impl - executeGetRequiredFieldsForCreatedInsrcEvnt END *****");
+			return row;
+		} catch (NoResultException ex) {
+			LOGGER.debug("***** PISDR012Impl - executeGetRequiredFieldsForCreatedInsrcEvnt ***** There was no result!!");
+			return null;
+		}
+	}
 
 }
