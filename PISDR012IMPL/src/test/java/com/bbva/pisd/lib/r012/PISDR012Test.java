@@ -12,7 +12,6 @@ import com.bbva.pisd.lib.r012.impl.PISDR012Impl;
 
 import com.bbva.rbvd.dto.insrncsale.utils.RBVDErrors;
 import com.bbva.rbvd.dto.insrncsale.utils.RBVDProperties;
-import org.apache.felix.resolver.util.ArrayMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -1185,5 +1183,26 @@ public class PISDR012Test {
 		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
 	}
 	//Fin Open Market
+
+
+	@Test
+	public void executeGetRequiredFieldsForCreatedInsrcEvnt_OK() {
+		LOGGER.info("PISDR012Test - Executing executeGetRequiredFieldsForCreatedInsrcEvnt_OK...");
+
+		when(this.jdbcUtils.queryForMap("PISD.SELECT_REQUIRED_FIELDS_FOR_CREATEDINSRC_EVENT", "policyQuotaInternalId")).thenReturn(new HashMap<>());
+
+		Map<String, Object> validation = pisdr012.executeGetRequiredFieldsForCreatedInsrcEvnt("policyQuotaInternalId");
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetRequiredFieldsForCreatedInsrcEvnt_WithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetRequiredFieldsForCreatedInsrcEvnt_WithNoResultException...");
+
+		when(this.jdbcUtils.queryForMap("PISD.SELECT_REQUIRED_FIELDS_FOR_CREATEDINSRC_EVENT", "policyQuotaInternalId")).thenThrow(new NoResultException("NO SE ENCONTRARON RESULTADOS"));
+
+		Map<String, Object> validation = pisdr012.executeGetRequiredFieldsForCreatedInsrcEvnt("policyQuotaInternalId");
+		assertNull(validation);
+	}
 
 }
