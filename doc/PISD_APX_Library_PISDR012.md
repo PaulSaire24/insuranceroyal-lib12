@@ -182,11 +182,11 @@ pisdR012.executeSaveSimulationVehicle(Map<String, Object> arguments);
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| response | List | Lista que contiene el valor de los campos de las filas devueltas |
+|1| response | Map | Mapa que contiene el nombre y el valor de los campos a insertar en la tabla |
 
 ##### 2.9.3 Ejemplo
 ```java
-List<Map<String, Object>> response = pisdR012.executeGetInsuranceQuotation(String quotationId);
+Map<String, Object> response = pisdR012.executeGetInsuranceQuotation(String quotationId);
 ```
 
 #### 2.10 Método 10: executeGetInsuranceSimulationIdAndExpiredDate(String quotationId)
@@ -220,7 +220,9 @@ Map<String, Object> responseQueryGetInsuranceSimulationIdAndExpiredDate = pisdR0
 
 ##### 2.11.2 Datos de Salida
 
-    Ninguno
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| responseSaveInsuranceQuotation | Integer | Valor numérico que indica los registros actualizados |
 
 ##### 2.11.3 Ejemplo
 ```java
@@ -238,7 +240,9 @@ pisdR012.executeSaveInsuranceQuotation(Map<String, Object> arguments);
 
 ##### 2.12.2 Datos de Salida
 
-    Ninguno
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| responseSaveInsuranceQuotationMod | Integer | Valor numérico que indica los registros actualizados |
 
 ##### 2.12.3 Ejemplo
 ```java
@@ -256,31 +260,33 @@ pisdR012.executeSaveInsuranceQuotationMod(Map<String, Object> arguments);
 
 ##### 2.13.2 Datos de Salida
 
-    Ninguno
+|#|Nombre del Atributo|Tipo de Dato| Descripción|
+| :----|:---------- |:--------------| :-----|
+|1| responseSaveInsuranceQuotationVeh | Integer | Valor numérico que indica los registros actualizados |
 
 ##### 2.13.3 Ejemplo
 ```java
 pisdR012.executeSaveInsuranceQuotationVeh(Map<String, Object> arguments);
 ```
 
-#### 2.14 Método 14: executeGetCompanyDescById(BigDecimal companyId)
-> Método que hace una consulta a la tabla T_PISD_INSURANCE_COMPANY
+#### 2.14 Método 14: executeGetOffer(Map<String, Object> arguments)
+> Método que realiza la selección de data de oferta para seguro vehicular
 
 ##### 2.14.1 Datos de Entrada
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| companyId | BigDecimal | Id de la compañía aseguradora |
+|1| arguments | Map | Mapa que contiene el nombre y el valor de los campos a seleccionar en la tabla |
 
 ##### 2.14.2 Datos de Salida
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| responseQuerySelectInsuranceCompany | Map | Mapa que contiene el valor de los campos devueltos |
+|1| responseGetOffer | Map |  Mapa que contiene el valor de los campos devueltos  |
 
 ##### 2.14.3 Ejemplo
 ```java
-Map<String, Object> responseQuerySelectInsuranceCompany = pisdR012.executeGetCompanyDescById(BigDecimal companyId);
+Map<String,Object> responseGetOffer = pisdR012.executeGetOffer(Map<String,Object> arguments);
 ```
 
 #### 2.15 Método 15: executeValidateIfPolicyExists(String policyQuotaInternalId)
@@ -425,7 +431,7 @@ int[] insertedRows = pisdR012.executeSaveParticipants(Map<String, Object>[] argu
 ```
 
 
-#### 2.22 Método 22: executeGetPolicyContract(Map<String, Object>[] arguments)
+#### 2.22 Método 22: executeGetPolicyContract(Map<String, Object> arguments)
 > Método que hace una consulta a la tabla T_PISD_INSURANCE_CONTRACT
 
 ##### 2.22.1 Datos de Entrada
@@ -442,11 +448,11 @@ int[] insertedRows = pisdR012.executeSaveParticipants(Map<String, Object>[] argu
 
 ##### 2.22.3 Ejemplo
 ```java
-Map<String, Object> responseQueryGetContract = pisdR012.executeGetPolicyContract(Map<String, Object>[] arguments);
+Map<String, Object> responseQueryGetContract = pisdR012.executeGetPolicyContract(Map<String, Object> arguments);
 ```
 
 
-#### 2.23 Método 23: executeUpdateInsuranceContract(Map<String, Object>[] arguments)
+#### 2.23 Método 23: executeUpdateInsuranceContract(Map<String, Object> arguments)
 > Método que actualiza a la tabla T_PISD_INSURANCE_CONTRACT
 
 ##### 2.23.1 Datos de Entrada
@@ -463,11 +469,11 @@ Map<String, Object> responseQueryGetContract = pisdR012.executeGetPolicyContract
 
 ##### 2.23.3 Ejemplo
 ```java
-boolean saveUpdateContractExecuted = pisdR012.executeUpdateInsuranceContract(Map<String, Object>[] arguments);
+boolean saveUpdateContractExecuted = pisdR012.executeUpdateInsuranceContract(Map<String, Object> arguments);
 ```
 
 
-#### 2.24 Método 24: executeUpdatePaymentSchedule(Map<String, Object>[] arguments)
+#### 2.24 Método 24: executeUpdatePaymentSchedule(Map<String, Object> arguments)
 > Método que actualiza a la tabla T_PISD_INSURANCE_CTR_RECEIPTS
 
 ##### 2.24.1 Datos de Entrada
@@ -484,11 +490,11 @@ boolean saveUpdateContractExecuted = pisdR012.executeUpdateInsuranceContract(Map
 
 ##### 2.24.3 Ejemplo
 ```java
-boolean saveUpdatePaymentExecuted = pisdR012.executeUpdatePaymentSchedule(Map<String, Object>[] arguments);
+boolean saveUpdatePaymentExecuted = pisdR012.executeUpdatePaymentSchedule(Map<String, Object> arguments);
 ```
 
 
-#### 2.25 Método 25: executeQueryForGerInsuranceCompanyQuotaId(Map<String, Object>[] arguments)
+#### 2.25 Método 25: executeQueryForGerInsuranceCompanyQuotaId(Map<String, Object> arguments)
 > Método que hace una consulta a la tabla T_PISD_INSURANCE_QUOTATION
 
 ##### 2.25.1 Datos de Entrada
@@ -509,7 +515,7 @@ Map<String, Object> responseQueryGetCompanyQuota = pisdR012.executeQueryForGerIn
 ```
 
 
-#### 2.26 Método 26: executeGetInsuranceContractStartDate(Map<String, Object>[] arguments)
+#### 2.26 Método 26: executeGetInsuranceContractStartDate(Map<String, Object> arguments)
 > Método que hace una consulta a la tabla T_PISD_INSURANCE_CONTRACT
 
 ##### 2.26.1 Datos de Entrada
@@ -530,14 +536,12 @@ Map<String, Object> responseQueryGetStarDate = pisdR012.executeGetInsuranceContr
 ```
 
 
-#### 2.27 Método 27: executeGetInsuranceContractStatus(Map<String, Object>[] arguments)
+#### 2.27 Método 27: executeGetInsuranceContractStatus()
 > Método que hace una consulta a la tabla T_PISD_INSURANCE_CONTRACT
 
 ##### 2.27.1 Datos de Entrada
 
-|#|Nombre del Atributo|Tipo de Dato| Descripción|
-| :----|:---------- |:--------------| :-----|
-|1| arguments | Map | Mapa que contiene el nombre y el valor de los filtros de la consulta sql |
+Ninguno
 
 ##### 2.27.2 Datos de Salida
 
@@ -551,7 +555,7 @@ Map<String, Object> responseQueryGetContractStatus = pisdR012.executeGetInsuranc
 ```
 
 
-#### 2.28 Método 28: executeUpdateInsuranceContractDocument(Map<String, Object>[] arguments)
+#### 2.28 Método 28: executeUpdateInsuranceContractDocument(Map<String, Object> arguments)
 > Método que actualiza a la tabla T_PISD_INSURANCE_CONTRACT
 
 ##### 2.28.1 Datos de Entrada
@@ -568,11 +572,11 @@ Map<String, Object> responseQueryGetContractStatus = pisdR012.executeGetInsuranc
 
 ##### 2.28.3 Ejemplo
 ```java
-boolean saveUpdateContractDocumentExecuted = pisdR012.executeUpdateInsuranceContractDocument(Map<String, Object>[] arguments);
+boolean saveUpdateContractDocumentExecuted = pisdR012.executeUpdateInsuranceContractDocument(Map<String, Object> arguments);
 ```
 
 
-#### 2.29 Método 29: executeGetPlansBBVA(Map<String, Object>[] arguments)
+#### 2.29 Método 29: executeGetPlansBBVA(Map<String, Object> arguments)
 > Método que hace una consulta a la tabla T_PISD_INSRNC_PRD_MODALITY junto con unos joins a las tablas T_PISD_INSURANCE_COMPANY.
 
 ##### 2.29.1 Datos de Entrada
@@ -589,11 +593,11 @@ boolean saveUpdateContractDocumentExecuted = pisdR012.executeUpdateInsuranceCont
 
 ##### 2.29.3 Ejemplo
 ```java
-Map<String, Object> responseQueryGetPlansBBVA = pisdR012.executeGetPlansBBVA(Map<String, Object>[] arguments);
+Map<String, Object> responseQueryGetPlansBBVA = pisdR012.executeGetPlansBBVA(Map<String, Object> arguments);
 ```
 
 
-#### 2.30 Método 30: executeQueryForDetailQuotationService(Map<String, Object>[] arguments)
+#### 2.30 Método 30: executeQueryForDetailQuotationService(String policyQuotaInternalId)
 > Método que hace una consulta a la tabla T_PISD_INSURANCE_QUOTATION junto con unos joins a las tablas T_PISD_INSRNC_QUOTATION_MOD,
 > T_PISD_INSRNC_QUOTATION_VEH, T_PISD_INSRNC_SIMLT_VEHICLE, T_PISD_INSURANCE_PRODUCT.
 
@@ -601,7 +605,7 @@ Map<String, Object> responseQueryGetPlansBBVA = pisdR012.executeGetPlansBBVA(Map
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| arguments | Map | Mapa que contiene el nombre y el valor de los filtros de la consulta sql |
+|1| arguments | String | Input que hace mención al valor filtro tipo cotización de poliza rimac |
 
 ##### 2.30.2 Datos de Salida
 
@@ -611,11 +615,11 @@ Map<String, Object> responseQueryGetPlansBBVA = pisdR012.executeGetPlansBBVA(Map
 
 ##### 2.30.3 Ejemplo
 ```java
-Map<String, Object> responseQueryGetQuotationService = pisdR012.executeQueryForDetailQuotationService(Map<String, Object>[] arguments);
+Map<String, Object> responseQueryGetQuotationService = pisdR012.executeQueryForDetailQuotationService(String policyQuotaInternalId);
 ```
 
 
-#### 2.31 Método 31: executeRegisterAdditionalQuotationVeh(Map<String, Object>[] arguments)
+#### 2.31 Método 31: executeRegisterAdditionalQuotationVeh(Map<String, Object> arguments)
 > Método que actualiza a la tabla T_PISD_INSRNC_QUOTATION_VEH
 
 ##### 2.31.1 Datos de Entrada
@@ -626,9 +630,7 @@ Map<String, Object> responseQueryGetQuotationService = pisdR012.executeQueryForD
 
 ##### 2.31.2 Datos de Salida
 
-|#|Nombre del Atributo|Tipo de Dato| Descripción|
-| :----|:---------- |:--------------| :-----|
-|1|  | Void | Determina si el update se realizó correctamente |
+Ninguno
 
 ##### 2.31.3 Ejemplo
 ```java
@@ -643,7 +645,7 @@ pisdR012.executeRegisterAdditionalQuotationVeh(Map<String, Object>[] arguments);
 
 |#|Nombre del Atributo|Tipo de Dato| Descripción|
 | :----|:---------- |:--------------| :-----|
-|1| arguments | Map | Mapa que contiene el nombre y el valor de los filtros de la consulta sql |
+|1| arguments | String | Input que hace referencia al filtro id de cotización banco |
 
 ##### 2.32.2 Datos de Salida
 
@@ -668,9 +670,7 @@ Map<String, Object> responseQueryAdditionalCompanyQuotaId = pisdR012.executeRegi
 
 ##### 2.33.2 Datos de Salida
 
-|#|Nombre del Atributo|Tipo de Dato| Descripción|
-| :----|:---------- |:--------------| :-----|
-|1|  | Void | Determina si el update se realizó correctamente |
+Ninguno
 
 ##### 2.33.3 Ejemplo
 ```java
@@ -689,9 +689,7 @@ pisdR012.executeRegisterAdditionalQuotationBranch(Map<String, Object> arguments)
 
 ##### 2.34.2 Datos de Salida
 
-|#|Nombre del Atributo|Tipo de Dato| Descripción|
-| :----|:---------- |:--------------| :-----|
-|1|  | Void | Determina si el select se realizó correctamente |
+Ninguno
 
 ##### 2.34.3 Ejemplo
 ```java
@@ -779,12 +777,8 @@ int insertedRows = pisdR012.executeUpdate(String nameProp, Map<String, Object> p
 ### 5.  Versiones:
 > En este apartado se detalla un historial de cambios o *changelog* por cada version implementada del recurso. 
 
-- **Versión 0.22.1**: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
-- **Versión 0.23.1**: Esta versión se agrego campos de las querys que permite realizar las operaciones necesarias en la BD para las transacciones RBVDT207, 208.
-- **Versión 0.23.2**: Esta versión se agrego campos de las querys que permite realizar las operaciones necesarias en la BD para las transacciones RBVDT204 y cambios en el pom.
-- **Versión 0.23.3**: Esta versión se remueve la doble llamada a las librerias.
+- **Versión 0.22.2**: Esta versión permite realizar las operaciones necesarias en la BD para las transacciones PISDT001, 002, 003, 004, 005, 006, 007, RBVDT201, 202, 203.
 - **Versión 0.23.4**: Esta versión se agrega la lib 201.
-- **Versión 0.23.5**: Esta versión modifica la query para obtener identificador de producto para Rimac.
 - **Versión 0.23.7**: En esta versión se añade la query [PISD.VALIDATE_IF_POLICY_EXISTS] para evitar que suceda el último inconveniente productivo 
                       (Realizar doble cobro al cliente al emitir la poliza de su seguro).
-- **Versión 0.24.1**: En esta versión se modifica la query [PISD.SELECT_INSURANCE_QUOTATION]
+- **Versión 0.24.2**: En esta versión se modifica la query [PISD.SELECT_INSURANCE_QUOTATION]
