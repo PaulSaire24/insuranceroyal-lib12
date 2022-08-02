@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 	<properties>
 		<outputDirectoryLibraries>../target</outputDirectoryLibraries>
-		<apx.core.online.version>7.5.5</apx.core.online.version>
+		<apx.core.online.version>7.7.10</apx.core.online.version>
 		<jacoco.no.coverage>0.00</jacoco.no.coverage>
 		<jacoco.min.coverage>0.80</jacoco.min.coverage>
 		<jacoco.type.coverage>COMPLEXITY</jacoco.type.coverage>
