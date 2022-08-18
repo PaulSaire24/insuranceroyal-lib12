@@ -29,15 +29,8 @@ public interface PISDR012 {
 	void executeRegisterAdditionalQuotationBranch(Map<String, Object> arguments);
 	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
 
-	Map<String, Object> executeValidateIfPolicyExists(String policyQuotaInternalId);
-	Map<String, Object> executeGetRequiredFieldsForEmissionService(String policyQuotaInternalId);
-	Map<String, Object> executeGetPaymentPeriod(String frequencyType);
-	int executeSaveContract(Map<String, Object> arguments);
-	int executeSaveContractEndoserment(Map<String, Object> arguments);
-	int[] executeSaveReceipts(Map<String, Object>[] firstReceiptMap);
-	int executeSaveContractMove(Map<String, Object> arguments);
-	Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType);
 	int[] executeSaveParticipants(Map<String, Object>[] participantsMap);
+	int[] executeSaveReceipts(Map<String, Object>[] receiptsInformation);
 
 	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
 	boolean executeUpdateInsuranceContract(Map<String, Object> arguments);
@@ -58,5 +51,22 @@ public interface PISDR012 {
 	 * @author P030557
 	 */
 	Map<String, Object> executeGetRequiredFieldsForCreatedInsrcEvnt(String policyQuotaInternalId);
+
+	/**
+	 * @author P030557
+	 * @param queryId query identificator from sql properties sheet
+	 * @param arguments parameters to replace in query
+	 * @param requiredParameters parameters whose should not be null values (if there aren't any parameters to evaluate, pass an empty array)
+	 * @return rows number inserted (it always must be 1 if everything went ok)
+	 */
+	int executeInsertSingleRow(String queryId, Map<String, Object> arguments, String... requiredParameters);
+
+	/**
+	 * @author P030557
+	 * @param queryId query identificator from sql properties sheet
+	 * @param arguments parameters to replace in query
+	 * @return a row with its columns
+	 */
+	Map<String, Object> executeGetASingleRow(String queryId, Map<String, Object> arguments);
 
 }
