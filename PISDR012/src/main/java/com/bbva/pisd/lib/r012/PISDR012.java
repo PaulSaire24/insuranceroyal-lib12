@@ -47,6 +47,8 @@ public interface PISDR012 {
 	int executeUpdate(String nameProp, Map<String, Object> parameters);
 	//Fin Open Market
 
+	Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType);
+
 	/**
 	 * @author P030557
 	 */

@@ -862,6 +862,34 @@ public class PISDR012Test {
 	}
 	//Fin Open Market
 
+	@Test
+	public void executeGetRolesByProductAndModality_OK() {
+		LOGGER.info("PISDR012Test - Executing executeGetRolesByProductAndModality_OK...");
+		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSRNC_ROLE_MODALITY.getValue(), BigDecimal.valueOf(1), "modalityType"))
+				.thenReturn(new ArrayList<>());
+
+		Map<String, Object> validation = pisdr012.executeGetRolesByProductAndModality(BigDecimal.valueOf(1), "modalityType");
+		assertNotNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetRolesByProductAndModalityWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetRolesByProductAndModalityWithNoResultException...");
+		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSRNC_ROLE_MODALITY.getValue(), BigDecimal.valueOf(1), "modalityType"))
+				.thenThrow(new NoResultException("RBVD00111990", "ERROR EN LA BASE DE DATOS"));
+
+		Map<String, Object> validation = pisdr012.executeGetRolesByProductAndModality(BigDecimal.valueOf(1), "modalityType");
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetRolesByProductAndModalityWithMissingParameters() {
+		LOGGER.info("PISDR012Test - Executing executeGetRolesByProductAndModality...");
+		Map<String, Object> validation = pisdr012.executeGetRolesByProductAndModality(null, "modalityType");
+
+		verify(this.jdbcUtils, never()).queryForList(anyString(), any(), anyString());
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
 
 	@Test
 	public void executeGetRequiredFieldsForCreatedInsrcEvnt_OK() {
