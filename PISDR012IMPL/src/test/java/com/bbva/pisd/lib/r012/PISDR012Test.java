@@ -10,7 +10,6 @@ import com.bbva.pisd.dto.insurance.utils.PISDErrors;
 import com.bbva.pisd.dto.insurance.utils.PISDProperties;
 import com.bbva.pisd.lib.r012.impl.PISDR012Impl;
 
-import com.bbva.rbvd.dto.insrncsale.utils.RBVDErrors;
 import com.bbva.rbvd.dto.insrncsale.utils.RBVDProperties;
 import org.junit.Before;
 import org.junit.Test;
@@ -742,7 +741,9 @@ public class PISDR012Test {
 	@Test
 	public void executeQueryForGerInsuranceCompanyQuotaId() {
 		LOGGER.info("PISDR012Test - Executing executeQueryForGerInsuranceCompanyQuotaId...");
-		when(jdbcUtils.queryForMap(PISDProperties.ID_QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID.getValue(), argumentsForGerInsuranceCompanyQuotaId)).thenReturn(new HashMap<>());
+		Map<String, Object> response = new HashMap<>();
+		response.put("key", "someValue");
+		when(jdbcUtils.queryForMap(PISDProperties.ID_QUERY_FOR_GET_INSURANCE_COMPANY_QUOTA_ID.getValue(), argumentsForGerInsuranceCompanyQuotaId)).thenReturn(response);
 		Map<String, Object> validation = pisdr012.executeQueryForGerInsuranceCompanyQuotaId(argumentsForGerInsuranceCompanyQuotaId);
 		assertNotNull(validation);
 	}
@@ -885,6 +886,7 @@ public class PISDR012Test {
 	@Test
 	public void executeGetRolesByProductAndModalityWithMissingParameters() {
 		LOGGER.info("PISDR012Test - Executing executeGetRolesByProductAndModality...");
+
 		Map<String, Object> validation = pisdr012.executeGetRolesByProductAndModality(null, "modalityType");
 
 		verify(this.jdbcUtils, never()).queryForList(anyString(), any(), anyString());
@@ -894,8 +896,9 @@ public class PISDR012Test {
 	@Test
 	public void executeGetRequiredFieldsForCreatedInsrcEvnt_OK() {
 		LOGGER.info("PISDR012Test - Executing executeGetRequiredFieldsForCreatedInsrcEvnt_OK...");
-
-		when(this.jdbcUtils.queryForMap("PISD.SELECT_REQUIRED_FIELDS_FOR_CREATEDINSRC_EVENT", "policyQuotaInternalId")).thenReturn(new HashMap<>());
+		Map<String, Object> response = new HashMap<>();
+		response.put("key", "someValue");
+		when(this.jdbcUtils.queryForMap("PISD.SELECT_REQUIRED_FIELDS_FOR_CREATEDINSRC_EVENT", "policyQuotaInternalId")).thenReturn(response);
 
 		Map<String, Object> validation = pisdr012.executeGetRequiredFieldsForCreatedInsrcEvnt("policyQuotaInternalId");
 		assertNotNull(validation);
