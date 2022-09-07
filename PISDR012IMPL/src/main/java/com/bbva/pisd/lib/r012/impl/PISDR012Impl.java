@@ -604,6 +604,25 @@ public class PISDR012Impl extends PISDR012Abstract {
 	//Fin Open Market
 
 	@Override
+	public Map<String, Object> executeGetRolesByProductAndModality(BigDecimal productId, String modalityType) {
+		LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality START *****");
+		List<Map<String, Object>> response = null;
+		if(Objects.nonNull(productId) && Objects.nonNull(modalityType)) {
+			try {
+				LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality PARAMETERS OK ... EXECUTING *****");
+				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_INSRNC_ROLE_MODALITY.getValue(), productId, modalityType);
+				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_INSRNC_ROLE_MODALITY] Result -> Key {} with value: {}", key, value)));
+			} catch (NoResultException ex) {
+				LOGGER.info("executeGetRolesByProductAndModality - NO ROLES ERROR: {}", RBVDErrors.NO_ROLES.getMessage());
+			}
+		} else {
+			LOGGER.info("executeGetRolesByProductAndModality - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSRNC_ROLE_MODALITY]");
+		}
+		LOGGER.info("***** PISDR012Impl - executeGetRolesByProductAndModality END *****");
+		return buildResult(response);
+	}
+
+	@Override
 	public Map<String, Object> executeGetRequiredFieldsForCreatedInsrcEvnt(String policyQuotaInternalId) {
 		LOGGER.info("***** PISDR012Impl - executeGetRequiredFieldsForCreatedInsrcEvnt START *****");
 		try {
@@ -646,7 +665,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		LOGGER.info("***** PISDR012Impl - executeGetASingleRow | Executing {} QUERY", queryId);
 		try {
 			Map<String, Object> response = this.jdbcUtils.queryForMap(queryId, arguments);
-			response.forEach((key, value) -> LOGGER.info("[{}] Column -> {} with value: {}", new String[]{queryId, key,(String) value}));
+			response.forEach((key, value) -> LOGGER.info("Column -> {} with value: {}", key,value));
 			LOGGER.info("***** PISDR012Impl - executeGetASingleRow END *****");
 			return response;
 		} catch (NoResultException ex) {
