@@ -730,4 +730,4 @@ Map<String, Object> responseQuery = pisdR012.executeGetASingleRow(String queryId
 - **Versión 0.23.7**: En esta versión se añade la query [PISD.VALIDATE_IF_POLICY_EXISTS] para evitar que suceda el último inconveniente productivo
   (Realizar doble cobro al cliente al emitir la poliza de su seguro).
 - **Versión 0.24.2**: En esta versión se modifica la query [PISD.SELECT_INSURANCE_QUOTATION]
-- **Versión 0.25.1**: En esta versión se retiran métodos de emisión y se agregan métodos genericos para consultas e inserciones.
+- **Versión 0.25.3**: En esta versión se retiran métodos de emisión y se agregan métodos genericos para consultas, inserciones y actualizaciones
