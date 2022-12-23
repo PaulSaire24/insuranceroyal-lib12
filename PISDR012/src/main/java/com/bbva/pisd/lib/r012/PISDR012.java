@@ -29,9 +29,6 @@ public interface PISDR012 {
 	void executeRegisterAdditionalQuotationBranch(Map<String, Object> arguments);
 	void executeRegisterAdditionalQuotationBranchMod(Map<String, Object> arguments);
 
-	int[] executeSaveParticipants(Map<String, Object>[] participantsMap);
-	int[] executeSaveReceipts(Map<String, Object>[] receiptsInformation);
-
 	Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments);
 	boolean executeUpdateInsuranceContract(Map<String, Object> arguments);
 	boolean executeUpdatePaymentSchedule(Map<String, Object> arguments);
@@ -59,7 +56,7 @@ public interface PISDR012 {
 	 * @param queryId query identificator from sql properties sheet
 	 * @param arguments parameters to replace in query
 	 * @param requiredParameters parameters whose should not be null values (if there aren't any parameters to evaluate, pass an empty array)
-	 * @return rows number inserted (it always must be 1 if everything went ok)
+	 * @return rows number inserted or updated (it always must be 1 if everything went ok)
 	 */
 	int executeInsertSingleRow(String queryId, Map<String, Object> arguments, String... requiredParameters);
 
@@ -70,5 +67,13 @@ public interface PISDR012 {
 	 * @return a row with its columns
 	 */
 	Map<String, Object> executeGetASingleRow(String queryId, Map<String, Object> arguments);
+
+	/**
+	 * @author P030557
+	 * @param queryId query identificator from sql properties sheet
+	 * @param argumentsArray parameters array to replace in each insert or update
+	 * @return rows number inserted or updated (it should be more than 1 if everything went ok)
+	 */
+	int[] executeMultipleInsertionOrUpdate(String queryId, Map<String, Object>[] argumentsArray);
 
 }

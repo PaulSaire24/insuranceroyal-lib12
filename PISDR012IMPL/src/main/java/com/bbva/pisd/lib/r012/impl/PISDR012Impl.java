@@ -350,47 +350,6 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
-	public int[] executeSaveParticipants(Map<String, Object>[] participantsMap) {
-		LOGGER.info("***** PISDR012Impl - executeSaveParticipants START *****");
-		int[] affectedRows = null;
-		if(Arrays.stream(participantsMap).
-				allMatch(map -> parametersEvaluation(map, RBVDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue(),
-						RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue(), RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue(),
-						RBVDProperties.FIELD_PARTICIPANT_ROLE_ID.getValue(), RBVDProperties.FIELD_PARTY_ORDER_NUMBER.getValue(),
-						RBVDProperties.FIELD_USER_AUDIT_ID.getValue()))) {
-			LOGGER.info("***** PISDR012Impl - executeSaveParticipants - PARAMETERS OK ... EXECUTING *****");
-			try {
-				affectedRows = this.jdbcUtils.batchUpdate(RBVDProperties.QUERY_INSERT_INSRNC_CTR_PARTICIPANT.getValue(), participantsMap);
-			} catch (NoResultException ex) {
-				LOGGER.debug("***** PISDR012Impl - executeSaveParticipants - Database exception: {} *****", ex.getMessage());
-				affectedRows = new int[0];
-			}
-		} else {
-			LOGGER.debug("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSRNC_CTR_PARTICIPANT]");
-		}
-
-		LOGGER.info("***** PISDR012Impl - executeSaveParticipants | Number of inserted rows: {} *****", Objects.nonNull(affectedRows) ? affectedRows.length : null);
-		LOGGER.info("***** PISDR012Impl - executeSaveParticipants END *****");
-		return affectedRows;
-	}
-
-	@Override
-	public int[] executeSaveReceipts(Map<String, Object>[] receiptsInformation) {
-		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt START *****");
-		int[] affectedRows = null;
-		try {
-			affectedRows = this.jdbcUtils.batchUpdate(RBVDProperties.QUERY_INSERT_INSURANCE_CTR_RECEIPTS.getValue(),
-					receiptsInformation);
-		} catch (NoResultException ex) {
-			LOGGER.debug("***** PISDR012Impl - executeSaveFirstReceipt - Database exception: {} *****", ex.getMessage());
-			affectedRows = new int[0];
-		}
-		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt | Number of inserted rows: {} *****", Objects.nonNull(affectedRows) ? affectedRows.length : null);
-		LOGGER.info("***** PISDR012Impl - executeSaveFirstReceipt END *****");
-		return affectedRows;
-	}
-
-	@Override
 	public Map<String, Object> executeGetPolicyContract(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeGetPolicyContract START *****");
 
@@ -403,7 +362,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				response = this.jdbcUtils.queryForMap(PISDProperties.QUERY_SELECT_INSURANCE_CONTRACT.getValue(), arguments);
 				
 			} catch (NoResultException ex) {
-				LOGGER.debug("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSURANCE_CONTRACT]");
+				LOGGER.debug("executeGetPolicyContract - MISSING MANDATORY PARAMETERS [PISD.SELECT_INSURANCE_CONTRACT]");
 				this.addAdvice(PISDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 		} else {
@@ -567,7 +526,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 				response = this.jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_OFFER.getValue(), arguments);
 				response.forEach(map -> map.forEach((key, value) -> LOGGER.info("[PISD.SELECT_OFFER] Result -> Key {} with value: {}", key, value)));
 			} catch (NoResultException ex) {
-				LOGGER.debug("executeSaveParticipants - MISSING MANDATORY PARAMETERS [PISD.SELECT_OFFER]");
+				LOGGER.debug("executeGetOffer - MISSING MANDATORY PARAMETERS [PISD.SELECT_OFFER]");
 				this.addAdvice(RBVDErrors.QUERY_EMPTY_RESULT.getAdviceCode());
 			}
 		} else {
@@ -665,7 +624,7 @@ public class PISDR012Impl extends PISDR012Abstract {
 		LOGGER.info("***** PISDR012Impl - executeGetASingleRow | Executing {} QUERY", queryId);
 		try {
 			Map<String, Object> response = this.jdbcUtils.queryForMap(queryId, arguments);
-			response.forEach((key, value) -> LOGGER.info("Column -> {} with value: {}", key, value));
+			response.forEach((key, value) -> LOGGER.info("Column -> {} with value: {}", key,value));
 			LOGGER.info("***** PISDR012Impl - executeGetASingleRow END *****");
 			return response;
 		} catch (NoResultException ex) {
@@ -674,5 +633,19 @@ public class PISDR012Impl extends PISDR012Abstract {
 		}
 	}
 
+	@Override
+	public int[] executeMultipleInsertionOrUpdate(String queryId, Map<String, Object>[] argumentsArray) {
+		LOGGER.info("***** PISDR012Impl - executeMultipleInsertionOrUpdate START *****");
+		int[] affectedRows = null;
+		try {
+			affectedRows = this.jdbcUtils.batchUpdate(queryId, argumentsArray);
+		} catch (NoResultException ex) {
+			LOGGER.debug("***** PISDR012Impl - executeMultipleInsertionOrUpdate - Database exception: {} *****", ex.getMessage());
+			affectedRows = new int[0];
+		}
+		LOGGER.info("***** PISDR012Impl - executeMultipleInsertionOrUpdate | Number of inserted rows: {} *****", Objects.nonNull(affectedRows) ? affectedRows.length : null);
+		LOGGER.info("***** PISDR012Impl - executeMultipleInsertionOrUpdate END *****");
+		return affectedRows;
+	}
 
 }
