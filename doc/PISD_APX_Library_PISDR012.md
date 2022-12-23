@@ -446,9 +446,7 @@ boolean saveUpdateContractDocumentExecuted = pisdR012.executeUpdateInsuranceCont
 
 ##### 2.22.1 Datos de Entrada
 
-|#|Nombre del Atributo|Tipo de Dato| Descripción|
-| :----|:---------- |:--------------| :-----|
-|1| arguments | Map | Mapa que contiene el nombre y el valor de los filtros de la consulta sql |
+Ninguno
 
 ##### 2.22.2 Datos de Salida
 
@@ -718,3 +716,4 @@ int[] insertedRows = pisdR012.executeMultipleInsertionOrUpdate(String queryId, M
 - **Versión 0.24.2**: En esta versión se modifica la query [PISD.SELECT_INSURANCE_QUOTATION]
 - **Versión 0.25.6**: En esta versión se retiran métodos de emisión y se agregan métodos genericos para consultas, inserciones y actualizaciones
 - **Versión 0.25.7**: Se agrega query para actualizar la poliza del contrato generado en la tabla [T_PISD_INSURANCE_CONTRACT]
+- **Versión 0.26.0**: En esta versión se retiran métodos de emisión y se agregan métodos genericos para consultas e inserciones.
