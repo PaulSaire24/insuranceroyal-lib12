@@ -648,4 +648,22 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return affectedRows;
 	}
 
+	@Override
+	public Map<String, Object> executeGetProductModalitiesInfoWithFlexible(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeGetProductModalitiesInformationWithFlexible START *****");
+		List<Map<String, Object>> response = null;
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(),
+				PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue(), PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())) {
+			try {
+				response = this.jdbcUtils.queryForList(PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION_WITH_FLEXIBLE.getValue(), arguments);
+				response.stream().forEach(map -> map.
+						forEach((key, value) -> LOGGER.info("[PISD.GET_PRODUCT_MODALITIES_INFORMATION_WITH_FLEXIBLE] Result -> Key {} with value: {}", key,value)));
+			} catch (NoResultException ex) {
+				LOGGER.debug("[PISD.GET_PRODUCT_MODALITIES_INFORMATION_WITH_FLEXIBLE] - EMPTY RESULT");
+			}
+		}
+		LOGGER.info("***** PISDR012Impl - executeGetProductModalitiesInformationWithFlexible END *****");
+		return buildResult(response);
+	}
+
 }
