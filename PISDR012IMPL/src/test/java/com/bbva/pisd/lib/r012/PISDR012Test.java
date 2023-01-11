@@ -869,4 +869,44 @@ public class PISDR012Test {
 
 		assertEquals(0, validation.length);
 	}
+
+	@Test
+	public void executeGetProductModalitiesInformationWithFlexibleOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitiesInformationOK...");
+
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn("830");
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())).thenReturn("BI");
+
+		when(this.jdbcUtils.queryForList(PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION_WITH_FLEXIBLE.getValue(), argumentsForGetModalitiesInformation)).
+				thenReturn(new ArrayList<>());
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInfoWithFlexible(argumentsForGetModalitiesInformation);
+		assertNotNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetProductInformationWithFlexibleEmptyResult() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductInformationWithFlexibleWithNoResultException...");
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInfoWithFlexible(argumentsForGetModalitiesInformation);
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetProductModalitiesInformationFlexibleWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitiesInformationFlexibleWithNoResultException...");
+
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn("830");
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())).thenReturn("PC");
+
+		when(this.jdbcUtils.queryForList(
+				PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION_WITH_FLEXIBLE.getValue(),
+				argumentsForGetModalitiesInformation))
+				.thenThrow(new NoResultException(CODE, MESSAGE));
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInfoWithFlexible(argumentsForGetModalitiesInformation);
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
 }
