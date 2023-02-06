@@ -19,6 +19,8 @@ public interface PISDR012 {
 	Map<String, Object> executeGetInsuranceSimulationIdAndExpiredDate(String quotationId);
 	int executeSaveInsuranceQuotation(Map<String, Object> arguments);
 	int executeSaveInsuranceQuotationMod(Map<String, Object> arguments);
+
+	int executeUpdateInsuranceQuotationMod(Map<String, Object> arguments);
 	int executeSaveInsuranceQuotationVeh(Map<String, Object> arguments);
 
 	Map<String, Object> executeGetPlansBBVA(Map<String, Object> arguments);
