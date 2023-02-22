@@ -718,4 +718,3 @@ int[] insertedRows = pisdR012.executeMultipleInsertionOrUpdate(String queryId, M
 - **Versión 0.24.2**: En esta versión se modifica la query [PISD.SELECT_INSURANCE_QUOTATION]
 - **Versión 0.25.6**: En esta versión se retiran métodos de emisión y se agregan métodos genericos para consultas, inserciones y actualizaciones
 - **Versión 0.25.7**: Se agrega query para actualizar la poliza del contrato generado en la tabla [T_PISD_INSURANCE_CONTRACT]
-- **Versión 0.25.7**: Se actualiza la query PISD.SELECT_REQUIRED_FIELDS_FOR_INSURANCE_CONTRACT para considerar el filtro correcto
