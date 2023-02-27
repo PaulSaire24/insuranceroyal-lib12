@@ -21,6 +21,7 @@ public interface PISDR012 {
 	int executeSaveInsuranceQuotationMod(Map<String, Object> arguments);
 
 	int executeUpdateInsuranceQuotationMod(Map<String, Object> arguments);
+	int executeUpdateInsuranceQuotationModAmount(Map<String, Object> arguments);
 	int executeSaveInsuranceQuotationVeh(Map<String, Object> arguments);
 
 	Map<String, Object> executeGetPlansBBVA(Map<String, Object> arguments);
