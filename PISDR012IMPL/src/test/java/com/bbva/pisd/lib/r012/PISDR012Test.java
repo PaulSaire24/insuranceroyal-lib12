@@ -349,6 +349,30 @@ public class PISDR012Test {
 	}
 
 	@Test
+	public void executeUpdateInsuranceQuotationModAmountOK() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceQuotationModAmountOK...");
+		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
+		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(new BigDecimal("827"));
+		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn("modality");
+		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
+
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
+
+		int validation = pisdr012.executeUpdateInsuranceQuotationModAmount(argumentsForSaveSimulationQuotationMod);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(1, validation);
+	}
+
+	@Test
+	public void executeUpdateInsuranceQuotationModAmountWithParametersEvaluationFalse() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceQuotationModAmountWithParametersEvaluationFalse...");
+
+		int validation = pisdr012.executeUpdateInsuranceQuotationModAmount(argumentsForSaveSimulationQuotationMod);
+		verify(jdbcUtils, never()).update(anyString(), anyMap());
+		assertEquals(0, validation);
+	}
+
+	@Test
 	public void executeSaveInsuranceQuotationVehOK() {
 		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceQuotationVehOK...");
 		when(argumentsForSaveSimulationQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
@@ -520,7 +544,7 @@ public class PISDR012Test {
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
-		when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(1);
+	    when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(1);
 		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
 		assertTrue(validation);
 	}
@@ -541,7 +565,7 @@ public class PISDR012Test {
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_ENTITY_ID.getValue())).thenReturn("0011");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
 		when(argumentsForUpdateInsuranceContract.get(PISDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
-		when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(0);
+	    when(jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_CONTRACT_STATUS.getValue(), argumentsForUpdateInsuranceContract)).thenReturn(0);
 		boolean validation = pisdr012.executeUpdateInsuranceContract(argumentsForUpdateInsuranceContract);
 		assertFalse(validation);
 	}
@@ -553,7 +577,7 @@ public class PISDR012Test {
 		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
 		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
 		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_POLICY_RECEIPT_ID.getValue())).thenReturn("1");
-		when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), argumentsForexecuteUpdatePaymentSchedule)).thenReturn(1);
+	    when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), argumentsForexecuteUpdatePaymentSchedule)).thenReturn(1);
 		boolean validation = pisdr012.executeUpdatePaymentSchedule(argumentsForexecuteUpdatePaymentSchedule);
 		assertTrue(validation);
 	}
@@ -576,7 +600,7 @@ public class PISDR012Test {
 		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
 		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
 		when(argumentsForexecuteUpdatePaymentSchedule.get(RBVDProperties.FIELD_POLICY_RECEIPT_ID.getValue())).thenReturn("1");
-		when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), argumentsForexecuteUpdatePaymentSchedule)).thenReturn(0);
+	    when(jdbcUtils.update(RBVDProperties.QUERY_UPDATE_INSURANCE_CTR_RECEIPTS.getValue(), argumentsForexecuteUpdatePaymentSchedule)).thenReturn(0);
 		boolean validation = pisdr012.executeUpdatePaymentSchedule(argumentsForexecuteUpdatePaymentSchedule);
 		assertFalse(validation);
 	}
@@ -588,7 +612,7 @@ public class PISDR012Test {
 		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
 		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
 		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE.getValue(), argumentsForexecuteGetInsuranceContractStartDate)).thenReturn(new HashMap<>());
-		Map<String,Object> validation = pisdr012.executeGetInsuranceContractStartDate(argumentsForexecuteGetInsuranceContractStartDate);
+	    Map<String,Object> validation = pisdr012.executeGetInsuranceContractStartDate(argumentsForexecuteGetInsuranceContractStartDate);
 		assertNotNull(validation);
 	}
 
@@ -609,7 +633,7 @@ public class PISDR012Test {
 		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSURANCE_CONTRACT_BRANCH_ID.getValue())).thenReturn("0241");
 		when(argumentsForexecuteGetInsuranceContractStartDate.get(RBVDProperties.FIELD_INSRC_CONTRACT_INT_ACCOUNT_ID.getValue())).thenReturn("3999993329");
 		when(jdbcUtils.queryForMap(RBVDProperties.QUERY_SELECT_INSURANCE_CONTRACT_START_DATE.getValue(), argumentsForexecuteGetInsuranceContractStartDate)).thenThrow(new NoResultException(MESSAGE));
-		Map<String,Object> validation = pisdr012.executeGetInsuranceContractStartDate(argumentsForexecuteGetInsuranceContractStartDate);
+	    Map<String,Object> validation = pisdr012.executeGetInsuranceContractStartDate(argumentsForexecuteGetInsuranceContractStartDate);
 		assertNull(validation);
 	}
 
@@ -700,7 +724,7 @@ public class PISDR012Test {
 		LOGGER.info("PISDR012Test - Executing executeGetOfferOK...");
 		when(argumentGetOffer.get(RBVDProperties.FIELD_PRODUCT_OFFER_ID.getValue())).thenReturn("0011");
 		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_OFFER.getValue(), argumentGetOffer)).thenReturn(new ArrayList<>());
-		Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
+	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
 		assertNotNull(validation.get(RBVDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
@@ -710,7 +734,7 @@ public class PISDR012Test {
 		LOGGER.info("PISDR012Test - Executing executeGetOfferWithNoResultException...");
 		when(argumentGetOffer.get(RBVDProperties.FIELD_PRODUCT_OFFER_ID.getValue())).thenReturn("0011");
 		when(jdbcUtils.queryForList(RBVDProperties.QUERY_SELECT_OFFER.getValue(), argumentGetOffer)).thenThrow(new NoResultException(MESSAGE));
-		Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
+	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
 		assertNull(validation.get(RBVDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
@@ -718,7 +742,7 @@ public class PISDR012Test {
 	public void executeGetOfferWithNull(){
 		LOGGER.info("PISDR012Test - Executing executeGetOfferWithNull...");
 		when(argumentGetOffer.get(RBVDProperties.FIELD_POLICY_ID.getValue())).thenReturn(null);
-		Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
+	    Map<String,Object> validation = pisdr012.executeGetOffer(argumentGetOffer);
 		assertNull(validation.get(RBVDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
@@ -868,29 +892,5 @@ public class PISDR012Test {
 		int[] validation = this.pisdr012.executeMultipleInsertionOrUpdate("queryId", new Map[2]);
 
 		assertEquals(0, validation.length);
-	}
-
-	@Test
-	public void executeUpdateInsuranceQuotationModAmountOK() {
-		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceQuotationModAmountOK...");
-		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
-		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(new BigDecimal("827"));
-		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn("modality");
-		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
-
-		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
-
-		int validation = pisdr012.executeUpdateInsuranceQuotationModAmount(argumentsForSaveSimulationQuotationMod);
-		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
-		assertEquals(1, validation);
-	}
-
-	@Test
-	public void executeUpdateInsuranceQuotationModAmountWithParametersEvaluationFalse() {
-		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceQuotationModAmountWithParametersEvaluationFalse...");
-
-		int validation = pisdr012.executeUpdateInsuranceQuotationModAmount(argumentsForSaveSimulationQuotationMod);
-		verify(jdbcUtils, never()).update(anyString(), anyMap());
-		assertEquals(0, validation);
 	}
 }

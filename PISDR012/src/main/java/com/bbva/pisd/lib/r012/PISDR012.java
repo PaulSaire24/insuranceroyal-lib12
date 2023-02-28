@@ -19,6 +19,8 @@ public interface PISDR012 {
 	Map<String, Object> executeGetInsuranceSimulationIdAndExpiredDate(String quotationId);
 	int executeSaveInsuranceQuotation(Map<String, Object> arguments);
 	int executeSaveInsuranceQuotationMod(Map<String, Object> arguments);
+
+	int executeUpdateInsuranceQuotationModAmount(Map<String, Object> arguments);
 	int executeSaveInsuranceQuotationVeh(Map<String, Object> arguments);
 
 	Map<String, Object> executeGetPlansBBVA(Map<String, Object> arguments);
@@ -39,7 +41,7 @@ public interface PISDR012 {
 
 	Map<String,Object> executeGetInsuranceContractStatus();
 	Boolean executeUpdateInsuranceContractDocument(Map<String,Object> arguments);
-	Map<String,Object> executeGetOffer(Map<String,Object> arguments);
+    Map<String,Object> executeGetOffer(Map<String,Object> arguments);
 	//Inicio Open Market
 	int executeUpdate(String nameProp, Map<String, Object> parameters);
 	//Fin Open Market
@@ -76,5 +78,4 @@ public interface PISDR012 {
 	 */
 	int[] executeMultipleInsertionOrUpdate(String queryId, Map<String, Object>[] argumentsArray);
 
-	int executeUpdateInsuranceQuotationModAmount(Map<String, Object> arguments);
 }
