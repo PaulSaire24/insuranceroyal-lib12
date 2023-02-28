@@ -217,6 +217,25 @@ public class PISDR012Impl extends PISDR012Abstract {
 	}
 
 	@Override
+	public int executeUpdateInsuranceQuotationModAmount(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeUpdateInsuranceQuotationModAmount START *****");
+		int affectedRows = 0;
+		if (parametersEvaluation(arguments, PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue(),
+				PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(),
+				PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue(),
+				PISDProperties.FIELD_USER_AUDIT_ID.getValue())) {
+			LOGGER.info("***** PISDR012Impl - executeUpdateInsuranceQuotationModAmount - PARAMETERS OK ... EXECUTING *****");
+			affectedRows = this.jdbcUtils.update(PISDProperties.QUERY_UPDATE_INSURANCE_QUOTATION_MOD_AMOUNT.getValue(), arguments);
+		} else {
+			LOGGER.debug("executeUpdateInsuranceQuotationModAmount - MISSING MANDATORY PARAMETERS [PISD.INSERT_INSURANCE_QUOTATION_MOD]");
+		}
+
+		LOGGER.info("***** PISDR012Impl - executeUpdateInsuranceQuotationModAmount | Number of inserted rows: {} *****", affectedRows);
+		LOGGER.info("***** PISDR012Impl - executeUpdateInsuranceQuotationModAmount END *****");
+		return affectedRows;
+	}
+
+	@Override
 	public int executeSaveInsuranceQuotationVeh(Map<String, Object> arguments) {
 		LOGGER.info("***** PISDR012Impl - executeSaveInsuranceQuotationVeh START *****");
 		int affectedRows = 0;
