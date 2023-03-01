@@ -373,6 +373,30 @@ public class PISDR012Test {
 	}
 
 	@Test
+	public void executeUpdateInsuranceQuotationModAmountOK() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceQuotationModAmountOK...");
+		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
+		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn(new BigDecimal("827"));
+		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn("modality");
+		when(argumentsForSaveSimulationQuotationMod.get(PISDProperties.FIELD_USER_AUDIT_ID.getValue())).thenReturn("user01");
+
+		when(this.jdbcUtils.update(anyString(), anyMap())).thenReturn(1);
+
+		int validation = pisdr012.executeUpdateInsuranceQuotationModAmount(argumentsForSaveSimulationQuotationMod);
+		verify(jdbcUtils, times(1)).update(anyString(), anyMap());
+		assertEquals(1, validation);
+	}
+
+	@Test
+	public void executeUpdateInsuranceQuotationModAmountWithParametersEvaluationFalse() {
+		LOGGER.info("PISDR012Test - Executing executeUpdateInsuranceQuotationModAmountWithParametersEvaluationFalse...");
+
+		int validation = pisdr012.executeUpdateInsuranceQuotationModAmount(argumentsForSaveSimulationQuotationMod);
+		verify(jdbcUtils, never()).update(anyString(), anyMap());
+		assertEquals(0, validation);
+	}
+
+	@Test
 	public void executeSaveInsuranceQuotationVehOK() {
 		LOGGER.info("PISDR012Test - Executing executeSaveInsuranceQuotationVehOK...");
 		when(argumentsForSaveSimulationQuotationVeh.get(PISDProperties.FIELD_POLICY_QUOTA_INTERNAL_ID.getValue())).thenReturn("aaaaa");
