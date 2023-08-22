@@ -957,4 +957,22 @@ public class PISDR012Test {
 		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
+	@Test
+	public void executeGetProductDescByInsrncCompanySimulationId_TESTOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductDescByInsrncCompanySimulationId_TESTOK...");
+
+		when(jdbcUtils.queryForMap(anyString(), anyString())).thenReturn(new HashMap<>());
+		Map<String, Object> validation = pisdr012.executeGetProductDescByInsrncCompanySimulationId("quotationId");
+		assertNotNull(validation);
+	}
+
+	@Test
+	public void executeGetProductDescByInsrncCompanySimulationIdWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductDescByInsrncCompanySimulationIdWithNoResultException...");
+
+		when(jdbcUtils.queryForMap(anyString(), anyString())).thenThrow(new NoResultException(MESSAGE));
+		Map<String, Object> validation = pisdr012.executeGetProductDescByInsrncCompanySimulationId("34213");
+		assertNull(validation);
+	}
+
 }
