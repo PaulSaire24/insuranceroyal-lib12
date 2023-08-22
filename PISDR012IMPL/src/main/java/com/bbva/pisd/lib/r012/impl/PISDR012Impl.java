@@ -704,4 +704,20 @@ public class PISDR012Impl extends PISDR012Abstract {
 		return buildResult(response);
 	}
 
+	@Override
+	public Map<String, Object> executeGetProductDescByInsrncCompanySimulationId(String companySimulationId) {
+		LOGGER.info("***** PISDR012Impl - executeGetProductDescByInsrncCompanySimulationId START *****");
+		Map<String, Object> response = null;
+
+		try {
+			response = this.jdbcUtils.queryForMap("PISD.SELECT_PRODUCT_BY_COMPANY_SIMULATION_ID",companySimulationId);
+			response.forEach((key,value) -> LOGGER.info("[PISD.SELECT_PRODUCT_BY_COMPANY_SIMULATION_ID] Result -> key {} with value {}",key,value));
+		}catch (NoResultException ex){
+			LOGGER.debug("executeGetProductDescByInsrncCompanySimulationId - ERROR IN QUERY [PISD.SELECT_PRODUCT_BY_COMPANY_SIMULATION_ID] - Message {}",ex.getMessage());
+		}
+
+		LOGGER.info("***** PISDR012Impl - executeGetProductDescByInsrncCompanySimulationId END *****");
+		return response;
+	}
+
 }
