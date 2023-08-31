@@ -711,9 +711,9 @@ public class PISDR012Impl extends PISDR012Abstract {
 
 		try {
 			response = this.jdbcUtils.queryForMap("PISD.SELECT_PRODUCT_BY_COMPANY_SIMULATION_ID",companySimulationId);
-			response.forEach((key,value) -> LOGGER.info("[PISD.SELECT_PRODUCT_BY_COMPANY_SIMULATION_ID] Result -> key {} with value {}",key,value));
+			response.forEach((key,value) -> LOGGER.info("[PISD.SELECT_PRODUCT_BY_COMPANY_SIMULATION_ID] Result -> key {} - value {}",key,value));
 		}catch (NoResultException ex){
-			LOGGER.debug("executeGetProductDescByInsrncCompanySimulationId - ERROR IN QUERY [PISD.SELECT_PRODUCT_BY_COMPANY_SIMULATION_ID] - Message {}",ex.getMessage());
+			LOGGER.debug("executeGetProductDescByInsrncCompanySimulationId - ERROR IN QUERY [PISD.SELECT_PRODUCT_BY_COMPANY_SIMULATION_ID] - {}",ex.getMessage());
 		}
 
 		LOGGER.info("***** PISDR012Impl - executeGetProductDescByInsrncCompanySimulationId END *****");
