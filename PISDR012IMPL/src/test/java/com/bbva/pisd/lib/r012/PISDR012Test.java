@@ -40,6 +40,8 @@ public class PISDR012Test {
 	private static final String CODE = "adviceCode";
 	private static final String MESSAGE = "No se encontró data";
 
+	private static final String UNEMPLOYMENT = "_UNEMPLOYMENT";
+
 	private final PISDR012Impl pisdr012 = new PISDR012Impl();
 	private JdbcUtils jdbcUtils;
 
@@ -973,6 +975,45 @@ public class PISDR012Test {
 		when(jdbcUtils.queryForMap(anyString(), anyString())).thenThrow(new NoResultException(MESSAGE));
 		Map<String, Object> validation = pisdr012.executeGetProductDescByInsrncCompanySimulationId("34213");
 		assertNull(validation);
+	}
+
+	@Test
+	public void executeGetProductModalitiesInfoUnemploymentOK() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitiesInfoUnemploymentOK...");
+
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn("836");
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())).thenReturn("PC");
+
+		when(this.jdbcUtils.queryForList(PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION.getValue().concat(UNEMPLOYMENT), argumentsForGetModalitiesInformation)).
+				thenReturn(new ArrayList<>());
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInfoUnemployment(argumentsForGetModalitiesInformation);
+		assertNotNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetProductModalitiesInfoUnemploymentEmptyResult() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitiesInfoUnemploymentEmptyResult...");
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInfoUnemployment(argumentsForGetModalitiesInformation);
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
+	}
+
+	@Test
+	public void executeGetProductModalitiesInfoUnemploymentWithNoResultException() {
+		LOGGER.info("PISDR012Test - Executing executeGetProductModalitiesInfoUnemploymentWithNoResultException...");
+
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue())).thenReturn("836");
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue())).thenReturn(new ArrayList<>());
+		when(argumentsForGetModalitiesInformation.get(PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())).thenReturn("PC");
+
+		when(this.jdbcUtils.queryForList(
+				PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION.getValue().concat(UNEMPLOYMENT),
+				argumentsForGetModalitiesInformation))
+				.thenThrow(new NoResultException(CODE, MESSAGE));
+
+		Map<String, Object> validation = pisdr012.executeGetProductModalitiesInfoUnemployment(argumentsForGetModalitiesInformation);
+		assertNull(validation.get(PISDProperties.KEY_OF_INSRC_LIST_RESPONSES.getValue()));
 	}
 
 }

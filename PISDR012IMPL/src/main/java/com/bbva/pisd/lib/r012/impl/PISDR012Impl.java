@@ -22,6 +22,8 @@ public class PISDR012Impl extends PISDR012Abstract {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR012Impl.class);
 
+	private static final String UNEMPLOYMENT = "_UNEMPLOYMENT";
+
 	@Override
 	public Map<String, Object> executeGetProductInformation(String insuranceProductType) {
 		LOGGER.info("***** PISDR012Impl - executeGetProductInformation START *****");
@@ -701,6 +703,24 @@ public class PISDR012Impl extends PISDR012Abstract {
 			}
 		}
 		LOGGER.info("***** PISDR012Impl - executeGetProductModalitiesInformationWithFlexible END *****");
+		return buildResult(response);
+	}
+
+	@Override
+	public Map<String, Object> executeGetProductModalitiesInfoUnemployment(Map<String, Object> arguments) {
+		LOGGER.info("***** PISDR012Impl - executeGetProductModalitiesInfoUnemployment START *****");
+		List<Map<String, Object>> response = null;
+		if(parametersEvaluation(arguments, PISDProperties.FIELD_OR_FILTER_INSURANCE_PRODUCT_ID.getValue(),
+				PISDProperties.FIELD_OR_FILTER_INSURANCE_MODALITY_TYPE.getValue(), PISDProperties.FIELD_SALE_CHANNEL_ID.getValue())) {
+			try {
+				response = this.jdbcUtils.queryForList(PISDProperties.QUERY_GET_PRODUCT_MODALITIES_INFORMATION.getValue().concat(UNEMPLOYMENT), arguments);
+				response.stream().forEach(map -> map.
+						forEach((key, value) -> LOGGER.info("[PISD.GET_PRODUCT_MODALITIES_INFORMATION_UNEMPLOYMENT] Result -> Key {} with value: {}", key,value)));
+			} catch (NoResultException ex) {
+				LOGGER.debug("[PISD.GET_PRODUCT_MODALITIES_INFORMATION_UNEMPLOYMENT] - EMPTY RESULT");
+			}
+		}
+		LOGGER.info("***** PISDR012Impl - executeGetProductModalitiesInfoUnemployment END *****");
 		return buildResult(response);
 	}
 
