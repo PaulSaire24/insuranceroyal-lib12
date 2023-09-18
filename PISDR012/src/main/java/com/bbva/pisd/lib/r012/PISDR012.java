@@ -80,6 +80,9 @@ public interface PISDR012 {
 	int[] executeMultipleInsertionOrUpdate(String queryId, Map<String, Object>[] argumentsArray);
 
 	Map<String, Object> executeGetProductModalitiesInfoWithFlexible(Map<String, Object> arguments);
+
+	Map<String, Object> executeGetProductModalitiesInfoUnemployment(Map<String, Object> arguments);
+
 	Map<String, Object> executeGetProductDescByInsrncCompanySimulationId(String companySimulationId);
 
 }
